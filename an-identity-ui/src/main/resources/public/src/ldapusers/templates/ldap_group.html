@@ -1,0 +1,26 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/ldapusers_groups">LDAP Group</a> | {{group.displayName}} <span ng-if="changed">*</span></h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Core Data</h4>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Display Name</label>
+					<input ng-model="group.displayName" disabled="true" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>DN</label>
+					<input ng-model="group.dn" disabled="true" class="form-control"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

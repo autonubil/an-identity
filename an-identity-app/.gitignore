@@ -3,5 +3,3 @@ target/
 .classpath
 .project
 /db/
-/ssl/
-/node/

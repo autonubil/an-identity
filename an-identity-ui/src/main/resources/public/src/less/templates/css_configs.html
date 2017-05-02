@@ -1,0 +1,28 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/css">CSS Config</a></h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-9">
+	</div>
+	<div class="col-md-3">
+		<button class="btn btn-primary" ng-click="add()"><i class="glyphicon glyphicon-plus"> </i> Add a CSS Link</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-striped table compact"> 
+			<tr>
+			</tr>
+			<tr ng-repeat="config in configs">
+				<td>{{config.name}}</td>
+				<td>{{config.rel}}</td>
+				<td>{{config.type}}</td>
+				<td>{{config.href}}</td>
+				<td width="20"><a class="btn btn-primary" href="#/main/admin/css/{{config.id}}"><i class="glyphicon glyphicon-pencil"> </i></a></td>
+				<td width="20"><span class="btn btn-primary" ng-click="remove(config)"><i class="glyphicon glyphicon-minus"> </i></span></td>
+			</tr>
+		</table>
+	</div>
+</div>

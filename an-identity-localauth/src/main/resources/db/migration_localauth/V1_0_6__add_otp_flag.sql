@@ -1,0 +1,1 @@
+ALTER TABLE admin_user ADD COLUMN use_otp DECIMAL(1,0)

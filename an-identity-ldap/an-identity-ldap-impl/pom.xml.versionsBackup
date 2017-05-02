@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.autonubil.intranet</groupId>
+		<artifactId>autonubil-intranet-ldap</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>autonubil-intranet-ldap-impl</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>com.autonubil.intranet</groupId>
+			<artifactId>autonubil-intranet-ldap-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.intranet</groupId>
+			<artifactId>autonubil-intranet-db-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.intranet</groupId>
+			<artifactId>autonubil-intranet-localauth</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>

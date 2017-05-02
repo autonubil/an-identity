@@ -1,0 +1,49 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2>Migration</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-1">
+		<label>from</label>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group">
+			<select class="form-control" ng-model="newConfig.fromLdap" ng-options="c.id as c.name for c in configs">
+			</select>
+		</div>
+	</div>
+	<div class="col-md-1">
+		<label>to</label>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group">
+			<select class="form-control" ng-model="newConfig.toLdap" ng-options="c.id as c.name for c in configs">
+			</select>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<div class="form-group">
+			<button type="button" class="btn btn-primary" ng-click="add()"><i class="glyphicon glyphicon-plus"> </i> add new config</button>
+		</div>
+	</div>
+</div>
+<div class="row" ng-if="!migrationConfigs.length || migrationConfigs.length==0">
+	<div class="col-md-12">
+		<div class="alert alert-warning">
+			No auto migration configured!
+		</div>
+	</div>
+</div>
+<div class="row" ng-if="migrationConfigs.length>0">
+	<div class="col-md-12">
+		<table class="table table-compact table-striped">
+			<tr ng-repeat="mc in migrationConfigs">
+				<td>{{configMap[mc.fromLdap]}}</td>
+				<td>{{configMap[mc.toLdap]}}</td>
+				<td width="20"><a href="#/main/admin/migrate/{{mc.id}}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"> </i></a>
+				<td width="20"><a href="#/main/admin/migrate" ng-click="remove(mc.id)" class="btn btn-danger"><i class="glyphicon glyphicon-remove-circle"> </i></a>
+			</tr>
+		</table>
+	</div>
+</div>

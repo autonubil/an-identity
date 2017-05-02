@@ -1,0 +1,27 @@
+build: 
+  only: 
+    - master
+  script: |
+    echo "checkout master ... "
+    git checkout master
+    git pull origin master
+    
+    echo "setting version ... "
+    mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.${CI_BUILD_ID}
+    mvn versions:update-properties -DincludeProperties=an.commons.version
+    mvn deploy
+
+    echo "pushing changes ... "
+    CI_PUSH_REPO=`echo ${CI_BUILD_REPO} |sed 's|.*.autonubil.local|ssh://git@gitlab.access.autonubil.local:2200|g'`
+    git remote set-url --push origin "${CI_PUSH_REPO}"
+    
+    tag=`mvn build-helper:parse-version exec:exec -Dexec.executable="echo" -Dexec.args="[ci skip] release \\${project.version}" |grep "^\[ci skip" -m 1`
+    git add . && git commit -m "${tag}" && git push origin master
+
+    echo "updating to next dev version ... "
+    mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT
+    mvn install
+    tag=`mvn build-helper:parse-version exec:exec -Dexec.executable="echo" -Dexec.args="[ci skip] next development version \\${project.version}" |grep "^\[ci skip" -m 1`
+    git add . && git commit -m "${tag}" && git push origin master
+
+    

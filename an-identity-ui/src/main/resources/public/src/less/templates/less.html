@@ -1,0 +1,2942 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/less">Less Config</a></h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="bs-docs-section" id="less-variables-section">
+			<h2 id="colors">
+				<a class="anchorjs-link " href="#colors"
+					aria-label="Anchor link for: colors" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Colors
+			</h2>
+			<p>Gray and brand colors for use across Bootstrap.</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@gray-base</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@gray-base']" value="#000"
+						data-var="@gray-base">
+				</div>
+				<div class="col-xs-4">
+					<label>@gray-darker</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@gray-darker']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@gray-dark</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@gray-dark']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@gray</label> <input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@gray']" >
+				</div>
+				<div class="col-xs-4">
+					<label>@gray-light</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@gray-light']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@gray-lighter</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@gray-lighter']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@brand-primary</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@brand-primary']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@brand-success</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@brand-success']" value="#5cb85c"
+						data-var="@brand-success">
+				</div>
+				<div class="col-xs-4">
+					<label>@brand-info</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@brand-info']" value="#5bc0de"
+						data-var="@brand-info">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@brand-warning</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@brand-warning']" value="#f0ad4e"
+						data-var="@brand-warning">
+				</div>
+				<div class="col-xs-4">
+					<label>@brand-danger</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@brand-danger']" value="#d9534f"
+						data-var="@brand-danger">
+				</div>
+			</div>
+			<h2 id="scaffolding">
+				<a class="anchorjs-link " href="#scaffolding"
+					aria-label="Anchor link for: scaffolding" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Scaffolding
+			</h2>
+			<p>Settings for some of the most global styles.</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@body-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@body-bg']"
+						value="#fff"
+						data-var="@body-bg">
+					<p class="help-block" id="help-block-@body-bg">
+						Background color for
+						<code>&lt;body&gt;</code>
+						.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@text-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@text-color']"
+						value="@gray-dark"
+						data-var="@text-color">
+					<p class="help-block" id="help-block-@text-color">
+						Global text color on
+						<code>&lt;body&gt;</code>
+						.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@link-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@link-color']"
+						value="@brand-primary"
+						data-var="@link-color">
+					<p class="help-block" id="help-block-@link-color">Global textual
+						link color.</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@link-hover-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@link-hover-color']"
+						aria-describedby="help-block-@link-hover-color"
+						>
+					<p class="help-block" id="help-block-@link-hover-color">
+						Link hover color set via
+						<code>darken()</code>
+						function.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@link-hover-decoration</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@link-hover-decoration']"
+						aria-describedby="help-block-@link-hover-decoration"
+						>
+					<p class="help-block" id="help-block-@link-hover-decoration">Link
+						hover decoration.</p>
+				</div>
+			</div>
+			<h2 id="typography">
+				<a class="anchorjs-link " href="#typography"
+					aria-label="Anchor link for: typography" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Typography
+			</h2>
+			<p>Font, line-height, and color for body text, headings, and more.</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@font-family-sans-serif</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@font-family-sans-serif']"
+						value="&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif"
+						data-var="@font-family-sans-serif">
+				</div>
+				<div class="col-xs-4">
+					<label>@font-family-serif</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-family-serif']"
+						value="Georgia, &quot;Times New Roman&quot;, Times, serif"
+						data-var="@font-family-serif">
+				</div>
+				<div class="col-xs-4">
+					<label>@font-family-monospace</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@font-family-monospace']"
+						aria-describedby="help-block-@font-family-monospace"
+						value="Menlo, Monaco, Consolas, &quot;Courier New&quot;, monospace"
+						data-var="@font-family-monospace">
+					<p class="help-block" id="help-block-@font-family-monospace">
+						Default monospace fonts for
+						<code>&lt;code&gt;</code>
+						,
+						<code>&lt;kbd&gt;</code>
+						, and
+						<code>&lt;pre&gt;</code>
+						.
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@font-family-base</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-family-base']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@font-size-base</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-size-base']" value="14px"
+						data-var="@font-size-base">
+				</div>
+				<div class="col-xs-4">
+					<label>@font-size-large</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-size-large']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@font-size-small</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-size-small']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@font-size-h1</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-size-h1']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@font-size-h2</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-size-h2']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@font-size-h3</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-size-h3']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@font-size-h4</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-size-h4']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@font-size-h5</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-size-h5']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@font-size-h6</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@font-size-h6']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@line-height-base</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@line-height-base']"
+						value="1.428571429"
+						data-var="@line-height-base">
+					<p class="help-block" id="help-block-@line-height-base">
+						Unit-less
+						<code>line-height</code>
+						for use in components like buttons.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@line-height-computed</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@line-height-computed']"
+						aria-describedby="help-block-@line-height-computed"
+						value="floor((@font-size-base * @line-height-base))"
+						data-var="@line-height-computed">
+					<p class="help-block" id="help-block-@line-height-computed">
+						Computed "line-height" (
+						<code>font-size</code>
+						*
+						<code>line-height</code>
+						) for use with
+						<code>margin</code>
+						,
+						<code>padding</code>
+						, etc.
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@headings-font-family</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@headings-font-family']"
+						value="inherit"
+						data-var="@headings-font-family">
+					<p class="help-block" id="help-block-@headings-font-family">
+						By default, this inherits from the
+						<code>&lt;body&gt;</code>
+						.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@headings-font-weight</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@headings-font-weight']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@headings-line-height</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@headings-line-height']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@headings-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@headings-color']" value="inherit"
+						data-var="@headings-color">
+				</div>
+			</div>
+			<h2 id="iconography">
+				<a class="anchorjs-link " href="#iconography"
+					aria-label="Anchor link for: iconography" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Iconography
+			</h2>
+			<p>Specify custom location and filename of the included Glyphicons
+				icon font. Useful for those including Bootstrap via Bower.</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@icon-font-path</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@icon-font-path']"
+						aria-describedby="help-block-@icon-font-path"
+						>
+					<p class="help-block" id="help-block-@icon-font-path">Load fonts
+						from this directory.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@icon-font-name</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@icon-font-name']"
+						aria-describedby="help-block-@icon-font-name"
+						value="&quot;glyphicons-halflings-regular&quot;"
+						data-var="@icon-font-name">
+					<p class="help-block" id="help-block-@icon-font-name">File name
+						for all font files.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@icon-font-svg-id</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@icon-font-svg-id']"
+						aria-describedby="help-block-@icon-font-svg-id"
+						value="&quot;glyphicons_halflingsregular&quot;"
+						data-var="@icon-font-svg-id">
+					<p class="help-block" id="help-block-@icon-font-svg-id">Element
+						ID within SVG icon file.</p>
+				</div>
+			</div>
+			<h2 id="components">
+				<a class="anchorjs-link " href="#components"
+					aria-label="Anchor link for: components" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Components
+			</h2>
+			<p>Define common padding and border radius sizes and more. Values
+				based on 14px text and 1.428 line-height (~20px to start).</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@padding-base-vertical</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@padding-base-vertical']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@padding-base-horizontal</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@padding-base-horizontal']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@padding-large-vertical</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@padding-large-vertical']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@padding-large-horizontal</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@padding-large-horizontal']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@padding-small-vertical</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@padding-small-vertical']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@padding-small-horizontal</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@padding-small-horizontal']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@padding-xs-vertical</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@padding-xs-vertical']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@padding-xs-horizontal</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@padding-xs-horizontal']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@line-height-large</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@line-height-large']" value="1.3333333"
+						data-var="@line-height-large">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@line-height-small</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@line-height-small']" value="1.5"
+						data-var="@line-height-small">
+				</div>
+				<div class="col-xs-4">
+					<label>@border-radius-base</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@border-radius-base']" value="4px"
+						data-var="@border-radius-base">
+				</div>
+				<div class="col-xs-4">
+					<label>@border-radius-large</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@border-radius-large']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@border-radius-small</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@border-radius-small']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@component-active-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@component-active-color']"
+						value="#fff"
+						data-var="@component-active-color">
+					<p class="help-block" id="help-block-@component-active-color">Global
+						color for active items (e.g., navs or dropdowns).</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@component-active-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@component-active-bg']"
+						aria-describedby="help-block-@component-active-bg"
+						>
+					<p class="help-block" id="help-block-@component-active-bg">Global
+						background color for active items (e.g., navs or dropdowns).</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@caret-width-base</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@caret-width-base']"
+						value="4px"
+						data-var="@caret-width-base">
+					<p class="help-block" id="help-block-@caret-width-base">
+						Width of the
+						<code>border</code>
+						for generating carets that indicate dropdowns.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@caret-width-large</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@caret-width-large']"
+						value="5px"
+						data-var="@caret-width-large">
+					<p class="help-block" id="help-block-@caret-width-large">Carets
+						increase slightly in size for larger components.</p>
+				</div>
+			</div>
+			<h2 id="tables">
+				<a class="anchorjs-link " href="#tables"
+					aria-label="Anchor link for: tables" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Tables
+			</h2>
+			<p>
+				Customizes the
+				<code>.table</code>
+				component with basic values, each used across all table variations.
+			</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@table-cell-padding</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@table-cell-padding']"
+						value="8px"
+						data-var="@table-cell-padding">
+					<p class="help-block" id="help-block-@table-cell-padding">
+						Padding for
+						<code>&lt;th&gt;</code>
+						s and
+						<code>&lt;td&gt;</code>
+						s.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@table-condensed-cell-padding</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@table-condensed-cell-padding']"
+						aria-describedby="help-block-@table-condensed-cell-padding"
+						>
+					<p class="help-block" id="help-block-@table-condensed-cell-padding">
+						Padding for cells in
+						<code>.table-condensed</code>
+						.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@table-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@table-bg']"
+						value="transparent"
+						data-var="@table-bg">
+					<p class="help-block" id="help-block-@table-bg">Default
+						background color used for all tables.</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@table-bg-accent</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@table-bg-accent']"
+						value="#f9f9f9"
+						data-var="@table-bg-accent">
+					<p class="help-block" id="help-block-@table-bg-accent">
+						Background color used for
+						<code>.table-striped</code>
+						.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@table-bg-hover</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@table-bg-hover']"
+						value="#f5f5f5"
+						data-var="@table-bg-hover">
+					<p class="help-block" id="help-block-@table-bg-hover">
+						Background color used for
+						<code>.table-hover</code>
+						.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@table-bg-active</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@table-bg-active']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@table-border-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@table-border-color']"
+						value="#ddd"
+						data-var="@table-border-color">
+					<p class="help-block" id="help-block-@table-border-color">Border
+						color for table and cell borders.</p>
+				</div>
+			</div>
+			<h2 id="buttons">
+				<a class="anchorjs-link " href="#buttons"
+					aria-label="Anchor link for: buttons" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Buttons
+			</h2>
+			<p>For each of Bootstrap's buttons, define text, background and
+				border color.</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@btn-font-weight</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-font-weight']" value="normal"
+						data-var="@btn-font-weight">
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-default-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-default-color']" value="#333"
+						data-var="@btn-default-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-default-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-default-bg']" value="#fff"
+						data-var="@btn-default-bg">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@btn-default-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-default-border']" value="#ccc"
+						data-var="@btn-default-border">
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-primary-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-primary-color']" value="#fff"
+						data-var="@btn-primary-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-primary-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-primary-bg']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@btn-primary-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-primary-border']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-success-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-success-color']" value="#fff"
+						data-var="@btn-success-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-success-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-success-bg']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@btn-success-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-success-border']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-info-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-info-color']" value="#fff"
+						data-var="@btn-info-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-info-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-info-bg']" value="@brand-info"
+						data-var="@btn-info-bg">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@btn-info-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-info-border']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-warning-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-warning-color']" value="#fff"
+						data-var="@btn-warning-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-warning-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-warning-bg']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@btn-warning-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-warning-border']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-danger-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-danger-color']" value="#fff"
+						data-var="@btn-danger-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-danger-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-danger-bg']" value="@brand-danger"
+						data-var="@btn-danger-bg">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@btn-danger-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@btn-danger-border']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-link-disabled-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@btn-link-disabled-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-border-radius-base</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@btn-border-radius-base']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@btn-border-radius-large</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@btn-border-radius-large']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@btn-border-radius-small</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@btn-border-radius-small']"
+						>
+				</div>
+			</div>
+			<h2 id="forms">
+				<a class="anchorjs-link " href="#forms"
+					aria-label="Anchor link for: forms" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Forms
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@input-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@input-bg']"
+						value="#fff"
+						data-var="@input-bg">
+					<p class="help-block" id="help-block-@input-bg">
+						<code>&lt;input&gt;</code>
+						background color
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@input-bg-disabled</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@input-bg-disabled']"
+						aria-describedby="help-block-@input-bg-disabled"
+						>
+					<p class="help-block" id="help-block-@input-bg-disabled">
+						<code>&lt;input disabled&gt;</code>
+						background color
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@input-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@input-color']"
+						value="@gray"
+						data-var="@input-color">
+					<p class="help-block" id="help-block-@input-color">
+						Text color for
+						<code>&lt;input&gt;</code>
+						s
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@input-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@input-border']"
+						value="#ccc"
+						data-var="@input-border">
+					<p class="help-block" id="help-block-@input-border">
+						<code>&lt;input&gt;</code>
+						border color
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@input-border-radius</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@input-border-radius']"
+						aria-describedby="help-block-@input-border-radius"
+						>
+					<p class="help-block" id="help-block-@input-border-radius">
+						Default
+						<code>.form-control</code>
+						border radius
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@input-border-radius-large</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@input-border-radius-large']"
+						aria-describedby="help-block-@input-border-radius-large"
+						>
+					<p class="help-block" id="help-block-@input-border-radius-large">
+						Large
+						<code>.form-control</code>
+						border radius
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@input-border-radius-small</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@input-border-radius-small']"
+						aria-describedby="help-block-@input-border-radius-small"
+						>
+					<p class="help-block" id="help-block-@input-border-radius-small">
+						Small
+						<code>.form-control</code>
+						border radius
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@input-border-focus</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@input-border-focus']"
+						value="#66afe9"
+						data-var="@input-border-focus">
+					<p class="help-block" id="help-block-@input-border-focus">Border
+						color for inputs on focus</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@input-color-placeholder</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@input-color-placeholder']"
+						value="#999"
+						data-var="@input-color-placeholder">
+					<p class="help-block" id="help-block-@input-color-placeholder">Placeholder
+						text color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@input-height-base</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@input-height-base']"
+						aria-describedby="help-block-@input-height-base"
+						value="(@line-height-computed + (@padding-base-vertical * 2) + 2)"
+						data-var="@input-height-base">
+					<p class="help-block" id="help-block-@input-height-base">
+						Default
+						<code>.form-control</code>
+						height
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@input-height-large</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@input-height-large']"
+						aria-describedby="help-block-@input-height-large"
+						value="(ceil(@font-size-large * @line-height-large) + (@padding-large-vertical * 2) + 2)"
+						data-var="@input-height-large">
+					<p class="help-block" id="help-block-@input-height-large">
+						Large
+						<code>.form-control</code>
+						height
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@input-height-small</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@input-height-small']"
+						aria-describedby="help-block-@input-height-small"
+						value="(floor(@font-size-small * @line-height-small) + (@padding-small-vertical * 2) + 2)"
+						data-var="@input-height-small">
+					<p class="help-block" id="help-block-@input-height-small">
+						Small
+						<code>.form-control</code>
+						height
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@form-group-margin-bottom</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@form-group-margin-bottom']"
+						value="15px"
+						data-var="@form-group-margin-bottom">
+					<p class="help-block" id="help-block-@form-group-margin-bottom">
+						<code>.form-group</code>
+						margin
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@legend-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@legend-color']" value="@gray-dark"
+						data-var="@legend-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@legend-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@legend-border-color']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@input-group-addon-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@input-group-addon-bg']"
+						aria-describedby="help-block-@input-group-addon-bg"
+						>
+					<p class="help-block" id="help-block-@input-group-addon-bg">Background
+						color for textual input addons</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@input-group-addon-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@input-group-addon-border-color']"
+						aria-describedby="help-block-@input-group-addon-border-color"
+						>
+					<p class="help-block" id="help-block-@input-group-addon-border-color">Border
+						color for textual input addons</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@cursor-disabled</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@cursor-disabled']"
+						value="not-allowed"
+						data-var="@cursor-disabled">
+					<p class="help-block" id="help-block-@cursor-disabled">Disabled
+						cursor for form controls and buttons.</p>
+				</div>
+			</div>
+			<h2 id="dropdowns">
+				<a class="anchorjs-link " href="#dropdowns"
+					aria-label="Anchor link for: dropdowns" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Dropdowns
+			</h2>
+			<p>Dropdown menu container and contents.</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@dropdown-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@dropdown-bg']"
+						value="#fff"
+						data-var="@dropdown-bg">
+					<p class="help-block" id="help-block-@dropdown-bg">Background for
+						the dropdown menu.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@dropdown-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@dropdown-border']"
+						aria-describedby="help-block-@dropdown-border"
+						>
+					<p class="help-block" id="help-block-@dropdown-border">
+						Dropdown menu
+						<code>border-color</code>
+						.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@dropdown-fallback-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dropdown-fallback-border']"
+						value="#ccc"
+						data-var="@dropdown-fallback-border">
+					<p class="help-block" id="help-block-@dropdown-fallback-border">
+						Dropdown menu
+						<code>border-color</code>
+						<strong>for IE8</strong>.
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@dropdown-divider-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dropdown-divider-bg']"
+						value="#e5e5e5"
+						data-var="@dropdown-divider-bg">
+					<p class="help-block" id="help-block-@dropdown-divider-bg">Divider
+						color for between dropdown items.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@dropdown-link-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dropdown-link-color']"
+						aria-describedby="help-block-@dropdown-link-color"
+						>
+					<p class="help-block" id="help-block-@dropdown-link-color">Dropdown
+						link text color.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@dropdown-link-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dropdown-link-hover-color']"
+						aria-describedby="help-block-@dropdown-link-hover-color"
+						>
+					<p class="help-block" id="help-block-@dropdown-link-hover-color">Hover
+						color for dropdown links.</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@dropdown-link-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dropdown-link-hover-bg']"
+						aria-describedby="help-block-@dropdown-link-hover-bg"
+						>
+					<p class="help-block" id="help-block-@dropdown-link-hover-bg">Hover
+						background for dropdown links.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@dropdown-link-active-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dropdown-link-active-color']"
+						aria-describedby="help-block-@dropdown-link-active-color"
+						value="@component-active-color"
+						data-var="@dropdown-link-active-color">
+					<p class="help-block" id="help-block-@dropdown-link-active-color">Active
+						dropdown menu item text color.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@dropdown-link-active-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dropdown-link-active-bg']"
+						aria-describedby="help-block-@dropdown-link-active-bg"
+						>
+					<p class="help-block" id="help-block-@dropdown-link-active-bg">Active
+						dropdown menu item background color.</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@dropdown-link-disabled-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dropdown-link-disabled-color']"
+						aria-describedby="help-block-@dropdown-link-disabled-color"
+						>
+					<p class="help-block" id="help-block-@dropdown-link-disabled-color">Disabled
+						dropdown menu item background color.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@dropdown-header-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dropdown-header-color']"
+						aria-describedby="help-block-@dropdown-header-color"
+						>
+					<p class="help-block" id="help-block-@dropdown-header-color">Text
+						color for headers within dropdown menus.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@dropdown-caret-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dropdown-caret-color']"
+						value="#000"
+						data-var="@dropdown-caret-color">
+					<p class="help-block" id="help-block-@dropdown-caret-color">
+						Deprecated
+						<code>@dropdown-caret-color</code>
+						as of v3.1.0
+					</p>
+				</div>
+			</div>
+			<h2 id="media-queries-breakpoints">
+				<a class="anchorjs-link " href="#media-queries-breakpoints"
+					aria-label="Anchor link for: media queries breakpoints"
+					data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Media
+				queries breakpoints
+			</h2>
+			<p>Define the breakpoints at which your layout will change,
+				adapting to different screen sizes.</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@screen-xs</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-xs']"
+						value="480px"
+						data-var="@screen-xs">
+					<p class="help-block" id="help-block-@screen-xs">
+						Deprecated
+						<code>@screen-xs</code>
+						as of v3.0.1
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@screen-xs-min</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-xs-min']"
+						value="@screen-xs"
+						data-var="@screen-xs-min">
+					<p class="help-block" id="help-block-@screen-xs-min">
+						Deprecated
+						<code>@screen-xs-min</code>
+						as of v3.2.0
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@screen-phone</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-phone']"
+						value="@screen-xs-min"
+						data-var="@screen-phone">
+					<p class="help-block" id="help-block-@screen-phone">
+						Deprecated
+						<code>@screen-phone</code>
+						as of v3.0.1
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@screen-sm</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-sm']"
+						value="768px"
+						data-var="@screen-sm">
+					<p class="help-block" id="help-block-@screen-sm">
+						Deprecated
+						<code>@screen-sm</code>
+						as of v3.0.1
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@screen-sm-min</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-sm-min']" value="@screen-sm"
+						data-var="@screen-sm-min">
+				</div>
+				<div class="col-xs-4">
+					<label>@screen-tablet</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-tablet']"
+						value="@screen-sm-min"
+						data-var="@screen-tablet">
+					<p class="help-block" id="help-block-@screen-tablet">
+						Deprecated
+						<code>@screen-tablet</code>
+						as of v3.0.1
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@screen-md</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-md']"
+						value="992px"
+						data-var="@screen-md">
+					<p class="help-block" id="help-block-@screen-md">
+						Deprecated
+						<code>@screen-md</code>
+						as of v3.0.1
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@screen-md-min</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-md-min']" value="@screen-md"
+						data-var="@screen-md-min">
+				</div>
+				<div class="col-xs-4">
+					<label>@screen-desktop</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-desktop']"
+						value="@screen-md-min"
+						data-var="@screen-desktop">
+					<p class="help-block" id="help-block-@screen-desktop">
+						Deprecated
+						<code>@screen-desktop</code>
+						as of v3.0.1
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@screen-lg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-lg']"
+						value="1200px"
+						data-var="@screen-lg">
+					<p class="help-block" id="help-block-@screen-lg">
+						Deprecated
+						<code>@screen-lg</code>
+						as of v3.0.1
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@screen-lg-min</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-lg-min']" value="@screen-lg"
+						data-var="@screen-lg-min">
+				</div>
+				<div class="col-xs-4">
+					<label>@screen-lg-desktop</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-lg-desktop']"
+						aria-describedby="help-block-@screen-lg-desktop"
+						>
+					<p class="help-block" id="help-block-@screen-lg-desktop">
+						Deprecated
+						<code>@screen-lg-desktop</code>
+						as of v3.0.1
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@screen-xs-max</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-xs-max']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@screen-sm-max</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-sm-max']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@screen-md-max</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@screen-md-max']"
+						>
+				</div>
+			</div>
+			<h2 id="grid-system">
+				<a class="anchorjs-link " href="#grid-system"
+					aria-label="Anchor link for: grid system" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Grid
+				system
+			</h2>
+			<p>Define your custom responsive grid.</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@grid-columns</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@grid-columns']"
+						value="12"
+						data-var="@grid-columns">
+					<p class="help-block" id="help-block-@grid-columns">Number of
+						columns in the grid.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@grid-gutter-width</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@grid-gutter-width']"
+						value="30px"
+						data-var="@grid-gutter-width">
+					<p class="help-block" id="help-block-@grid-gutter-width">Padding
+						between columns. Gets divided in half for the left and right.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@grid-float-breakpoint</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@grid-float-breakpoint']"
+						aria-describedby="help-block-@grid-float-breakpoint"
+						>
+					<p class="help-block" id="help-block-@grid-float-breakpoint">Point
+						at which the navbar becomes uncollapsed.</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@grid-float-breakpoint-max</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@grid-float-breakpoint-max']"
+						aria-describedby="help-block-@grid-float-breakpoint-max"
+						value="(@grid-float-breakpoint - 1)"
+						data-var="@grid-float-breakpoint-max">
+					<p class="help-block" id="help-block-@grid-float-breakpoint-max">Point
+						at which the navbar begins collapsing.</p>
+				</div>
+			</div>
+			<h2 id="container-sizes">
+				<a class="anchorjs-link " href="#container-sizes"
+					aria-label="Anchor link for: container sizes" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Container
+				sizes
+			</h2>
+			<p>
+				Define the maximum width of
+				<code>.container</code>
+				for different screen sizes.
+			</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@container-tablet</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@container-tablet']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@container-sm</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@container-sm']"
+						aria-describedby="help-block-@container-sm"
+						>
+					<p class="help-block" id="help-block-@container-sm">
+						For
+						<code>@screen-sm-min</code>
+						and up.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@container-desktop</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@container-desktop']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@container-md</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@container-md']"
+						aria-describedby="help-block-@container-md"
+						>
+					<p class="help-block" id="help-block-@container-md">
+						For
+						<code>@screen-md-min</code>
+						and up.
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@container-large-desktop</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@container-large-desktop']"
+						value="(1140px + @grid-gutter-width)"
+						data-var="@container-large-desktop">
+				</div>
+				<div class="col-xs-4">
+					<label>@container-lg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@container-lg']"
+						aria-describedby="help-block-@container-lg"
+						>
+					<p class="help-block" id="help-block-@container-lg">
+						For
+						<code>@screen-lg-min</code>
+						and up.
+					</p>
+				</div>
+			</div>
+			<h2 id="navbar">
+				<a class="anchorjs-link " href="#navbar"
+					aria-label="Anchor link for: navbar" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Navbar
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@navbar-height</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@navbar-height']" value="50px"
+						data-var="@navbar-height">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-margin-bottom</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-margin-bottom']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-border-radius</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-border-radius']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-padding-horizontal</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-padding-horizontal']"
+						value="floor((@grid-gutter-width / 2))"
+						data-var="@navbar-padding-horizontal">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-padding-vertical</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-padding-vertical']"
+						value="((@navbar-height - @line-height-computed) / 2)"
+						data-var="@navbar-padding-vertical">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-collapse-max-height</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-collapse-max-height']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-default-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-default-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-default-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@navbar-default-bg']" value="#f8f8f8"
+						data-var="@navbar-default-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-default-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-default-border']"
+						value="darken(@navbar-default-bg, 6.5%)"
+						data-var="@navbar-default-border">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-default-link-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-default-link-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-default-link-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-default-link-hover-color']" value="#333"
+						data-var="@navbar-default-link-hover-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-default-link-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-default-link-hover-bg']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-default-link-active-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-default-link-active-color']" value="#555"
+						data-var="@navbar-default-link-active-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-default-link-active-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-default-link-active-bg']"
+						value="darken(@navbar-default-bg, 6.5%)"
+						data-var="@navbar-default-link-active-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-default-link-disabled-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-default-link-disabled-color']" value="#ccc"
+						data-var="@navbar-default-link-disabled-color">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-default-link-disabled-bg</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-default-link-disabled-bg']" value="transparent"
+						data-var="@navbar-default-link-disabled-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-default-brand-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-default-brand-color']"
+						value="@navbar-default-link-color"
+						data-var="@navbar-default-brand-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-default-brand-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-default-brand-hover-color']"
+						value="darken(@navbar-default-brand-color, 10%)"
+						data-var="@navbar-default-brand-hover-color">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-default-brand-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-default-brand-hover-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-default-toggle-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-default-toggle-hover-bg']" value="#ddd"
+						data-var="@navbar-default-toggle-hover-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-default-toggle-icon-bar-bg</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-default-toggle-icon-bar-bg']" value="#888"
+						data-var="@navbar-default-toggle-icon-bar-bg">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-default-toggle-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-default-toggle-border-color']" value="#ddd"
+						data-var="@navbar-default-toggle-border-color">
+				</div>
+			</div>
+			<h3 id="inverted-navbar">
+				<a class="anchorjs-link " href="#inverted-navbar"
+					aria-label="Anchor link for: inverted navbar" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Inverted
+				navbar
+			</h3>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@navbar-inverse-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-inverse-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@navbar-inverse-bg']" value="#222"
+						data-var="@navbar-inverse-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-inverse-border']"
+						value="darken(@navbar-inverse-bg, 10%)"
+						data-var="@navbar-inverse-border">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-link-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-inverse-link-color']"
+						value="lighten(@gray-light, 15%)"
+						data-var="@navbar-inverse-link-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-link-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-inverse-link-hover-color']" value="#fff"
+						data-var="@navbar-inverse-link-hover-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-link-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-inverse-link-hover-bg']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-link-active-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-inverse-link-active-color']"
+						value="@navbar-inverse-link-hover-color"
+						data-var="@navbar-inverse-link-active-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-link-active-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-inverse-link-active-bg']"
+						value="darken(@navbar-inverse-bg, 10%)"
+						data-var="@navbar-inverse-link-active-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-link-disabled-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-inverse-link-disabled-color']" value="#444"
+						data-var="@navbar-inverse-link-disabled-color">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-link-disabled-bg</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-inverse-link-disabled-bg']" value="transparent"
+						data-var="@navbar-inverse-link-disabled-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-brand-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-inverse-brand-color']"
+						value="@navbar-inverse-link-color"
+						data-var="@navbar-inverse-brand-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-brand-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-inverse-brand-hover-color']" value="#fff"
+						data-var="@navbar-inverse-brand-hover-color">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-brand-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@navbar-inverse-brand-hover-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-toggle-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-inverse-toggle-hover-bg']" value="#333"
+						data-var="@navbar-inverse-toggle-hover-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-toggle-icon-bar-bg</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-inverse-toggle-icon-bar-bg']" value="#fff"
+						data-var="@navbar-inverse-toggle-icon-bar-bg">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@navbar-inverse-toggle-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@navbar-inverse-toggle-border-color']" value="#333"
+						data-var="@navbar-inverse-toggle-border-color">
+				</div>
+			</div>
+			<h2 id="navs">
+				<a class="anchorjs-link " href="#navs"
+					aria-label="Anchor link for: navs" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Navs
+			</h2>
+			<h3 id="shared-nav-styles">
+				<a class="anchorjs-link " href="#shared-nav-styles"
+					aria-label="Anchor link for: shared nav styles"
+					data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Shared
+				nav styles
+			</h3>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@nav-link-padding</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@nav-link-padding']" value="10px 15px"
+						data-var="@nav-link-padding">
+				</div>
+				<div class="col-xs-4">
+					<label>@nav-link-hover-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@nav-link-hover-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@nav-disabled-link-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@nav-disabled-link-color']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@nav-disabled-link-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@nav-disabled-link-hover-color']"
+						>
+				</div>
+			</div>
+			<h2 id="tabs">
+				<a class="anchorjs-link " href="#tabs"
+					aria-label="Anchor link for: tabs" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Tabs
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@nav-tabs-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@nav-tabs-border-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@nav-tabs-link-hover-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@nav-tabs-link-hover-border-color']" value="@gray-lighter"
+						data-var="@nav-tabs-link-hover-border-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@nav-tabs-active-link-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@nav-tabs-active-link-hover-bg']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@nav-tabs-active-link-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@nav-tabs-active-link-hover-color']" value="@gray"
+						data-var="@nav-tabs-active-link-hover-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@nav-tabs-active-link-hover-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@nav-tabs-active-link-hover-border-color']" value="#ddd"
+						data-var="@nav-tabs-active-link-hover-border-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@nav-tabs-justified-link-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@nav-tabs-justified-link-border-color']" value="#ddd"
+						data-var="@nav-tabs-justified-link-border-color">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@nav-tabs-justified-active-link-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@nav-tabs-justified-active-link-border-color']"
+						value="@body-bg"
+						data-var="@nav-tabs-justified-active-link-border-color">
+				</div>
+			</div>
+			<h2 id="pills">
+				<a class="anchorjs-link " href="#pills"
+					aria-label="Anchor link for: pills" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Pills
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@nav-pills-border-radius</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@nav-pills-border-radius']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@nav-pills-active-link-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@nav-pills-active-link-hover-bg']"
+						value="@component-active-bg"
+						data-var="@nav-pills-active-link-hover-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@nav-pills-active-link-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@nav-pills-active-link-hover-color']"
+						value="@component-active-color"
+						data-var="@nav-pills-active-link-hover-color">
+				</div>
+			</div>
+			<h2 id="pagination">
+				<a class="anchorjs-link " href="#pagination"
+					aria-label="Anchor link for: pagination" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Pagination
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@pagination-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pagination-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@pagination-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pagination-bg']" value="#fff"
+						data-var="@pagination-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@pagination-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pagination-border']" value="#ddd"
+						data-var="@pagination-border">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@pagination-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pagination-hover-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@pagination-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pagination-hover-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@pagination-hover-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pagination-hover-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@pagination-active-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pagination-active-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@pagination-active-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pagination-active-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@pagination-active-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pagination-active-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@pagination-disabled-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pagination-disabled-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@pagination-disabled-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pagination-disabled-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@pagination-disabled-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pagination-disabled-border']"
+						>
+				</div>
+			</div>
+			<h2 id="pager">
+				<a class="anchorjs-link " href="#pager"
+					aria-label="Anchor link for: pager" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Pager
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@pager-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pager-bg']" value="@pagination-bg"
+						data-var="@pager-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@pager-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pager-border']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@pager-border-radius</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pager-border-radius']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@pager-hover-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pager-hover-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@pager-active-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pager-active-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@pager-active-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pager-active-color']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@pager-disabled-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pager-disabled-color']"
+						>
+				</div>
+			</div>
+			<h2 id="jumbotron">
+				<a class="anchorjs-link " href="#jumbotron"
+					aria-label="Anchor link for: jumbotron" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Jumbotron
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@jumbotron-padding</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@jumbotron-padding']" value="30px"
+						data-var="@jumbotron-padding">
+				</div>
+				<div class="col-xs-4">
+					<label>@jumbotron-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@jumbotron-color']" value="inherit"
+						data-var="@jumbotron-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@jumbotron-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@jumbotron-bg']" value="@gray-lighter"
+						data-var="@jumbotron-bg">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@jumbotron-heading-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@jumbotron-heading-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@jumbotron-font-size</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@jumbotron-font-size']"
+						value="ceil((@font-size-base * 1.5))"
+						data-var="@jumbotron-font-size">
+				</div>
+				<div class="col-xs-4">
+					<label>@jumbotron-heading-font-size</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@jumbotron-heading-font-size']"
+						value="ceil((@font-size-base * 4.5))"
+						data-var="@jumbotron-heading-font-size">
+				</div>
+			</div>
+			<h2 id="form-states-and-alerts">
+				<a class="anchorjs-link " href="#form-states-and-alerts"
+					aria-label="Anchor link for: form states and alerts"
+					data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Form
+				states and alerts
+			</h2>
+			<p>Define colors for form feedback states and, by default, alerts.</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@state-success-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@state-success-text']" value="#3c763d"
+						data-var="@state-success-text">
+				</div>
+				<div class="col-xs-4">
+					<label>@state-success-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@state-success-bg']" value="#dff0d8"
+						data-var="@state-success-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@state-success-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@state-success-border']"
+						value="darken(spin(@state-success-bg, -10), 5%)"
+						data-var="@state-success-border">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@state-info-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@state-info-text']" value="#31708f"
+						data-var="@state-info-text">
+				</div>
+				<div class="col-xs-4">
+					<label>@state-info-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@state-info-bg']" value="#d9edf7"
+						data-var="@state-info-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@state-info-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@state-info-border']"
+						value="darken(spin(@state-info-bg, -10), 7%)"
+						data-var="@state-info-border">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@state-warning-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@state-warning-text']" value="#8a6d3b"
+						data-var="@state-warning-text">
+				</div>
+				<div class="col-xs-4">
+					<label>@state-warning-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@state-warning-bg']" value="#fcf8e3"
+						data-var="@state-warning-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@state-warning-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@state-warning-border']"
+						value="darken(spin(@state-warning-bg, -10), 5%)"
+						data-var="@state-warning-border">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@state-danger-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@state-danger-text']" value="#a94442"
+						data-var="@state-danger-text">
+				</div>
+				<div class="col-xs-4">
+					<label>@state-danger-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@state-danger-bg']" value="#f2dede"
+						data-var="@state-danger-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@state-danger-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@state-danger-border']"
+						value="darken(spin(@state-danger-bg, -10), 5%)"
+						data-var="@state-danger-border">
+				</div>
+			</div>
+			<h2 id="tooltips">
+				<a class="anchorjs-link " href="#tooltips"
+					aria-label="Anchor link for: tooltips" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Tooltips
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@tooltip-max-width</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@tooltip-max-width']"
+						value="200px"
+						data-var="@tooltip-max-width">
+					<p class="help-block" id="help-block-@tooltip-max-width">Tooltip
+						max width</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@tooltip-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@tooltip-color']"
+						value="#fff"
+						data-var="@tooltip-color">
+					<p class="help-block" id="help-block-@tooltip-color">Tooltip text
+						color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@tooltip-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@tooltip-bg']"
+						value="#000"
+						data-var="@tooltip-bg">
+					<p class="help-block" id="help-block-@tooltip-bg">Tooltip
+						background color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@tooltip-opacity</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@tooltip-opacity']" value=".9"
+						data-var="@tooltip-opacity">
+				</div>
+				<div class="col-xs-4">
+					<label>@tooltip-arrow-width</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@tooltip-arrow-width']"
+						value="5px"
+						data-var="@tooltip-arrow-width">
+					<p class="help-block" id="help-block-@tooltip-arrow-width">Tooltip
+						arrow width</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@tooltip-arrow-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@tooltip-arrow-color']"
+						aria-describedby="help-block-@tooltip-arrow-color"
+						>
+					<p class="help-block" id="help-block-@tooltip-arrow-color">Tooltip
+						arrow color</p>
+				</div>
+			</div>
+			<h2 id="popovers">
+				<a class="anchorjs-link " href="#popovers"
+					aria-label="Anchor link for: popovers" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Popovers
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@popover-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@popover-bg']"
+						value="#fff"
+						data-var="@popover-bg">
+					<p class="help-block" id="help-block-@popover-bg">Popover body
+						background color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@popover-max-width</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@popover-max-width']"
+						value="276px"
+						data-var="@popover-max-width">
+					<p class="help-block" id="help-block-@popover-max-width">Popover
+						maximum width</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@popover-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@popover-border-color']"
+						aria-describedby="help-block-@popover-border-color"
+						>
+					<p class="help-block" id="help-block-@popover-border-color">Popover
+						border color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@popover-fallback-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@popover-fallback-border-color']"
+						aria-describedby="help-block-@popover-fallback-border-color"
+						>
+					<p class="help-block" id="help-block-@popover-fallback-border-color">Popover
+						fallback border color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@popover-title-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@popover-title-bg']"
+						aria-describedby="help-block-@popover-title-bg"
+						>
+					<p class="help-block" id="help-block-@popover-title-bg">Popover
+						title background color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@popover-arrow-width</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@popover-arrow-width']"
+						value="10px"
+						data-var="@popover-arrow-width">
+					<p class="help-block" id="help-block-@popover-arrow-width">Popover
+						arrow width</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@popover-arrow-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@popover-arrow-color']"
+						aria-describedby="help-block-@popover-arrow-color"
+						>
+					<p class="help-block" id="help-block-@popover-arrow-color">Popover
+						arrow color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@popover-arrow-outer-width</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@popover-arrow-outer-width']"
+						aria-describedby="help-block-@popover-arrow-outer-width"
+						value="(@popover-arrow-width + 1)"
+						data-var="@popover-arrow-outer-width">
+					<p class="help-block" id="help-block-@popover-arrow-outer-width">Popover
+						outer arrow width</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@popover-arrow-outer-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@popover-arrow-outer-color']"
+						aria-describedby="help-block-@popover-arrow-outer-color"
+						value="fadein(@popover-border-color, 5%)"
+						data-var="@popover-arrow-outer-color">
+					<p class="help-block" id="help-block-@popover-arrow-outer-color">Popover
+						outer arrow color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@popover-arrow-outer-fallback-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@popover-arrow-outer-fallback-color']"
+						aria-describedby="help-block-@popover-arrow-outer-fallback-color"
+						value="darken(@popover-fallback-border-color, 20%)"
+						data-var="@popover-arrow-outer-fallback-color">
+					<p class="help-block"
+						id="help-block-@popover-arrow-outer-fallback-color">Popover
+						outer arrow fallback color</p>
+				</div>
+			</div>
+			<h2 id="labels">
+				<a class="anchorjs-link " href="#labels"
+					aria-label="Anchor link for: labels" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Labels
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@label-default-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@label-default-bg']"
+						value="@gray-light"
+						data-var="@label-default-bg">
+					<p class="help-block" id="help-block-@label-default-bg">Default
+						label background color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@label-primary-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@label-primary-bg']"
+						aria-describedby="help-block-@label-primary-bg"
+						>
+					<p class="help-block" id="help-block-@label-primary-bg">Primary
+						label background color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@label-success-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@label-success-bg']"
+						aria-describedby="help-block-@label-success-bg"
+						>
+					<p class="help-block" id="help-block-@label-success-bg">Success
+						label background color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@label-info-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@label-info-bg']"
+						value="@brand-info"
+						data-var="@label-info-bg">
+					<p class="help-block" id="help-block-@label-info-bg">Info label
+						background color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@label-warning-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@label-warning-bg']"
+						aria-describedby="help-block-@label-warning-bg"
+						>
+					<p class="help-block" id="help-block-@label-warning-bg">Warning
+						label background color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@label-danger-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@label-danger-bg']"
+						value="@brand-danger"
+						data-var="@label-danger-bg">
+					<p class="help-block" id="help-block-@label-danger-bg">Danger
+						label background color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@label-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@label-color']"
+						value="#fff"
+						data-var="@label-color">
+					<p class="help-block" id="help-block-@label-color">Default label
+						text color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@label-link-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@label-link-hover-color']"
+						value="#fff"
+						data-var="@label-link-hover-color">
+					<p class="help-block" id="help-block-@label-link-hover-color">Default
+						text color of a linked label</p>
+				</div>
+			</div>
+			<h2 id="modals">
+				<a class="anchorjs-link " href="#modals"
+					aria-label="Anchor link for: modals" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Modals
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@modal-inner-padding</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@modal-inner-padding']"
+						value="15px"
+						data-var="@modal-inner-padding">
+					<p class="help-block" id="help-block-@modal-inner-padding">Padding
+						applied to the modal body</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@modal-title-padding</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@modal-title-padding']"
+						value="15px"
+						data-var="@modal-title-padding">
+					<p class="help-block" id="help-block-@modal-title-padding">Padding
+						applied to the modal title</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@modal-title-line-height</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@modal-title-line-height']"
+						aria-describedby="help-block-@modal-title-line-height"
+						>
+					<p class="help-block" id="help-block-@modal-title-line-height">Modal
+						title line-height</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@modal-content-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@modal-content-bg']"
+						value="#fff"
+						data-var="@modal-content-bg">
+					<p class="help-block" id="help-block-@modal-content-bg">Background
+						color of modal content area</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@modal-content-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@modal-content-border-color']"
+						aria-describedby="help-block-@modal-content-border-color"
+						>
+					<p class="help-block" id="help-block-@modal-content-border-color">Modal
+						content border color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@modal-content-fallback-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@modal-content-fallback-border-color']"
+						aria-describedby="help-block-@modal-content-fallback-border-color"
+						>
+					<p class="help-block"
+						id="help-block-@modal-content-fallback-border-color">
+						Modal content border color <strong>for IE8</strong>
+					</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@modal-backdrop-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@modal-backdrop-bg']"
+						value="#000"
+						data-var="@modal-backdrop-bg">
+					<p class="help-block" id="help-block-@modal-backdrop-bg">Modal
+						backdrop background color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@modal-backdrop-opacity</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@modal-backdrop-opacity']"
+						value=".5"
+						data-var="@modal-backdrop-opacity">
+					<p class="help-block" id="help-block-@modal-backdrop-opacity">Modal
+						backdrop opacity</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@modal-header-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@modal-header-border-color']"
+						aria-describedby="help-block-@modal-header-border-color"
+						>
+					<p class="help-block" id="help-block-@modal-header-border-color">Modal
+						header border color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@modal-footer-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@modal-footer-border-color']"
+						aria-describedby="help-block-@modal-footer-border-color"
+						value="@modal-header-border-color"
+						data-var="@modal-footer-border-color">
+					<p class="help-block" id="help-block-@modal-footer-border-color">Modal
+						footer border color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@modal-lg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@modal-lg']" value="900px"
+						data-var="@modal-lg">
+				</div>
+				<div class="col-xs-4">
+					<label>@modal-md</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@modal-md']" value="600px"
+						data-var="@modal-md">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@modal-sm</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@modal-sm']" value="300px"
+						data-var="@modal-sm">
+				</div>
+			</div>
+			<h2 id="alerts">
+				<a class="anchorjs-link " href="#alerts"
+					aria-label="Anchor link for: alerts" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Alerts
+			</h2>
+			<p>Define alert colors, border radius, and padding.</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@alert-padding</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@alert-padding']" value="15px"
+						data-var="@alert-padding">
+				</div>
+				<div class="col-xs-4">
+					<label>@alert-border-radius</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@alert-border-radius']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@alert-link-font-weight</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@alert-link-font-weight']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@alert-success-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@alert-success-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@alert-success-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@alert-success-text']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@alert-success-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@alert-success-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@alert-info-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@alert-info-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@alert-info-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@alert-info-text']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@alert-info-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@alert-info-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@alert-warning-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@alert-warning-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@alert-warning-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@alert-warning-text']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@alert-warning-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@alert-warning-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@alert-danger-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@alert-danger-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@alert-danger-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@alert-danger-text']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@alert-danger-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@alert-danger-border']"
+						>
+				</div>
+			</div>
+			<h2 id="progress-bars">
+				<a class="anchorjs-link " href="#progress-bars"
+					aria-label="Anchor link for: progress bars" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Progress
+				bars
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@progress-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@progress-bg']"
+						value="#f5f5f5"
+						data-var="@progress-bg">
+					<p class="help-block" id="help-block-@progress-bg">Background
+						color of the whole progress component</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@progress-bar-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@progress-bar-color']"
+						value="#fff"
+						data-var="@progress-bar-color">
+					<p class="help-block" id="help-block-@progress-bar-color">Progress
+						bar text color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@progress-border-radius</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@progress-border-radius']"
+						aria-describedby="help-block-@progress-border-radius"
+						>
+					<p class="help-block" id="help-block-@progress-border-radius">Variable
+						for setting rounded corners on progress bar.</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@progress-bar-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@progress-bar-bg']"
+						aria-describedby="help-block-@progress-bar-bg"
+						>
+					<p class="help-block" id="help-block-@progress-bar-bg">Default
+						progress bar color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@progress-bar-success-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@progress-bar-success-bg']"
+						aria-describedby="help-block-@progress-bar-success-bg"
+						>
+					<p class="help-block" id="help-block-@progress-bar-success-bg">Success
+						progress bar color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@progress-bar-warning-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@progress-bar-warning-bg']"
+						aria-describedby="help-block-@progress-bar-warning-bg"
+						>
+					<p class="help-block" id="help-block-@progress-bar-warning-bg">Warning
+						progress bar color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@progress-bar-danger-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@progress-bar-danger-bg']"
+						aria-describedby="help-block-@progress-bar-danger-bg"
+						>
+					<p class="help-block" id="help-block-@progress-bar-danger-bg">Danger
+						progress bar color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@progress-bar-info-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@progress-bar-info-bg']"
+						aria-describedby="help-block-@progress-bar-info-bg"
+						>
+					<p class="help-block" id="help-block-@progress-bar-info-bg">Info
+						progress bar color</p>
+				</div>
+			</div>
+			<h2 id="list-group">
+				<a class="anchorjs-link " href="#list-group"
+					aria-label="Anchor link for: list group" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>List
+				group
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@list-group-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@list-group-bg']"
+						value="#fff"
+						data-var="@list-group-bg">
+					<p class="help-block" id="help-block-@list-group-bg">
+						Background color on
+						<code>.list-group-item</code>
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@list-group-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@list-group-border']"
+						value="#ddd"
+						data-var="@list-group-border">
+					<p class="help-block" id="help-block-@list-group-border">
+						<code>.list-group-item</code>
+						border color
+					</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@list-group-border-radius</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-border-radius']"
+						aria-describedby="help-block-@list-group-border-radius"
+						>
+					<p class="help-block" id="help-block-@list-group-border-radius">List
+						group border radius</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@list-group-hover-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-hover-bg']"
+						value="#f5f5f5"
+						data-var="@list-group-hover-bg">
+					<p class="help-block" id="help-block-@list-group-hover-bg">Background
+						color of single list items on hover</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@list-group-active-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-active-color']"
+						aria-describedby="help-block-@list-group-active-color"
+						>
+					<p class="help-block" id="help-block-@list-group-active-color">Text
+						color of active list items</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@list-group-active-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-active-bg']"
+						aria-describedby="help-block-@list-group-active-bg"
+						>
+					<p class="help-block" id="help-block-@list-group-active-bg">Background
+						color of active list items</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@list-group-active-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-active-border']"
+						aria-describedby="help-block-@list-group-active-border"
+						>
+					<p class="help-block" id="help-block-@list-group-active-border">Border
+						color of active list elements</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@list-group-active-text-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-active-text-color']"
+						aria-describedby="help-block-@list-group-active-text-color"
+						value="lighten(@list-group-active-bg, 40%)"
+						data-var="@list-group-active-text-color">
+					<p class="help-block" id="help-block-@list-group-active-text-color">Text
+						color for content within active list items</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@list-group-disabled-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-disabled-color']"
+						aria-describedby="help-block-@list-group-disabled-color"
+						>
+					<p class="help-block" id="help-block-@list-group-disabled-color">Text
+						color of disabled list items</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@list-group-disabled-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-disabled-bg']"
+						aria-describedby="help-block-@list-group-disabled-bg"
+						>
+					<p class="help-block" id="help-block-@list-group-disabled-bg">Background
+						color of disabled list items</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@list-group-disabled-text-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@list-group-disabled-text-color']"
+						aria-describedby="help-block-@list-group-disabled-text-color"
+						value="@list-group-disabled-color"
+						data-var="@list-group-disabled-text-color">
+					<p class="help-block" id="help-block-@list-group-disabled-text-color">Text
+						color for content within disabled list items</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@list-group-link-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-link-color']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@list-group-link-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-link-hover-color']"
+						value="@list-group-link-color"
+						data-var="@list-group-link-hover-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@list-group-link-heading-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@list-group-link-heading-color']"
+						>
+				</div>
+			</div>
+			<h2 id="panels">
+				<a class="anchorjs-link " href="#panels"
+					aria-label="Anchor link for: panels" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Panels
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@panel-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-bg']" value="#fff"
+						data-var="@panel-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-body-padding</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-body-padding']" value="15px"
+						data-var="@panel-body-padding">
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-heading-padding</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-heading-padding']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@panel-footer-padding</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-footer-padding']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-border-radius</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-border-radius']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-inner-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-inner-border']"
+						value="#ddd"
+						data-var="@panel-inner-border">
+					<p class="help-block" id="help-block-@panel-inner-border">Border
+						color for elements within panels</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@panel-footer-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-footer-bg']" value="#f5f5f5"
+						data-var="@panel-footer-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-default-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-default-text']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-default-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-default-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@panel-default-heading-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-default-heading-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-primary-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-primary-text']" value="#fff"
+						data-var="@panel-primary-text">
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-primary-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-primary-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@panel-primary-heading-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-primary-heading-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-success-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-success-text']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-success-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-success-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@panel-success-heading-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-success-heading-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-info-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-info-text']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-info-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-info-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@panel-info-heading-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-info-heading-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-warning-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-warning-text']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-warning-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-warning-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@panel-warning-heading-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-warning-heading-bg']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-danger-text</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@panel-danger-text']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@panel-danger-border</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-danger-border']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@panel-danger-heading-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@panel-danger-heading-bg']"
+						>
+				</div>
+			</div>
+			<h2 id="thumbnails">
+				<a class="anchorjs-link " href="#thumbnails"
+					aria-label="Anchor link for: thumbnails" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Thumbnails
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@thumbnail-padding</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@thumbnail-padding']"
+						value="4px"
+						data-var="@thumbnail-padding">
+					<p class="help-block" id="help-block-@thumbnail-padding">Padding
+						around the thumbnail image</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@thumbnail-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@thumbnail-bg']"
+						value="@body-bg"
+						data-var="@thumbnail-bg">
+					<p class="help-block" id="help-block-@thumbnail-bg">Thumbnail
+						background color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@thumbnail-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@thumbnail-border']"
+						value="#ddd"
+						data-var="@thumbnail-border">
+					<p class="help-block" id="help-block-@thumbnail-border">Thumbnail
+						border color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@thumbnail-border-radius</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@thumbnail-border-radius']"
+						aria-describedby="help-block-@thumbnail-border-radius"
+						>
+					<p class="help-block" id="help-block-@thumbnail-border-radius">Thumbnail
+						border radius</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@thumbnail-caption-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@thumbnail-caption-color']"
+						aria-describedby="help-block-@thumbnail-caption-color"
+						>
+					<p class="help-block" id="help-block-@thumbnail-caption-color">Custom
+						text color for thumbnail captions</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@thumbnail-caption-padding</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@thumbnail-caption-padding']"
+						value="9px"
+						data-var="@thumbnail-caption-padding">
+					<p class="help-block" id="help-block-@thumbnail-caption-padding">Padding
+						around the thumbnail caption</p>
+				</div>
+			</div>
+			<h2 id="wells">
+				<a class="anchorjs-link " href="#wells"
+					aria-label="Anchor link for: wells" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Wells
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@well-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@well-bg']" value="#f5f5f5"
+						data-var="@well-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@well-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@well-border']"
+						>
+				</div>
+			</div>
+			<h2 id="badges">
+				<a class="anchorjs-link " href="#badges"
+					aria-label="Anchor link for: badges" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Badges
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@badge-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@badge-color']" value="#fff"
+						data-var="@badge-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@badge-link-hover-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@badge-link-hover-color']"
+						value="#fff"
+						data-var="@badge-link-hover-color">
+					<p class="help-block" id="help-block-@badge-link-hover-color">Linked
+						badge text color on hover</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@badge-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@badge-bg']" value="@gray-light"
+						data-var="@badge-bg">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@badge-active-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@badge-active-color']"
+						aria-describedby="help-block-@badge-active-color"
+						>
+					<p class="help-block" id="help-block-@badge-active-color">Badge
+						text color in active nav link</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@badge-active-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@badge-active-bg']"
+						value="#fff"
+						data-var="@badge-active-bg">
+					<p class="help-block" id="help-block-@badge-active-bg">Badge
+						background color in active nav link</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@badge-font-weight</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@badge-font-weight']" value="bold"
+						data-var="@badge-font-weight">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@badge-line-height</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@badge-line-height']" value="1"
+						data-var="@badge-line-height">
+				</div>
+				<div class="col-xs-4">
+					<label>@badge-border-radius</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@badge-border-radius']"
+						>
+				</div>
+			</div>
+			<h2 id="breadcrumbs">
+				<a class="anchorjs-link " href="#breadcrumbs"
+					aria-label="Anchor link for: breadcrumbs" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Breadcrumbs
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@breadcrumb-padding-vertical</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@breadcrumb-padding-vertical']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@breadcrumb-padding-horizontal</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@breadcrumb-padding-horizontal']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@breadcrumb-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@breadcrumb-bg']"
+						value="#f5f5f5"
+						data-var="@breadcrumb-bg">
+					<p class="help-block" id="help-block-@breadcrumb-bg">Breadcrumb
+						background color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@breadcrumb-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@breadcrumb-color']"
+						value="#ccc"
+						data-var="@breadcrumb-color">
+					<p class="help-block" id="help-block-@breadcrumb-color">Breadcrumb
+						text color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@breadcrumb-active-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@breadcrumb-active-color']"
+						aria-describedby="help-block-@breadcrumb-active-color"
+						>
+					<p class="help-block" id="help-block-@breadcrumb-active-color">Text
+						color of current page in the breadcrumb</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@breadcrumb-separator</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@breadcrumb-separator']"
+						aria-describedby="help-block-@breadcrumb-separator"
+						>
+					<p class="help-block" id="help-block-@breadcrumb-separator">Textual
+						separator for between breadcrumb elements</p>
+				</div>
+			</div>
+			<h2 id="carousel">
+				<a class="anchorjs-link " href="#carousel"
+					aria-label="Anchor link for: carousel" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Carousel
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@carousel-text-shadow</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@carousel-text-shadow']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@carousel-control-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@carousel-control-color']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@carousel-control-width</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@carousel-control-width']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@carousel-control-opacity</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@carousel-control-opacity']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@carousel-control-font-size</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@carousel-control-font-size']"
+						>
+				</div>
+				<div class="col-xs-4">
+					<label>@carousel-indicator-active-bg</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@carousel-indicator-active-bg']"
+						>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@carousel-indicator-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control"
+						ng-model="lessConfig['@carousel-indicator-border-color']" value="#fff"
+						data-var="@carousel-indicator-border-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@carousel-caption-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@carousel-caption-color']"
+						>
+				</div>
+			</div>
+			<h2 id="close">
+				<a class="anchorjs-link " href="#close"
+					aria-label="Anchor link for: close" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Close
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@close-font-weight</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@close-font-weight']" value="bold"
+						data-var="@close-font-weight">
+				</div>
+				<div class="col-xs-4">
+					<label>@close-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@close-color']" value="#000"
+						data-var="@close-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@close-text-shadow</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@close-text-shadow']"
+						>
+				</div>
+			</div>
+			<h2 id="code">
+				<a class="anchorjs-link " href="#code"
+					aria-label="Anchor link for: code" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Code
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@code-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@code-color']" value="#c7254e"
+						data-var="@code-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@code-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@code-bg']" value="#f9f2f4"
+						data-var="@code-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@kbd-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@kbd-color']" value="#fff"
+						data-var="@kbd-color">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@kbd-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@kbd-bg']" value="#333"
+						data-var="@kbd-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@pre-bg</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pre-bg']" value="#f5f5f5"
+						data-var="@pre-bg">
+				</div>
+				<div class="col-xs-4">
+					<label>@pre-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pre-color']" value="@gray-dark"
+						data-var="@pre-color">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@pre-border-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@pre-border-color']" value="#ccc"
+						data-var="@pre-border-color">
+				</div>
+				<div class="col-xs-4">
+					<label>@pre-scrollable-max-height</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@pre-scrollable-max-height']"
+						>
+				</div>
+			</div>
+			<h2 id="type">
+				<a class="anchorjs-link " href="#type"
+					aria-label="Anchor link for: type" data-anchorjs-icon=""
+					style="font-family: anchorjs-icons; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: normal; line-height: inherit; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>Type
+			</h2>
+			<div class="row">
+				<div class="col-xs-4">
+					<label>@component-offset-horizontal</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@component-offset-horizontal']"
+						aria-describedby="help-block-@component-offset-horizontal"
+						>
+					<p class="help-block" id="help-block-@component-offset-horizontal">Horizontal
+						offset for forms and lists.</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@text-muted</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@text-muted']"
+						value="@gray-light"
+						data-var="@text-muted">
+					<p class="help-block" id="help-block-@text-muted">Text muted
+						color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@abbr-border-color</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@abbr-border-color']"
+						value="@gray-light"
+						data-var="@abbr-border-color">
+					<p class="help-block" id="help-block-@abbr-border-color">Abbreviations
+						and acronyms border color</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@headings-small-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@headings-small-color']"
+						aria-describedby="help-block-@headings-small-color"
+						>
+					<p class="help-block" id="help-block-@headings-small-color">Headings
+						small color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@blockquote-small-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@blockquote-small-color']"
+						aria-describedby="help-block-@blockquote-small-color"
+						>
+					<p class="help-block" id="help-block-@blockquote-small-color">Blockquote
+						small color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@blockquote-font-size</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@blockquote-font-size']"
+						aria-describedby="help-block-@blockquote-font-size"
+						>
+					<p class="help-block" id="help-block-@blockquote-font-size">Blockquote
+						font size</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@blockquote-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@blockquote-border-color']"
+						aria-describedby="help-block-@blockquote-border-color"
+						>
+					<p class="help-block" id="help-block-@blockquote-border-color">Blockquote
+						border color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@page-header-border-color</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@page-header-border-color']"
+						aria-describedby="help-block-@page-header-border-color"
+						>
+					<p class="help-block" id="help-block-@page-header-border-color">Page
+						header border color</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@dl-horizontal-offset</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dl-horizontal-offset']"
+						aria-describedby="help-block-@dl-horizontal-offset"
+						value="@component-offset-horizontal"
+						data-var="@dl-horizontal-offset">
+					<p class="help-block" id="help-block-@dl-horizontal-offset">Width
+						of horizontal description list titles</p>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-4">
+					<label>@dl-horizontal-breakpoint</label>
+					<input ng-change="updateTyping()"  class="form-control" ng-model="lessConfig['@dl-horizontal-breakpoint']"
+						aria-describedby="help-block-@dl-horizontal-breakpoint"
+						>
+					<p class="help-block" id="help-block-@dl-horizontal-breakpoint">Point
+						at which .dl-horizontal becomes horizontal</p>
+				</div>
+				<div class="col-xs-4">
+					<label>@hr-border</label> <input ng-change="updateTyping()" 
+						class="form-control" ng-model="lessConfig['@hr-border']"
+						value="@gray-lighter"
+						data-var="@hr-border">
+					<p class="help-block" id="help-block-@hr-border">Horizontal line
+						color.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		{{ldapConfig}}
+	</div>
+</div>

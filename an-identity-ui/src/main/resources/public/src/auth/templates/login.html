@@ -1,0 +1,161 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2>Login</h2>
+	</div>
+	<div class="col-md-6 col-md-offset-6" ng-if="!status.loggedIn && sources">
+		<div class="row well well-sm">
+			<br />
+			<br />
+			<div class="col-md-12">
+				<ul class="nav nav-tabs">
+					<li ng-repeat="s in sources" ng-class="s.sourceId == config.sourceId ? 'active' : ''" >
+						<a href="#/auth/login?sourceId={{s.sourceId}}&mode={{config.mode}}">{{s.sourceName}}</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-12 form" ng-if="config.sourceId && config.mode == 'login'">
+				<div class="row">
+					<div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px">
+						<h4>Login</h4>
+						Please enter your username, password, and TOTP (where applicable).
+					</div>
+					<div class="col-md-12">
+						<div class="alert alert-danger" role="alert" ng-if="error">
+							<i class="glyphicon glyphicon-exclamation-sign"> </i> {{error.data.message}}
+						</div>
+						<form ng-submit="login()">
+						<div class="form-group">
+							<label>Username</label>
+							<input ng-model="credentials.username" class="form-control"/>
+						</div>
+						<div class="form-group">
+							<label>Password</label>
+							<input ng-model="credentials.password"  class="form-control" type="password"/>
+						</div>
+						<div class="form-group" ng-if="source.secondFactor">
+							<label>OTP</label>
+							<input ng-model="credentials.secondFactor"  class="form-control" type="password"/>
+						</div>
+						<div class="form-group">
+							<span class="pull-right">
+							<a class="small btn btn-link" href="#/auth/login?mode=reset&sourceId={{source.sourceId}}&username={{credentials.username}}">Reset or change Password</a>			
+							<button class="btn btn-primary">Log in!</button>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12 form" >
+				<div class="row" ng-if="config.mode == 'reset'">
+					<div class="col-md-12"  style="padding-top: 10px; padding-bottom: 10px">
+						<div class="form-group">
+							<h4>Password Reset</h4>
+							If you forgot your password, just enter your username here.
+						</div>
+						<div class="form-group small">
+							- Initiate a password reset<br/>					
+							- <a href="#/auth/login?mode=resetWithOldPassword&sourceId={{source.sourceId}}&username={{reset.username}}">I know my existing password</a><br/>					
+							- <a href="#/auth/login?mode=resetWithToken&sourceId={{source.sourceId}}&username={{reset.username}}">I received reset instruction by mail</a>					
+						</div>
+						<div class="alert alert-success" role="alert" ng-if="success">
+							<i class="glyphicon glyphicon-exclamation-sign"> </i> {{success}}
+						</div>
+						<div class="form-group">
+							<label>Username</label>
+							<input ng-model="reset.username"  class="form-control"/>
+						</div>
+						<div class="form-group">
+							<span class="pull-right">
+								<a class="small btn btn-link" href="#/auth/login?mode=login&sourceId={{source.sourceId}}&username={{reset.username}}">Remember Now?</a>			
+								<span class="btn btn-primary" ng-click="resetPassword()">Reset!</span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="row" ng-if="config.mode == 'resetWithOldPassword'">
+					<div class="col-md-12"  style="padding-top: 10px; padding-bottom: 10px">
+						<div class="form-group">
+							<h4>Password Reset</h4>
+							Update your password using your OLD password.
+						</div>
+						<div class="form-group small">
+							- <a href="#/auth/login?mode=reset&sourceId={{source.sourceId}}&username={{reset.username}}">Initiate a password reset</a><br/>					
+							- I know my existing password<br/>					
+							- <a href="#/auth/login?mode=resetWithToken&sourceId={{source.sourceId}}&username={{reset.username}}">I received reset instruction by mail</a>
+						</div>
+						<div class="alert alert-danger" role="alert" ng-if="error">
+							<i class="glyphicon glyphicon-exclamation-sign"> </i> {{error.data.message}}
+						</div>
+						<div class="alert alert-success" role="alert" ng-if="success">
+							<i class="glyphicon glyphicon-exclamation-sign"> </i> {{success}}
+							<a href="#/auth/login?mode=login&sourceId={{source.sourceId}}&username={{reset.username}}">Login</a>					
+						</div>
+						<div class="form-group">
+							<label>Username</label>
+							<input ng-model="reset.username"  class="form-control"/>
+						</div>
+						<div class="form-group">
+							<label>Old Password</label>
+							<input ng-model="reset.oldPassword"  class="form-control" type="password"/>
+						</div>
+						<div class="form-group">
+							<label>New Password</label>
+							<input ng-model="reset.newPassword"  class="form-control" type="password"/>
+						</div>
+						<div class="form-group">
+							<span class="pull-right">
+								<span class="btn btn-primary" ng-click="resetPassword()">Reset!</span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="row" ng-if="config.mode == 'resetWithToken'">
+					<div class="col-md-12"  style="padding-top: 10px; padding-bottom: 10px">
+						<div class="form-group">
+							<h4>Password Reset</h4>
+							Update your password with a reset token from your email.
+						</div>
+						<div class="form-group small">
+							- <a href="#/auth/login?mode=reset&sourceId={{source.sourceId}}&username={{reset.username}}">Initiate a password reset</a><br/>					
+							- <a href="#/auth/login?mode=resetWithOldPassword&sourceId={{source.sourceId}}&username={{reset.username}}">I know my existing password</a><br/>					
+							- I received reset instruction by mail
+						</div>
+						<div class="alert alert-danger" role="alert" ng-if="error">
+							<i class="glyphicon glyphicon-exclamation-sign"> </i> {{error.data.message}}
+						</div>
+						<div class="alert alert-success" role="alert" ng-if="success">
+							<i class="glyphicon glyphicon-exclamation-sign"> </i> {{success}}
+							<a href="#/auth/login?mode=login&sourceId={{source.sourceId}}&username={{reset.username}}">Login</a>					
+						</div>
+						<div class="form-group">
+							<label>Username</label>
+							<input ng-model="reset.username"  class="form-control"/>
+						</div>
+						<div class="form-group">
+							<label>Token</label>
+							<input ng-model="reset.token"  class="form-control" type="password"/>
+						</div>
+						<div class="form-group" ng-if="reset.token && reset.token.length>0">
+							<label>Email</label>
+							<input ng-model="reset.email"  class="form-control"/>
+						</div>
+						<div class="form-group" ng-if="reset.email && reset.email.length>0">
+							<label>New Password</label>
+							<input ng-model="reset.newPassword"  class="form-control" type="password"/>
+						</div>
+						<div class="form-group">
+							<span class="pull-right">
+								<a class="small btn btn-link" href="#/auth/login?mode=login&sourceId={{source.sourceId}}&username={{reset.username}}">Remember Now?</a>			
+								<button class="btn btn-primary" ng-click="resetPassword()">Reset!</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div  class="row" include-components path="/dashboard" ng-if="status.loggedIn">
+	<div ng-include="item.templateUrl">
+	</div>
+</div>

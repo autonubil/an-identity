@@ -1,0 +1,87 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/mailconfigs">Mail Configs</a> | {{mailConfig.name}} <span ng-if="changed">*</span></h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Mail Server</h4>
+			</div>
+			<div class="col-md-12" ng-if="error">
+				<div class="alert alert-danger">
+					<h4>Error</h4>
+					{{error.data.message}}
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Name</label>
+					<input ng-model="mailConfig.name" ng-change="startChange()" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="form form-group">
+					<label>Host</label>
+					<input ng-model="mailConfig.host" ng-change="startChange()" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form form-group">
+					<label>Port</label>
+					<input ng-model="mailConfig.port" ng-change="startChange()" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="form form-group">
+					<label>Sender</label>
+					<input ng-model="mailConfig.sender" ng-change="startChange()" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="form form-group">
+					<label>Certificate to trust</label>
+					<textarea ng-model="mailConfig.cert" ng-change="startChange()" class="form-control"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>encryption</label>
+					<select ng-model="mailConfig.encryption" ng-change="startChange()" class="form-control">
+						<option>NONE</option>
+						<option>START_TLS</option>
+						<option>TLS</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="checkbox">
+				    <label>
+						<input type="checkbox" ng-model="mailConfig.auth" ng-change="startChange()"> Use Authentication
+				    </label>
+				</div>
+			</div>
+			<div class="col-md-12" ng-if="mailConfig.auth">
+				<div class="form form-group">
+					<label>SMTP Username</label>
+					<input ng-model="mailConfig.username" ng-change="startChange()" class="form-control"/>
+				</div>
+				<div class="form form-group">
+					<label>Set Password</label>
+					<form class="form-inline">
+						<input type="password" ng-model="password" class="form-control"/>
+						<button ng-class="['btn','btn-primary',{'btn-danger':resetError},{'btn-success':resetSuccess}]" ng-click="setPassword(mailConfig.id,password)">Set</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<label>Addition values</label>
+		To be made available in every mail.
+		<textarea rows="30" cols="40" class="form-control" ng-model="params" ng-change="save()" ng-class="parseError ? 'alert alert-danger' : ''"></textarea>
+	</div>
+</div>

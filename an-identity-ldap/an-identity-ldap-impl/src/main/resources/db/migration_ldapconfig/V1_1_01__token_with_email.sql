@@ -1,0 +1,3 @@
+ALTER TABLE reset_token 
+ADD COLUMN email VARCHAR(128);
+	

@@ -1,0 +1,37 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/localusers">Local Users</a> | {{user.username}} <span ng-if="changed">*</span></h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="form form-group">
+			<label>email</label>
+			<input ng-model="user.email" ng-change="startChange()" class="form-control"/>
+		</div>
+		<div class="checkbox">
+			<label>
+				<input ng-model="user.useOtp"  ng-change="startChange()"  type="checkbox">Use OTP
+			</label>
+		</div>
+		<div class="form form-group" ng-if="user.useOtp">
+			<label>Reset OTP</label>
+			<form method="POST" action="{{resetUrl}}" target="snowflake">
+				<input type="submit" class="btn btn-primary form-control" ng-click="showSnowflake=true">
+			</form>
+			<iframe name="snowflake" height="300" ng-if="showSnowflake">
+			</iframe>
+		</div>
+		<div class="form form-group">
+			<hr>
+		</div>
+		<div class="form form-group">
+			<label>Reset Password</label>
+			<form method="POST" action="{{resetUrl}}" target="_new">
+				<input type="submit" class="btn btn-primary form-control">
+			</form>
+		</div>
+		<div class="form form-group">
+		</div>
+	</div>
+</div>

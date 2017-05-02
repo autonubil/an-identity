@@ -1,0 +1,7 @@
+ALTER TABLE mail_config
+ADD COLUMN
+	cert VARCHAR(2048),
+ADD COLUMN
+	sender VARCHAR(128)
+;
+	

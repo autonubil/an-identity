@@ -1,0 +1,9 @@
+Dear $user.displayName!
+
+Someone (presumably you) has requested a password reset. Please <a href="${baseUrl}#/auth/login?mode=resetWithToken&sourceId=${user.sourceId}&token=${token}">click here</a> to complete the request and reset your password.
+
+regards,
+
+your ldap server
+----------------
+${footer}

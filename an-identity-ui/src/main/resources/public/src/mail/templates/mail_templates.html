@@ -1,0 +1,39 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2>Mail Templates</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<div class="form-group">
+			<select class="form-control" ng-model="search.module" ng-change="update()" ng-options="module for module in modules">
+			    <option value="" selected="selected"></option>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="form-group">
+			<select class="form-control" ng-model="search.locale" ng-change="update()" ng-options="locale for locale in locales">
+				<option value="" selected="selected"></option>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="form-group">
+			<input class="form-control" ng-model="search.search" ng-change="update()">
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-compact table-striped">
+			<tr ng-repeat="mailTemplate in mailTemplates">
+				<td width="25%">{{mailTemplate.module}}</td>
+				<td width="25%">{{mailTemplate.locale}}</td>
+				<td>{{mailTemplate.name}}</td>
+				<td width="20"><a href="#/main/admin/mailtemplates/{{mailTemplate.id}}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"> </i></a>
+				<td width="20"><a href="#/main/admin/mailtemplates" ng-click="remove(mailTemplate.id)" class="btn btn-danger"><i class="glyphicon glyphicon-remove-circle"> </i></a>
+			</tr>
+		</table>
+	</div>
+</div>

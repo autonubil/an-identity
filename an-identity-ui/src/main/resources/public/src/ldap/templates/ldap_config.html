@@ -1,0 +1,214 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/ldap">LDAP Configs</a> | {{ldapConfig.name}} <span ng-if="changed">*</span></h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Directory Server</h4>
+			</div>
+			<div class="col-md-12" ng-if="error">
+				<div class="alert alert-danger">
+					<h4>Error</h4>
+					{{error.data.message}}
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Name</label>
+					<input ng-model="ldapConfig.name" ng-change="startChange()" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="checkbox">
+				    <label>
+						<input type="checkbox" ng-model="ldapConfig.useAsAuth" ng-change="startChange()"> Use for Authentication
+				    </label>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div class="form form-group">
+					<label>Host</label>
+					<input ng-model="ldapConfig.host" ng-change="startChange()" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form form-group">
+					<label>Port</label>
+					<input ng-model="ldapConfig.port" ng-change="startChange()" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-12" ng-if="types">
+				<div class="form form-group">
+					<label>Server Type</label>
+					<select ng-model="ldapConfig.serverType"  ng-options="type.id as type.name for type in types" ng-change="startChange()" class="form-control">
+					</select>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Root DSE</label>
+					<input ng-model="ldapConfig.rootDse" ng-change="startChange()" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>encryption</label>
+					<select ng-model="ldapConfig.encryption" ng-change="startChange()" class="form-control">
+						<option>NONE</option>
+						<option>START_TLS</option>
+						<option>SSL</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-12" ng-if="ldapConfig.encryption!='NONE'">
+				<div class="checkbox">
+				    <label>
+						<input type="checkbox" ng-model="ldapConfig.trustAll" ng-change="startChange()"> Trust All
+				    </label>
+				</div>
+			</div>
+			<div class="col-md-12" ng-if="ldapConfig.encryption!='NONE' && !ldapConfig.trustAll">
+				<div class="form form-group">
+					<label>Trusted Certificates</label>
+					<div>
+						<textarea cols=50 rows=10 ng-model="ldapConfig.cert" ng-change="startChange()" class="form-control"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>authentication</label>
+					<select ng-model="ldapConfig.auth" ng-change="startChange()" class="form-control">
+						<option>SIMPLE</option>
+						<option>DIGEST_MD5</option>
+						<option>CRAM_MD5</option>
+						<option>GSSAPI</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Admin DN</label>
+					<input ng-model="ldapConfig.adminBindDn" ng-change="startChange()" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-12">
+				<hr>
+			</div>
+			<div class="col-md-12" ng-click="enablePassword=true">
+				<label>Admin Password</label>
+			</div>
+			<div class="col-md-8" ng-click="enablePassword=true">
+				<div class="form form-group">
+					<input ng-model="password" type="password" ng-disabled="!enablePassword" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form form-group">
+					<button class="btn btn-default form-control" ng-disabled="password.length==0" ng-click="setPassword()">Set</button>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<hr>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group pull-right">
+					<button type="button" class="form-control btn btn-primary" ng-click="test()" ng-class="[{'btn-success' : status.success},{'btn-danger':status.error}]">Test Connection
+						<i ng-if="status.success" class="glyphicon glyphicon-ok"></i>
+						<i ng-if="status.error" class="glyphicon glyphicon-remove"></i>
+					</button>
+				</div>
+			</div>
+			<div class="col-md-12" ng-if="status.error">
+				<div class="alert alert-danger">
+					Error! {{status.exception.message}}
+				</div>
+			</div>
+			<div class="col-md-12" ng-if="status.exception.pems">
+				<label>Certificates presented by the server</label>
+				<div ng-repeat="pem in status.exception.pems">
+					<pre>{{pem}}</pre>			
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Custom Fields</h4>
+			</div>
+			<div class="col-md-12" ng-if="fields.length==0">
+				<div class="alert alert-warning">
+					no fields configured
+				</div>
+			</div>
+			<div class="col-md-12" ng-if="fields.length>0">
+				<table class="table table-compact table-striped">
+					<tr>
+						<th>Object Class</th>
+						<th>Attribute</th>
+						<th>Display Name</th>
+						<th></th>
+					</tr>
+					<tr ng-repeat="field in fields">
+						<td>
+							{{field.objectClass}}
+						</td>
+						<td>
+							{{field.attributeName}}
+						</td>
+						<td>
+							{{field.displayName}}
+						</td>
+						<td>
+							<i class="glyphicon glyphicon-minus" ng-click="deleteField(field.sourceId,field.id)"> </i>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="col-md-12">
+				<h4>Add Field</h4>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Object Class</label>
+					<input ng-model="field.objectClass" class="form-control">
+				</div>
+				<div class="form form-group">
+					<label>Attribute Name</label>
+					<input ng-model="field.attributeName" class="form-control">
+				</div>
+				<div class="form form-group">
+					<label>Attribute Type</label>
+					<select ng-model="field.attributeType" class="form-control">
+						<option value="String">String</option>
+						<option value="Text">Text</option>
+						<option value="Number">Number</option>
+						<option value="Date">Date</option>
+					</select>
+				</div>
+				<div class="form form-group">
+					<label>Display Name</label>
+					<input ng-model="field.displayName" class="form-control">
+				</div>
+				<div class="form form-group">
+				  	<label><input type="checkbox" ng-model="field.multi">&nbsp;Multi-Value</label>
+				</div>
+				<div class="form form-group">
+				  	<label><input type="checkbox" ng-model="field.adminEditable">&nbsp;Editable by admins</label>
+				</div>
+				<div class="form form-group">
+				  	<label><input type="checkbox" ng-model="field.userEditable">&nbsp;Editable by Users (self service)</label>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group pull-right">
+					<span class="btn btn-primary" ng-click="addField()"><i class="glyphicon glyphicon-plus"> </i></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

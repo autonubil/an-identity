@@ -1,0 +1,1 @@
+ALTER TABLE ldap_config_field ADD COLUMN display_name VARCHAR(128);

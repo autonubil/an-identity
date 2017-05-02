@@ -1,0 +1,82 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/ldapusers_users">LDAP Users</a> | Add User ({{config.name}})</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Core Data</h4>
+			</div>
+			<div class="col-md-12" ng-if="error">
+				<div class="alert alert-danger">
+					<h4>Error</h4>
+					{{error.data.message}}
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Display Name</label>
+					<input ng-model="user.displayName" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Common Name</label>
+					<input ng-model="user.cn" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Surname</label>
+					<input ng-model="user.sn" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>username</label>
+					<input ng-model="user.username" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>E-Mail</label>
+					<input ng-model="user.mail" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Organization</label>
+					<input ng-model="user.organization" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Department</label>
+					<input ng-model="user.department" class="form-control"/>
+				</div>
+			</div>
+			
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Company</label>
+					<input ng-model="user.company" class="form-control"/>
+				</div>
+			</div>
+			
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Expires</label>
+					<select ng-model="user.userExpires" ng-options="expires.value as expires.display for expires in expiry"   class="form-control">
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<button type="submit" class="btn btn-primary pull-right" ng-click="create()">Create!</button>
+			</div>
+		</div>
+	</div>
+</div>

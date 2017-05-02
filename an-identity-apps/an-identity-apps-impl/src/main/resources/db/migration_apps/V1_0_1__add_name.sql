@@ -1,0 +1,1 @@
+ALTER TABLE app_permission ADD COLUMN name VARCHAR(256);

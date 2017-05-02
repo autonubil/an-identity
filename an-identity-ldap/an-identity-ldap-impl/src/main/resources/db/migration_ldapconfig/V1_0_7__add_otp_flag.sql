@@ -1,0 +1,3 @@
+ALTER TABLE ldap_config
+ADD COLUMN use_otp DECIMAL(1,0) NOT NULL DEFAULT 0;
+

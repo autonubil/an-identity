@@ -1,0 +1,12 @@
+{
+  "source" : "LOCAL",
+  "expired" : 1489340098904,
+  "token" : "GPQQdmLvfjdQfdtcZCPstfVQ",
+  "user" : {
+    "id" : "e747f83c-04d6-11e7-ad28-080027bda117",
+    "username" : "admin",
+    "dn" : "uid=admin,cn=users,cn=accounts,dc=example,dc=com",
+    "displayName" : "Administrator",
+    "mail" : ""
+  }
+}

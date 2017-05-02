@@ -1,0 +1,52 @@
+	public DirContext connect(String username, String password, String otp) {
+		Hashtable<String, Object> env = new Hashtable<>();
+		try {
+			
+			env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+			env.put(Context.SECURITY_PRINCIPAL, username);
+			env.put(Context.SECURITY_CREDENTIALS, password+(otp==null?"":otp));
+			env.put("java.naming.ldap.version", "3");
+			
+			if (config.getEncryption() == ENCRYPTION.SSL) {
+				env.put(Context.PROVIDER_URL, "ldaps://" + config.getHost() + ":" + config.getPort());
+				env.put(Context.SECURITY_PROTOCOL, "ssl");
+				env.put("java.naming.ldap.factory.socket", ThreadLocalSocketFactory.class.getName());
+				
+				TrustManager tm = new TrustManagerDelegate();
+				SSLContext sslContext = SSLContext.getInstance("TLS");
+				sslContext.init(null, new TrustManager[] { tm }, new SecureRandom());
+				SocketFactory sf = sslContext.getSocketFactory();
+				
+				ThreadLocalSocketFactory.set(sf);
+			} else {
+				env.put(Context.PROVIDER_URL, "ldap://" + config.getHost() + ":" + config.getPort());
+				ThreadLocalSocketFactory.set(SocketFactory.getDefault());
+			}
+			
+			env.put("java.naming.ldap.attributes.binary", "objectGUID");
+			env.put(Context.SECURITY_AUTHENTICATION, config.getAuth().name());
+			env.put("java.naming.ldap.attributes.binary", "objectSID");
+			
+			LdapContext ctx = new InitialLdapContext(env,null);
+			
+			
+	        if (config.getEncryption() == ENCRYPTION.START_TLS) {
+				StartTlsResponse tls = (StartTlsResponse) ctx.extendedOperation(new StartTlsRequest());
+				TrustManager tm = new TrustManagerDelegate();
+				SSLContext sslContext = SSLContext.getInstance("TLS");
+				sslContext.init(null, new TrustManager[] { tm }, new SecureRandom());
+				tls.negotiate(sslContext.getSocketFactory());
+	        }
+			
+	        return ctx;
+			
+		} catch (Exception e) {
+			log.warn("error connecting to LDAP:",e);
+			try {
+				new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValue(System.err, env);
+			} catch (Exception e2) {
+			}
+			
+			throw new RuntimeException("unable to connect",e);
+		}
+	}

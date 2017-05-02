@@ -1,0 +1,42 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2>LDAP Users</h2>
+	</div>
+</div>
+<div class="row" ng-if="!configs || configs.length==0">
+	<div class="col-md-12">
+		<div class="alert alert-warning col-md-12">
+			<i>No LDAP servers configured!</i>
+		</div>
+	</div>
+</div>
+<div class="row" ng-if="configs && configs.length > 0">
+	<div class="col-md-2" ng-if="configs">
+		<select class="form-control" ng-model="search.config" ng-change="setSource()" ng-options="config.id as config.name for config in configs">
+		</select>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<input class="form-control" ng-model="search.search" ng-change="updateTyping()">
+		</div>
+	</div>
+	<div class="col-md-2">
+		<a href="#/main/admin/ldapusers/add_user/{{search.config}}" class="form-control btn btn-primary"><i class="glyphicon glyphicon-plus"> </i></a>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div ng-if="!users || users.length==0">
+			<div class="alert alert-warning col-md-12">
+				<i>No users found</i>
+			</div>
+		</div> 
+		<table class="table table-compact table-striped">
+			<tr ng-repeat="user in users">
+				<td>{{user.cn}}</td>
+				<td width="200">{{user.username}}</td>
+				<td width="20"><a href="#/main/admin/ldapusers/edit_user/{{search.config}}/{{user.id}}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"> </i></a>
+			</tr>
+		</table>
+	</div>
+</div>

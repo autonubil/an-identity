@@ -1,0 +1,29 @@
+<div class="col-md-12" ng-controller="MyOtpController">
+	<div class="row">
+		<div class="col-md-12">
+			<h4>OTP Tokens</h4>
+		</div>
+	</div>
+	<div class="row" ng-if="!supported">
+		<div class="col-md-12">
+			<span class="alert alert-warning">TOTP not supported for this account</span>
+		</div>
+	</div>
+	<div class="row" ng-if="supported">
+		<div class="col-md-12">
+			<table>
+				<tr ng-repeat="app in apps" class="well-sm">
+					<td>
+						token
+					</td>
+					<td style="padding-right: 10px">
+						&nbsp;
+					</td>
+					<td style="padding-right: 10px">
+						tokens ... 
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

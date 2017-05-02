@@ -1,0 +1,87 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/mailtemplates">Mail Templates</a> | {{mailTemplate.module}} | {{mailTemplate.name}} | {{mailTemplate.locale}} <span ng-if="changed">*</span></h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="row">	
+			<div class="col-md-6">
+				<div class="form form-group">
+					<label>Module <i class="glyphicon glyphicon-pencil" ng-click="enableModule=!enableModule"> </i></label>
+					<select ng-model="mailTemplate.module" ng-change="startChange()" ng-disabled="!enableModule"  class="form-control" ng-options="module for module in modules">
+					</select>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form form-group">
+					<label>Mail <i class="glyphicon glyphicon-pencil" ng-click="enableMail=!enableMail"> </i></label>
+					<input ng-model="mailTemplate.name" ng-change="startChange()" ng-disabled="!enableMail" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-10">
+				<div class="form form-group">
+					<label>Subject</label>
+					<input ng-model="mailTemplate.subject" ng-change="startChange()" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="form form-group">
+					<label>Locale <i class="glyphicon glyphicon-pencil" ng-click="enableLocale=!enableLocale"> </i></label>
+					<input ng-model="mailTemplate.locale" ng-disabled="!enableLocale" ng-change="startChange()" class="form-control"/>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Body (plain text)</label>
+					<textarea ng-model="mailTemplate.text" ng-change="startChange()" class="form-control" cols="80" rows="20"></textarea>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Body (HTML)</label>
+					<textarea ng-model="mailTemplate.html" ng-change="startChange()" class="form-control" cols="80" rows="20"></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="row">	
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Model <i class="glyphicon glyphicon-pencil" ng-click="showModel=!showModel"> </i></label>
+					<textarea ng-model="mailTemplate.model" ng-if="showModel" ng-change="startChange()" class="form-control" cols="80" rows="20"></textarea>
+					<pre ng-if="!showModel">{{mailTemplate.model}}</pre>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>Example</label>
+					<select ng-model="exampleMailConfig" ng-options="mailConfig.id as mailConfig.name for mailConfig in mailConfigs" class="form-control">
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Subject</label>
+					<div class="well well-sm" style="white-space: pre-wrap;">{{mail.subject}}</div>
+					<label>Body (plain text)</label>
+					<div class="well well-sm" style="white-space: pre-wrap;">{{mail.text}}</div>
+					<label>Body (HTML)</label>
+					<div class="well well-sm" style="white-space: pre-wrap;" id="htmlExample"></div>
+				</div>
+				<div class="form-group form-inline">
+					<label>Send test mail</label>
+					<div ng-if="testSuccess" class="alert alert-success">
+						Success!
+					</div>
+					<div ng-if="testError" class="alert alert-danger">
+						Error! {{testError.data.message}}
+					</div>
+					<div>
+						<input class="form-control form-inline" ng-model="recipient" placeholder="recipient">
+						<button class="btn btn-primary form-inline" ng-click="sendTest(recipient,exampleMailConfig)">send</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

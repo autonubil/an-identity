@@ -1,0 +1,236 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/ldapusers_users?source={{source}}">LDAP Users</a> | {{user.cn}} ({{user.sourceName}})<span ng-if="state.changed">*</span></h2>
+	</div>
+</div>
+<div class="row" ng-if="user">
+	<div class="col-md-12" ng-if="error">
+		<div class="alert alert-danger">
+			<h4>Error</h4>
+			{{error.data.message}}
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="form form-group well well-sm">
+					<label>username</label><br>
+					{{user.username}}
+					<!-- 
+					<input ng-model="" ng-disabled="true"  ng-change="save()" class="form-control"/>
+					 -->
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form form-group well well-sm">
+					<label>account name</label><br>
+					{{user.accountName}}
+					<!-- 
+					<input ng-model="user.accountName" ng-disabled="true"  ng-change="save()" class="form-control"/>
+					 -->
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form form-group well well-sm">
+					<label>DN</label><br>
+					{{user.dn}}
+					<!-- 
+					<input ng-model="user.dn" ng-disabled="true"  ng-change="save()" class="form-control"/>
+					 -->
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12"><hr>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<h4>User Data <i class="glyphicon glyphicon-pencil" ng-click="toggleEdit()"></i></h4>
+					</div>
+					<div class="col-md-12">
+						<div class="form form-group">
+							<label>Display Name</label>
+							<input ng-model="user.displayName" ng-disabled="!state.editMode" ng-change="state.changed=true" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form form-group">
+							<label>Common Name</label>
+							<input ng-model="user.cn" ng-disabled="!state.editMode" ng-change="state.changed=true" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form form-group">
+							<label>Surname</label>
+							<input ng-model="user.sn" ng-disabled="!state.editMode" ng-change="state.changed=true" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form form-group">
+							<label>Phone</label>
+							<input ng-model="user.phone" ng-disabled="!state.editMode" ng-change="state.changed=true" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form form-group">
+							<label>Mobile</label>
+							<input ng-model="user.mobilePhone" ng-disabled="!state.editMode" ng-change="state.changed=true" class="form-control">
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form form-group">
+							<label>E-Mail</label>
+							<input ng-model="user.mail" ng-disabled="!state.editMode"  ng-change="state.changed=true" class="form-control"/>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form form-group">
+							<label>Organization</label>
+							<input ng-model="user.organization" ng-disabled="!state.editMode"  ng-change="state.changed=true" class="form-control"/>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form form-group">
+							<label>Department</label>
+							<input ng-model="user.department" ng-disabled="!state.editMode"  ng-change="state.changed=true" class="form-control"/>
+						</div>
+					</div>
+					<div class="col-md-12 form form-group" ng-if="user.passwordExpires < 1">
+						<label>Password does not expire</label>
+					</div>
+					<div class="col-md-12 form form-group" ng-click="state.showPasswordExpiryPicker=!state.showPasswordExpiryPicker" ng-if="user.passwordExpires > 0">
+						<label>Password Expires</label>
+						{{ user.passwordExpires | date : format : timezone}}
+					</div>
+					<div class="col-md-6 form form-group" ng-if="user.userExpires < 1">
+						<label>User does not expire</label>
+					</div>
+					<div class="col-md-6 form form-group" ng-click="state.showUserExpiryPicker=!state.showUserExpiryPicker" ng-if="user.userExpires > 0">
+						<label>User Expires</label>
+						{{ user.userExpires | date : format : timezone}}
+					</div>
+					<div class="col-md-6 form form-group">
+						<select ng-model="user.userExpires" placeholder="selectToUpdate" ng-options="expires.value as expires.display for expires in expiry" ng-disabled="!state.editMode"   ng-change="setUserExpiry(user.userExpires)"  class="form-control">
+						</select>
+					</div>
+					<div class="col-md-12 form form-group" ng-if="state.showUserExpiryPicker">
+						<date-picker ng-model="user.userExpires" format-date="formatDate" ng-change="setUserExpiry(user.userExpires)">
+						</date-picker>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<div class="col-md-12">
+						<h4>Alter Egos</h4>
+						<label>Accounts in other authentication sources</label>
+					</div>
+					<div class="col-md-12" ng-if="!alterEgos || alterEgos.length==0">
+						<div class="alert alert-warning">
+							<i>No alter egos</i>
+						</div>
+					</div>
+					<div class="col-md-12" ng-if="alterEgos && alterEgos.length>0">
+						<label>&nbsp;</label>
+						{{alterEgo}}
+						<table class="table table-striped table-compact">
+							<tr ng-repeat="alterEgo in alterEgos">
+								<td width="50%"><a href="#/main/admin/ldapusers/edit_user/{{alterEgo.source.id}}/{{alterEgo.user.id}}">{{alterEgo.source.name}}</a></td>
+								<td width="50%"><a href="#/main/admin/ldapusers/edit_user/{{alterEgo.source.id}}/{{alterEgo.user.id}}">{{alterEgo.user.cn}}</a></td>
+							</tr>
+						</table>
+					</div>
+					<div class="col-md-12 form form-group">
+						<h4>Object Classes</h4>
+						<label>Object classes assigned in the underlying LDAP</label>
+						<!-- 
+						<div style="max-height: 20em; min-height: 20em; overflow:scroll; overflow-x: hidden;">
+						 -->
+						 <div></div>
+							<table class="table table-striped table-compact">
+								<tr ng-repeat="objectClass in user.objectClasses">
+									<td>{{objectClass}}</td>
+								</tr>
+							</table>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<hr>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Other Fields</h4>
+				</div>
+				<div class="col-md-4" ng-repeat="customField in user.customFields">
+					<label>{{customField.displayName}}</label><br>
+					<div ng-if="customField.multi">
+						<div class="form-group" ng-repeat="value in customField.values track by $index">
+							<input class="form-control" ng-model="customField.values[$index]" ng-change="checkCustomFields()" ng-if="customField.attributeType=='String'">
+							<textarea class="form-control" cols="40" rows="5" ng-model="customField.values[$index]" ng-change="checkCustomFields()" ng-if="customField.attributeType=='Text'"></textarea>
+						</div>
+						<i class="glyphicon glyphicon-plus" ng-click="customField.values.push('')"></i>
+					</div>
+					<div ng-if="!customField.multi">
+						<input class="form-control" ng-model="customField.values[0]">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<hr>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Groups</h4>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<label>Assigned Groups</label>
+					<div class="alert alert-warning" ng-if="!groups || groups.length==0">
+						<i>No groups</i>
+					</div>
+					<div style="max-height: 20em; min-height: 20em; overflow:scroll; overflow-x: hidden;" ng-if="groups && groups.length>0">
+						<table class="table table-striped table-compact">
+							<tr ng-repeat="group in groups">
+								<td>{{group.displayName}}</td>
+								<td width="20"><a><i ng-click="removeGroup(group.id)" class="glyphicon glyphicon-minus"></i></a></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<label>Available groups</label>
+					<input class="form-control" ng-model="groupList.search" ng-change="searchGroups()" style="margin-bottom: 1em">
+					<div style="max-height: 20em; min-height: 20em; overflow:scroll; overflow-x: hidden;">
+						<div class="alert alert-warning" ng-if="groupList.groups<1">
+							<i>No matching groups</i>
+						</div>
+						<table class="table table-striped table-compact">
+							<tr ng-repeat="group in groupList.groups">
+								<td>{{group.displayName}}</td>
+								<td width="20"><a><i ng-click="addGroup(group.id)" class="glyphicon glyphicon-plus"></i></a></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

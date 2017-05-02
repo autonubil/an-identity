@@ -1,0 +1,43 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/migrate">Migration</a> | {{configMap[migrationConfig.fromLdap]}} - {{configMap[migrationConfig.toLdap]}} <span ng-if="changed">*</span>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12" ng-if="migrationConfig.groupMappings.length == 0">
+		<div class="alert alert-warning">
+			no group mappings configured 
+		</div>
+	</div>
+	<div class="col-md-12" ng-if="migrationConfig.groupMappings.length > 0">
+		<table class="table table-compact table-striped">
+			<tr>
+				<th>From</th>
+				<th></th>
+				<th>To</th>
+				<th></th>
+			</tr>
+			<tr ng-repeat="gm in migrationConfig.groupMappings track by $index">
+				<td width="40%">{{groupsMap[gm.fromGroup]}}</td>
+				<td width="10%"><i class="glyphicon glyphicon-chevron-right"> </i></td>
+				<td width="40%">{{groupsMap[gm.toGroup]}}</td>
+				<td width="10%"><button class="btn btn-danger" ng-click="remove($index)"><i class="glyphicon glyphicon-minus"> </i></button></td>
+ 			</tr>
+		</table>
+	</div>
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-5">
+				<select ng-model="groupMapping.from" class="form-control" ng-options="c.id as c.displayName for c in fromGroups">
+				</select>
+			</div>
+			<div class="col-md-5">
+				<select ng-model="groupMapping.to" class="form-control" ng-options="c.id as c.displayName for c in toGroups">
+				</select>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-primary" ng-click="add()"><i class="glyphicon glyphicon-plus"> </i> Add</button>
+			</div>
+		</div>
+	</div>
+</div>

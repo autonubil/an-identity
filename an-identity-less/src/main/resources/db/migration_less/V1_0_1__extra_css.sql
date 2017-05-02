@@ -1,0 +1,10 @@
+CREATE TABLE css_config (
+   id VARCHAR(36) NOT NULL,
+   ord INT NOT NULL,
+   name VARCHAR(128) NOT NULL,
+   r VARCHAR(128) NOT NULL,
+   t VARCHAR(512) NOT NULL,
+   h VARCHAR(512) NOT NULL,
+   PRIMARY KEY (id) 
+)
+

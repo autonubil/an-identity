@@ -1,0 +1,13 @@
+Dear $user.displayName!
+
+we have just created a new user account for you. you can now go to:
+
+	<a href="${baseUrl}#/auth/login?mode=reset&sourceId=${user.sourceId}">here</a>
+	
+to reset your password.
+
+regards,
+
+your ldap server
+----------------
+${footer}

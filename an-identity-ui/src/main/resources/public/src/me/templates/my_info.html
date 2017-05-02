@@ -1,0 +1,36 @@
+<div class="col-md-12" ng-controller="MyInfoController" >
+	<h4>Accounts</h4>
+	<div ng-repeat="user in identity.linked">
+		<div class="well well-sm"> 
+			<span class="pull-right" ng-click="collpase[user.id] = !collpase[user.id]"><i class="glyphicon glyphicon-chevron-down"> </i></span>
+			<h4>Account: {{user.displayName}} ({{user.username}}) | {{user.sourceName}}</h4> 
+			<div class="form-group" ng-if="!collpase[user.id]">
+				<label>Groups</label><br>
+				<div class="alert alert-warning" ng-if="user.groups.length == 0">
+					no groups
+				</div>
+				<span class="badge" style="margin-bottom: 8px; margin-right:8px;" ng-repeat="group in user.groups">{{group.displayName}}</span> 
+			</div>
+			<div class="form-group" ng-if="!collpase[user.id]">
+				<label>Notifications</label><br>
+				<div class="alert alert-warning" ng-if="user.notifications.length == 0">
+					no notifications
+				</div>
+				<div ng-repeat="notification in user.notifications">
+					<strong ng-class="['label',{'label-danger':notification.level=='ERROR'},{'label-warning':notification.level=='WARN'},{'label-info':notification.level=='INFO'}]">{{notification.level}}</strong> {{notification.message}}<br>
+				</div>
+			</div>
+			<div class="form-inline" ng-if="!collpase[user.id]">
+				<label>Password Reset</label><br>
+				<div class="alert alert-danger" ng-if="error[user.id]">Error! {{error[user.id].data.message}}</div>
+				<div class="alert alert-success" ng-if="success[user.id]">Success!</div>
+				<input class="form-control " placeholder="Old Password" ng-model="reset[user.id].oldPassword" type="password">
+				<input class="form-control" placeholder="New Password" ng-model="reset[user.id].newPassword" type="password">
+				<input class="form-control" placeholder="New Password Repeat" ng-model="reset[user.id].newPasswordRepeat" type="password">
+				<button class="btn btn-primary" ng-click="reset(user.username,user.id,user.sourceId)" ng-disabled="!(reset[user.id].oldPassword.length>0 && reset[user.id].newPassword.length>0 && reset[user.id].newPassword == reset[user.id].newPasswordRepeat)">Reset Password</button>
+			</div>												
+		</div>
+		<hr>
+	</div>
+</div>
+	

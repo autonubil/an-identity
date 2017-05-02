@@ -1,0 +1,30 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2><a href="#/main/admin/css">CSS Config</a></h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<label>Name / ID</label>
+		<input ng-model="config.name" class="form-control" ng-change="save()">
+	</div>
+	<div class="col-md-12">
+		<label>rel</label>
+		<select ng-model="config.rel" class="form-control" ng-change="save()">
+			<option value="stylesheet">stylesheet</option>
+			<option value="icon">icon</option>
+		</select>
+	</div>
+	<div class="col-md-12">
+		<label>Type</label>
+		<select ng-model="config.type" class="form-control" ng-change="save()">
+			<option value="text/css">text/css</option>
+			<option value="image/png">image/png</option>
+			<option value="image/x-icon">image/x-icon</option>
+		</select>
+	</div>
+	<div class="col-md-12">
+		<label>href</label>
+		<input ng-model="config.href" class="form-control" ng-change="save()">
+	</div>
+</div>

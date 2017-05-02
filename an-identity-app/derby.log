@@ -1,0 +1,39 @@
+----------------------------------------------------------------
+Thu Feb 16 12:38:44 CET 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-015a-46b7-a337-00000a7d8df0 
+on database directory /Users/rm/Eclipse/udp/autonubil-intranet/autonubil-intranet-app/db/derby/localauth with class loader sun.misc.Launcher$AppClassLoader@2a139a55 
+Loaded from file:/Users/rm/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_111-b14
+user.dir=/Users/rm/Eclipse/udp/autonubil-intranet/autonubil-intranet-app
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.12.2
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Thu Feb 16 12:38:44 CET 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance 38c30028-015a-46b7-a337-00000a7d8df0 
+on database directory /Users/rm/Eclipse/udp/autonubil-intranet/autonubil-intranet-app/db/derby/audit_log with class loader sun.misc.Launcher$AppClassLoader@2a139a55 
+Loaded from file:/Users/rm/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_111-b14
+user.dir=/Users/rm/Eclipse/udp/autonubil-intranet/autonubil-intranet-app
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.12.2
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Thu Feb 16 12:38:45 CET 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance 6b91c056-015a-46b7-a337-00000a7d8df0 
+on database directory /Users/rm/Eclipse/udp/autonubil-intranet/autonubil-intranet-app/db/derby/ldapconfig with class loader sun.misc.Launcher$AppClassLoader@2a139a55 
+Loaded from file:/Users/rm/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_111-b14
+user.dir=/Users/rm/Eclipse/udp/autonubil-intranet/autonubil-intranet-app
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.12.2
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

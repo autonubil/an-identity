@@ -1,0 +1,15 @@
+
+
+hello $displayName!
+
+we have received a request to reset the password for your account $username
+
+if this is really from you, please go to:
+
+	http://127.0.0.1/#/localauth/passwordReset?token=$token
+	
+to complete the reset process. otherwise, you can simply ignore this mail
+
+yours truly
+
+the server

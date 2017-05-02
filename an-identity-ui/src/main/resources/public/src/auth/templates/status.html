@@ -1,0 +1,4 @@
+<li ng-controller="LoginStatusController">
+	<a href="#/me" ng-if="status.loggedIn">{{status.user.name}} <span class="glyphicon glyphicon-off" ng-style="{'visibility': status.loggedIn ? 'visible' : 'hidden'}" ng-click="logout()"></a>
+	<a href="#/auth/login" ng-if="!status.loggedIn"><small>please log in</small></a>
+</li>

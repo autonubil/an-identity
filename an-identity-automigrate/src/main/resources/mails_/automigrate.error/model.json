@@ -1,0 +1,28 @@
+{
+  "token_expires" : 1490888472264,
+  "user" : {
+    "sourceId" : "70cb0a13-4faf-4fcb-8b9c-09fc8a49905b",
+    "sourceName" : "IPA Local",
+    "id" : "d55f33bc-13b1-11e7-9ebf-080027bda117",
+    "username" : "plustig",
+    "dn" : "uid=plustig,cn=users,cn=accounts,dc=example,dc=com",
+    "displayName" : "Peter Lustig",
+    "mail" : "hund@nase.de",
+    "company" : "",
+    "department" : "",
+    "passwordExpires" : 1485782401000,
+    "userExpires" : 1494422401000,
+    "attributes" : {
+      "krbPasswordExpiration" : "20170130152001+0200",
+      "uid" : "plustig",
+      "mail" : "hund@nase.de",
+      "uidNumber" : "173200027",
+      "displayName" : "Peter Lustig",
+      "krbPrincipalExpiration" : "20170510152001+0200",
+      "gidNumber" : "173200027",
+      "cn" : "Peter Lustig",
+      "ipaUniqueId" : "d55f33bc-13b1-11e7-9ebf-080027bda117"
+    }
+  },
+  "token" : "D9UyiIHj7hSbugIzKlQ2Iijj"
+}

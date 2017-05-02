@@ -1,0 +1,27 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2>Local Users</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-10">
+		<div class="form-group">
+			<input class="form-control" ng-model="search.search" ng-change="updateTyping()">
+		</div>
+	</div>
+	<div class="col-md-2">
+		<button type="button" class="btn form-control" ng-class="enableAdd ? 'btn-primary' : 'btn-default'"" ng-click="add()"  ng-disabled="!enableAdd">add user</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-compact table-striped">
+			<tr ng-repeat="user in users">
+				<td>{{user.username}}</td>
+				<td>{{user.email}}</td>
+				<td width="20"><a href="#/main/admin/localusers/{{user.id}}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"> </i></a>
+				<td width="20"><a href="#/main/admin/localusers" ng-click="remove(user.id)" class="btn btn-danger"><i class="glyphicon glyphicon-remove-circle"> </i></a>
+			</tr>
+		</table>
+	</div>
+</div>

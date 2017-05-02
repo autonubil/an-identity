@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.autonubil.identity</groupId>
+		<artifactId>an-identity-ldap</artifactId>
+		<version>0.0.1059-SNAPSHOT</version>
+
+	</parent>
+	<artifactId>an-identity-ldap-impl</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>com.unboundid</groupId>
+			<artifactId>unboundid-ldapsdk</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-ldap-api</artifactId>
+			<version>0.0.1059-SNAPSHOT</version>
+
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-db-common</artifactId>
+			<version>0.0.1059-SNAPSHOT</version>
+
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-util</artifactId>
+			<version>0.0.1059-SNAPSHOT</version>
+
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-mail-api</artifactId>
+			<version>0.0.1059-SNAPSHOT</version>
+
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-auth-api</artifactId>
+			<version>0.0.1059-SNAPSHOT</version>
+
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-audit-api</artifactId>
+			<version>0.0.1059-SNAPSHOT</version>
+
+		</dependency>
+	</dependencies>
+</project>

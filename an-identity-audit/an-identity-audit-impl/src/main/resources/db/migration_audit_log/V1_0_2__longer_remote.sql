@@ -1,0 +1,2 @@
+ALTER TABLE audit_log 
+ALTER COLUMN "remote" TYPE VARCHAR(512);

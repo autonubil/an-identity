@@ -1,0 +1,3 @@
+ALTER TABLE admin_user ADD COLUMN email VARCHAR(128);
+ALTER TABLE admin_user ADD COLUMN token VARCHAR(128);
+ALTER TABLE admin_user ADD COLUMN token_expires DECIMAL(20,0);

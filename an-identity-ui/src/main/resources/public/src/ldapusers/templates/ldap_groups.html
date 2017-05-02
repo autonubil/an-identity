@@ -1,0 +1,35 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2>LDAP Groups</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2" ng-if="configs">
+		<select class="form-control" ng-model="search.config" ng-change="setSource()" ng-options="config.id as config.name for config in configs">
+		</select>
+	</div>
+	<div class="col-md-8">
+		<div class="form-group">
+			<input class="form-control" ng-model="search.search" ng-change="updateTyping()">
+		</div>
+	</div>
+	<div class="col-md-2">
+		<a href="#/main/admin/ldapusers/add/{{search.config}}" class="form-control btn btn-primary"><i class="glyphicon glyphicon-plus"> </i></a>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div ng-if="!groups || groups.length==0">
+			<div class="alert alert-warning col-md-12">
+				<i>No groups found</i>
+			</div>
+		</div> 
+		<table class="table table-compact table-striped">
+			<tr ng-repeat="group in groups">
+				<td>{{group.displayName}}</td>
+				<td width="200">{{user.username}}</td>
+				<td width="20"><a href="#/main/admin/ldapusers/edit_group/{{search.config}}/{{group.id}}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"> </i></a>
+			</tr>
+		</table>
+	</div>
+</div>
