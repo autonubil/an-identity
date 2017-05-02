@@ -3,16 +3,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
-		<artifactId>an-identity-db</artifactId>
-		<version>0.0.1060-SNAPSHOT</version>
-
+		<artifactId>an-identity-persistence</artifactId>
+		<version>0.0.1059-SNAPSHOT</version>
 	</parent>
-	<artifactId>an-identity-db-common</artifactId>
+	<artifactId>an-identity-persistence-impl</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>org.jooq</groupId>
-			<artifactId>jooq</artifactId>
-			<version>3.9.1</version>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-persistence-api</artifactId>
+			<version>0.0.1059-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

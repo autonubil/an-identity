@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity</artifactId>
-		<version>0.0.1059-SNAPSHOT</version>
+		<version>0.0.1060-SNAPSHOT</version>
 
 	</parent>
 	<artifactId>an-identity-localauth</artifactId>
@@ -12,31 +12,31 @@
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-common</artifactId>
-			<version>0.0.1059-SNAPSHOT</version>
+			<version>0.0.1060-SNAPSHOT</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-util</artifactId>
-			<version>0.0.1059-SNAPSHOT</version>
+			<version>0.0.1060-SNAPSHOT</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-api</artifactId>
-			<version>0.0.1059-SNAPSHOT</version>
+			<version>0.0.1060-SNAPSHOT</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-audit-api</artifactId>
-			<version>0.0.1059-SNAPSHOT</version>
+			<version>0.0.1060-SNAPSHOT</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-mail-api</artifactId>
-			<version>0.0.1059-SNAPSHOT</version>
+			<version>0.0.1060-SNAPSHOT</version>
 
 		</dependency>
 	</dependencies>

@@ -3,16 +3,12 @@
   <parent>
     <groupId>com.autonubil.identity</groupId>
     <artifactId>an-identity</artifactId>
-
-    
-
-    <version>0.0.1060-SNAPSHOT</version>
-
+    <version>0.0.1059-SNAPSHOT</version>
   </parent>
-  <artifactId>an-identity-apps</artifactId>
+  <artifactId>an-identity-persistence</artifactId>
   <packaging>pom</packaging>
   <modules>
-  	<module>an-identity-apps-api</module>
-  	<module>an-identity-apps-impl</module>
+  	<module>an-identity-persistence-api</module>
+  	<module>an-identity-persistence-impl</module>
   </modules>
 </project>

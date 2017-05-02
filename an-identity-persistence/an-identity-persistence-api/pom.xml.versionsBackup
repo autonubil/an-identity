@@ -2,17 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.autonubil.identity</groupId>
-    <artifactId>an-identity</artifactId>
-
-    
-
-    <version>0.0.1060-SNAPSHOT</version>
-
+    <artifactId>an-identity-persistence</artifactId>
+    <version>0.0.1059-SNAPSHOT</version>
   </parent>
-  <artifactId>an-identity-apps</artifactId>
-  <packaging>pom</packaging>
-  <modules>
-  	<module>an-identity-apps-api</module>
-  	<module>an-identity-apps-impl</module>
-  </modules>
+  <artifactId>an-identity-persistence-api</artifactId>
 </project>
