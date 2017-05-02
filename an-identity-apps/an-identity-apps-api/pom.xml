@@ -6,7 +6,7 @@
 
     
 
-    <version>0.0.1060-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
 
   </parent>
   <artifactId>an-identity-apps-api</artifactId>

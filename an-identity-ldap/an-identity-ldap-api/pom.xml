@@ -4,14 +4,14 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity-ldap</artifactId>
-		<version>0.0.1060-SNAPSHOT</version>
+		<version>0.1.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>an-identity-ldap-api</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-api</artifactId>
-			<version>0.0.1060-SNAPSHOT</version>
+			<version>0.1.1-SNAPSHOT</version>
 
 		</dependency>
 	</dependencies>
