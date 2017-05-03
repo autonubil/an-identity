@@ -24,7 +24,7 @@ public class BasicUser implements User {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.autonubil.intranet.auth.api.entities.User#getDisplayName()
+	 * @see com.autonubil.identity.auth.api.entities.User#getDisplayName()
 	 */
 	@Override
 	public String getDisplayName() {
@@ -35,12 +35,14 @@ public class BasicUser implements User {
 		this.displayName = displayName;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.autonubil.identity.auth.api.entities.User#getGroups()
+	 */
 	@Override
 	public List<Group> getGroups() {
 		return Collections.unmodifiableList(groups);
 	}
 
-	@Override
 	public void setGroups(List<Group> groups) {
 		this.groups.clear();
 		if (groups != null) {
@@ -54,7 +56,7 @@ public class BasicUser implements User {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.autonubil.intranet.auth.api.entities.User#getId()
+	 * @see com.autonubil.identity.auth.api.entities.User#getId()
 	 */
 	@Override
 	public String getId() {
@@ -66,7 +68,7 @@ public class BasicUser implements User {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.autonubil.intranet.auth.api.entities.User#getSourceId()
+	 * @see com.autonubil.identity.auth.api.entities.User#getSourceId()
 	 */
 	@Override
 	public String getSourceId() {
@@ -82,7 +84,6 @@ public class BasicUser implements User {
 		return sourceName;
 	}
 
-	@Override
 	public void setSourceName(String sourceName) {
 		this.sourceName = sourceName;
 	}

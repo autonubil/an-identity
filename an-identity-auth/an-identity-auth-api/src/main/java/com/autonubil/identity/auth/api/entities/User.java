@@ -6,20 +6,14 @@ public interface User {
 
 	String getDisplayName();
 
+	List<Group> getGroups();
+
 	String getId();
 
 	String getSourceId();
 
-	void setGroups(List<Group> groups);
-
-	List<Group> getGroups();
+	String getSourceName();
 
 	boolean isAdmin();
 
-	void setSourceName(String sourceName);
-
-	String getSourceName();
-
-	public List<Notification> getNotifications();
-	
 }
