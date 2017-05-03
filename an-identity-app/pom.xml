@@ -5,7 +5,6 @@
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity</artifactId>
 		<version>0.1.2-SNAPSHOT</version>
-
 	</parent>
 	<artifactId>an-identity-app</artifactId>
 	<properties>
@@ -83,6 +82,7 @@
 			<artifactId>an-identity-less</artifactId>
 			<version>0.1.2-SNAPSHOT</version>
 		</dependency>
+		<!--
 		<dependency>
 		    <groupId>io.prometheus</groupId>
 		    <artifactId>simpleclient_spring_boot</artifactId>
@@ -90,7 +90,6 @@
 		</dependency>
 
 
-		<!--
 		<dependency>
 			<groupId>net.simpledynamics</groupId>
 			<artifactId>openid-connect-server-spring-boot-config</artifactId>

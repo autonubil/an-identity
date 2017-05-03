@@ -18,7 +18,6 @@
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-common</artifactId>
 			<version>0.1.2-SNAPSHOT</version>
-
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>

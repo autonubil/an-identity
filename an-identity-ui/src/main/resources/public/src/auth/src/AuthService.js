@@ -1,35 +1,50 @@
 angular.module("autonubil-intranet-auth")
-.service("AuthService", function(Restangular,$location, $interval) {
+.service("AuthService", function(Restangular,$location, $interval, $rootScope) {
 	
 	var AuthStatus = {
 			loggedIn : false,
+			admin : false,
 			user: {
 				name : "anonymous"
 			}
 	};
 	
+
+	var setAuthStatus = function(l,a,n) {
+		changed = false;
+		if(l!=AuthStatus.loggedIn) {
+			AuthStatus.loggedIn = l;
+			changed = true;
+		}
+		if(a!=AuthStatus.admin) {
+			AuthStatus.admin = a;
+			changed = true;
+		}
+		if(n!=AuthStatus.user.name) {
+			AuthStatus.user.name = n;
+			changed = true;
+		}
+		console.log ( "Auth changed? "+changed);
+		if(changed) {
+			$rootScope.$emit("authChanged",AuthStatus);
+		}
+	} 
+	
+	
 	var updateAuth = function() {
 		console.log ( " update Auth ... ");
 		Restangular.all("autonubil/api/authentication").customGET("authenticate").then(
 				function(e) {
-					angular.module("autonubil-intranet-auth").meMenuState.visible = true;
 					x = false;
 					_.forEach(e.user.groups,function(group){
 						if(group.name == "admin") {
 							x = true;
 						}
 					});
-					angular.module("autonubil-intranet-auth").adminMenuState.visible = x;					
-					AuthStatus.loggedIn = true;
-					AuthStatus.user.name = e.user.displayName;
-					AuthStatus.identity = e;
+					setAuthStatus(true,x,e.user.displayName);
 				},
 				function(e) {
-					angular.module("autonubil-intranet-auth").meMenuState.visible = false;
-					angular.module("autonubil-intranet-auth").adminMenuState.visible = false;
-					AuthStatus.loggedIn = false;
-					AuthStatus.user.name = "anonymous";
-					console.log("failed: ");
+					setAuthStatus(false,false,"anonymous");
 				}			
 		);
 	};

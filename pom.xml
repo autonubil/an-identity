@@ -3,11 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.autonubil.identity</groupId>
 	<artifactId>an-identity</artifactId>
-
-	
-
 	<version>0.1.2-SNAPSHOT</version>
-
 	<packaging>pom</packaging>
 	<modules>
 		<module>an-identity-app</module>
@@ -28,9 +24,9 @@
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	
-		<springframework.version>4.2.1.RELEASE</springframework.version>
-		<springboot.version>1.4.2.RELEASE</springboot.version>
-		<springsecurity.version>4.2.0.RELEASE</springsecurity.version>
+		<springframework.version>4.3.8.RELEASE</springframework.version>
+		<springboot.version>1.4.6.RELEASE</springboot.version>
+		<springsecurity.version>4.2.2.RELEASE</springsecurity.version>
 		<jackson.version>2.8.4</jackson.version>
 		<commons-lang3.version>3.5</commons-lang3.version>
 		<commons-io.version>2.5</commons-io.version>
@@ -58,6 +54,11 @@
 				<version>${sqlbuilder.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-core</artifactId>
+				<version>4.0.1</version>
+			</dependency>
+   			<dependency>
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
