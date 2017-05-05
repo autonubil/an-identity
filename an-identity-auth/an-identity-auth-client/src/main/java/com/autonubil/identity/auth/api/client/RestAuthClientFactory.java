@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @PropertySource(value="an.identity.auth.client.properties")
@@ -17,13 +16,19 @@ public class RestAuthClientFactory {
 	
 	@Bean
 	@ConditionalOnProperty(havingValue="true",name="an.identity.client.enabled",matchIfMissing=false)
-	public RestAuthClient restAuthClient(@Value("${an.identity.client.url}") String url) {
+	public RestAuthClient restAuthClient(
+			@Value("${an.identity.client.url}") String url,
+			@Value("${an.identity.client.sourceId}") String sourceId,
+			@Value("${an.identity.client.admin.sourceId}") String adminSourceId,
+			@Value("${an.identity.client.admin.user}") String adminUser,
+			@Value("${an.identity.client.admin.password}") String adminPassword
+		) {
 		log.info(" ######################################## ");
 		log.info(" ## ");
 		log.info(" ## Instantiating REST Authentication client with URL: "+url);
 		log.info(" ## ");
 		log.info(" ######################################## ");
-		return new RestAuthClient(url);
+		return new RestAuthClient(url,sourceId,adminSourceId, adminUser, adminPassword);
 	}
 	
 }

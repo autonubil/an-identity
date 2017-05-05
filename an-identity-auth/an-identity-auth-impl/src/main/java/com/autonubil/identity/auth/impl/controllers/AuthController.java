@@ -26,6 +26,7 @@ import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.auth.api.exceptions.AuthException;
 import com.autonubil.identity.auth.api.exceptions.AuthenticationFailedException;
 import com.autonubil.identity.auth.api.exceptions.NotAuthenticatedException;
+import com.autonubil.identity.auth.api.util.AuthUtils;
 import com.autonubil.identity.auth.api.util.IdentityHolder;
 import com.autonubil.identity.auth.api.util.UsernamePasswordOTPCredentials;
 import com.autonubil.identity.auth.api.util.UsernamePasswordOTPReset;
@@ -56,7 +57,8 @@ public class AuthController {
 	}
 	
 	@RequestMapping(value="/user",method={RequestMethod.GET})
-	public User getUser(@RequestParam String sourceId, @RequestParam String username) {
+	public User getUser(@RequestParam String sourceId, @RequestParam String username) throws AuthException {
+		AuthUtils.checkAdmin();
 		return authService.getUser(sourceId,username);
 	}
 	
