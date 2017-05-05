@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,7 @@ import com.autonubil.identity.audit.api.AuditLogger;
 import com.autonubil.identity.auth.api.IdentityStore;
 import com.autonubil.identity.auth.api.entities.AuthenticationSource;
 import com.autonubil.identity.auth.api.entities.Identity;
+import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.auth.api.exceptions.AuthException;
 import com.autonubil.identity.auth.api.exceptions.AuthenticationFailedException;
 import com.autonubil.identity.auth.api.exceptions.NotAuthenticatedException;
@@ -51,6 +53,11 @@ public class AuthController {
 	@RequestMapping(value="/sources",method={RequestMethod.GET})
 	public List<AuthenticationSource> listSource() {
 		return authService.getSources();
+	}
+	
+	@RequestMapping(value="/user",method={RequestMethod.GET})
+	public User getUser(@RequestParam String sourceId, @RequestParam String username) {
+		return authService.getUser(sourceId,username);
 	}
 	
 	@RequestMapping(value="/authenticate",method={RequestMethod.POST})

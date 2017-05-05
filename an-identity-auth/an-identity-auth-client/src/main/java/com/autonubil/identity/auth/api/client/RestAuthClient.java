@@ -1,14 +1,17 @@
 package com.autonubil.identity.auth.api.client;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestTemplate;
 
 import com.autonubil.identity.auth.api.entities.BasicGroup;
@@ -31,12 +34,14 @@ public class RestAuthClient {
 	private String baseUrl;
 	private String sourceId = "LOCAL";
 	
+	private RestTemplate restTemplate;
+	
 	public RestAuthClient(String url) {
 		this.baseUrl = url;
 	}
 	
-	
-	public Authentication authenticate(String username, String password) {
+	@PostConstruct
+	public void init() {
 		ObjectMapper om = new ObjectMapper();
 		om.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		SimpleModule sm = new SimpleModule();
@@ -66,26 +71,27 @@ public class RestAuthClient {
 
 		List<HttpMessageConverter<?>> converters = Collections.singletonList(new MappingJackson2HttpMessageConverter(om)); 
 		
-		RestTemplate temp = new RestTemplate(converters);
-		
+		this.restTemplate = new RestTemplate(converters);
+
+	}
+	
+	
+	public Authentication authenticate(String username, String password) {
 		UsernamePasswordCredentials upc = new UsernamePasswordCredentials(sourceId, username, password); 
-		
-		Identity i = temp.postForObject(baseUrl+"/autonubil/api/authentication/authenticate", upc, Identity.class);
-		
-		String s;
-		try {
-			s = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT).writeValueAsString(i);
-			log.info(s);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		
+		Identity i = restTemplate.postForObject(baseUrl+"/autonubil/api/authentication/authenticate", upc, Identity.class);
 		if(i!=null && i.getUser()!=null) {
 			return new RestAuthentication(i);
 		}
 		return null;
-
-		
+	}
+	
+	
+	public User getUser(String username) {
+		Map<String,Object> uriParams = new HashMap<>();
+		Map<String,Object> reqParams = new HashMap<>();
+		reqParams.put("sourceId", sourceId);
+		reqParams.put("username", username);
+		return restTemplate.getForObject(baseUrl+"/autonubil/api/authentication/user?sourceId="+sourceId+"&username="+username, User.class, reqParams);
 	}
 	
 	

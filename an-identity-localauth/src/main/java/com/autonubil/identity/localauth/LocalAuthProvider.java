@@ -23,11 +23,13 @@ import org.springframework.stereotype.Component;
 import com.autonubil.identity.auth.api.AuthenticationProvider;
 import com.autonubil.identity.auth.api.Credentials;
 import com.autonubil.identity.auth.api.entities.AuthenticationSource;
+import com.autonubil.identity.auth.api.entities.BasicUser;
 import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.auth.api.exceptions.AuthException;
 import com.autonubil.identity.auth.api.util.PasswordReset;
 import com.autonubil.identity.auth.api.util.UsernamePasswordOTPCredentials;
 import com.autonubil.identity.auth.api.util.UsernamePasswordOTPReset;
+import com.autonubil.identity.localauth.entities.LocalAuthUser;
 import com.autonubil.identity.localauth.services.LocalAuthUserService;
 
 @Component
@@ -118,5 +120,24 @@ public class LocalAuthProvider implements AuthenticationProvider {
 	public String toString() {
 		return getClass().getName();
 	}
+	
+	
+	@Override
+	public User getUser(String sourceId, String username) {
+		if(sourceId.compareTo(SOURCE_NAME)==0) {
+			try {
+				BasicUser u = new BasicUser();
+				LocalAuthUser lau = localAuthUserService.list(null, null, username, null, 0, 1).get(0);
+				u.setDisplayName(lau.getUsername());
+				u.setAdmin(true);
+				u.setUsername(lau.getUsername());
+				return u;
+			} catch (Exception e) {
+				// none found?
+			}
+		}
+		return null;
+	}
+		
 	
 }

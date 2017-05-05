@@ -33,6 +33,7 @@ public class RestAuthentication implements Authentication {
 		if(identity.getUser().isAdmin()) {
 			out.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
+		out.add(new SimpleGrantedAuthority("ROLE_USER"));
 		return out;
 	}
 

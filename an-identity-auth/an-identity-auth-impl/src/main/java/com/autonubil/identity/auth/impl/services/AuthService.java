@@ -138,6 +138,15 @@ public class AuthService {
 		return out;
 	}
 
+
+	public User getUser(String sourceId, String username) {
+		for(AuthenticationProvider p : authProviders) {
+			User u = p.getUser(sourceId, username);
+			if(u!=null) return u;
+		}
+		return null;
+	}
+
 	
 	
 }

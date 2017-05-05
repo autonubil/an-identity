@@ -241,4 +241,19 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
 		return getClass().getName();
 	}
 	
+	@Override
+	public User getUser(String sourceId, String username) {
+		LdapConnection conn = ldapConfigService.connect(sourceId);
+		if(conn==null) {
+			log.warn("unable to connect to source!");
+			return null;
+		}
+		try {
+			return conn.getUserByName(username);
+		} catch (Exception e) {
+			// ...
+		}
+		return null;
+	}
+	
 }

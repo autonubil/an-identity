@@ -18,5 +18,7 @@ public interface AuthenticationProvider {
 	public boolean reset(PasswordReset pwr) throws AuthException;
 	
 	public List<User> getLinked(User u) throws Exception;
+	
+	public User getUser(String sourceId, String username); 
 
 }
