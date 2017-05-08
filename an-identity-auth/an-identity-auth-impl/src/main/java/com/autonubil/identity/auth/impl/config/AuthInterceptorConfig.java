@@ -10,19 +10,24 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.autonubil.identity.auth.impl.controllers.AuthInterceptor;
+import com.autonubil.identity.auth.impl.controllers.CookieAuthInterceptor;
+import com.autonubil.identity.auth.impl.controllers.HeaderAuthInterceptor;
 
 @Configuration
 @PropertySource(value = { "auth.properties" })
 public class AuthInterceptorConfig extends WebMvcConfigurerAdapter {
 
 	@Autowired
-	private AuthInterceptor authInterceptor;
+	private CookieAuthInterceptor cookieAuthInterceptor;
+	
+	@Autowired
+	private HeaderAuthInterceptor headerAuthInterceptor;
 	
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(authInterceptor);
+		registry.addInterceptor(cookieAuthInterceptor);
+		registry.addInterceptor(headerAuthInterceptor);
 		registry.addInterceptor(new HandlerInterceptorAdapter() {
 			@Override
 			public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

@@ -18,7 +18,7 @@ import com.autonubil.identity.auth.api.entities.Identity;
 import com.autonubil.identity.auth.api.util.IdentityHolder;
 
 @Component
-public class AuthInterceptor extends HandlerInterceptorAdapter {
+public class CookieAuthInterceptor extends HandlerInterceptorAdapter {
 	
 	@Autowired
 	private IdentityStore identityStore;
@@ -26,7 +26,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	@Value("${auth.cookie.name}") 
     private String jwtCookieName;
 	
-	private static Log log = LogFactory.getLog(AuthInterceptor.class); 
+	private static Log log = LogFactory.getLog(CookieAuthInterceptor.class); 
 	
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

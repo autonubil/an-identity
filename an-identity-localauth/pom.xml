@@ -13,31 +13,30 @@
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-common</artifactId>
 			<version>0.1.9-SNAPSHOT</version>
-
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-util</artifactId>
 			<version>0.1.9-SNAPSHOT</version>
-
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-api</artifactId>
 			<version>0.1.9-SNAPSHOT</version>
-
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-audit-api</artifactId>
 			<version>0.1.9-SNAPSHOT</version>
-
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-mail-api</artifactId>
 			<version>0.1.9-SNAPSHOT</version>
-
 		</dependency>
+	  	<dependency>
+	  		<groupId>org.springframework.security</groupId>
+	  		<artifactId>spring-security-core</artifactId>
+	  	</dependency>
 	</dependencies>
 </project>
