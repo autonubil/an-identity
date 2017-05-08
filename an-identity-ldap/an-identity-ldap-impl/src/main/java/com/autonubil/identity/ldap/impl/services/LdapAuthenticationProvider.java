@@ -62,15 +62,10 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
 	}
 
 	private AuthenticationSource getAuthenticationSource(String sourceId) {
-		List<LdapConfig> lcs = ldapConfigService.list(sourceId, null, true); 
-		log.debug("i found "+lcs.size()+" matching ldap configs ... ");
-		if(lcs.size()==1) {
-			LdapConfig lc = lcs.get(0);
-			AuthenticationSource as = new AuthenticationSource();
-			as.setSourceName(lc.getName());
-			as.setSecondFactor(lc.isUseOtp());
-			as.setSourceId(lc.getId());
-			return as;
+		for(AuthenticationSource as : getSources()) {
+			if(as.matches(sourceId)) {
+				return as;
+			}
 		}
 		return null;
 	}
@@ -82,6 +77,7 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
 			log.info("ldap authentication source with id "+c.getSourceId()+" does not exist!");
 			return false;
 		}
+		c.setSourceId(as.getSourceId());
 		if(as.getSourceId().compareTo(c.getSourceId())!=0) {
 			log.info("ldap authentication source "+as.getSourceId()+" does not match: "+c.getSourceId());
 			return false;

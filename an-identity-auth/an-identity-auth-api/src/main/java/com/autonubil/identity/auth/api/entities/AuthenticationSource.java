@@ -69,5 +69,9 @@ public class AuthenticationSource {
 	public void setAllowReset(boolean allowReset) {
 		this.allowReset = allowReset;
 	}
+
+	public boolean matches(String sourceId2) {
+		return sourceId2!=null && (sourceId2.compareTo(sourceId)==0 || sourceId2.compareTo(sourceName)==0);
+	}
 	
 }
