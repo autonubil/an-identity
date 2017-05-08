@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity</artifactId>
-		<version>0.1.12-SNAPSHOT</version>
+		<version>0.1.13-SNAPSHOT</version>
 	</parent>
 	<artifactId>an-identity-app</artifactId>
 	<properties>
@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-ui</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<!-- 
 		<dependency>
@@ -30,57 +30,57 @@
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-common</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-impl</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-pgsql</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-localauth</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-ldap-impl</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-ldapusers-impl</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-audit-impl</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-mail-impl</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-apps-impl</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-ldapotp-impl</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-less</artifactId>
-			<version>0.1.12-SNAPSHOT</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<!--
 		<dependency>
