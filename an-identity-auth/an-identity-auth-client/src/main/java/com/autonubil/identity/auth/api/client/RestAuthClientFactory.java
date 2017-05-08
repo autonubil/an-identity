@@ -26,6 +26,8 @@ public class RestAuthClientFactory {
 		log.info(" ######################################## ");
 		log.info(" ## ");
 		log.info(" ## Instantiating REST Authentication client with URL: "+url);
+		log.info(" ##                                         source ID: "+sourceId);
+		log.info(" ##                                   admin source ID: "+adminSourceId);
 		log.info(" ## ");
 		log.info(" ######################################## ");
 		return new RestAuthClient(url,sourceId,adminSourceId, adminUser, adminPassword);

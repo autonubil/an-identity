@@ -40,18 +40,22 @@ public class RestAuthClient {
 	private String url,sourceId,adminSourceId, adminUser, adminPassword;
 	
 	private RestTemplate restTemplate;
-	private RestTemplate restTemplateAuthenticated;
+	private ObjectMapper objectMapper;
 	
 	private String sessionId;
 	
 	public RestAuthClient(String url, String sourceId, String adminSourceId, String adminUser, String adminPassword) {
 		this.url = url;
+		this.sourceId = sourceId;
+		this.adminSourceId = adminSourceId;
+		this.adminUser = adminUser;
+		this.adminPassword = adminPassword;
 	}
 	
 	@PostConstruct
 	public void init() {
-		ObjectMapper om = new ObjectMapper();
-		om.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		objectMapper = new ObjectMapper();
+		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		SimpleModule sm = new SimpleModule();
 		sm.addDeserializer(
 			User.class, 
@@ -75,27 +79,38 @@ public class RestAuthClient {
 					};
 				}
 				);
-		om.registerModule(sm);
-		List<HttpMessageConverter<?>> converters = Collections.singletonList(new MappingJackson2HttpMessageConverter(om)); 
+		objectMapper.registerModule(sm);
+
 		
-		this.restTemplate = new RestTemplate(converters);
-		this.restTemplateAuthenticated = new RestTemplate(converters);
-		
-		this.restTemplateAuthenticated.setInterceptors(
+		this.restTemplate = new RestTemplate(Collections.singletonList(new MappingJackson2HttpMessageConverter(objectMapper)));
+		this.restTemplate.setInterceptors(
 			Collections.singletonList(
 				new ClientHttpRequestInterceptor() {
 					@Override
 					public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+						log.info("intercepting request. adding headers ... ");
+						log.info(" ### user: "+adminUser);
+						request.getHeaders().add("x-auth-user", adminUser);
+						log.info(" ### password: "+adminPassword);
+						request.getHeaders().add("x-auth-password", adminPassword);
+						log.info(" ### source: "+adminSourceId);
+						request.getHeaders().add("x-auth-source", adminSourceId);
 						return execution.execute(request, body);
 					}
 				}
 			)
 		);
-
 	}
 	
 	public Authentication authenticate(String username, String password) {
-		UsernamePasswordCredentials upc = new UsernamePasswordCredentials(sourceId, username, password); 
+		RestTemplate restTemplate = new RestTemplate(Collections.singletonList(new MappingJackson2HttpMessageConverter(objectMapper)));
+		UsernamePasswordCredentials upc = new UsernamePasswordCredentials(sourceId, username, password);
+		String v;
+		try {
+			v = objectMapper.writeValueAsString(upc);
+			log.info(" //// "+v);
+		} catch (JsonProcessingException e) {
+		}
 		ResponseEntity<Identity> ri = restTemplate.postForEntity(url+"/autonubil/api/authentication/authenticate", upc, Identity.class);
 		Identity i = ri.getBody();
 		if(i!=null && i.getUser()!=null) {
@@ -106,6 +121,7 @@ public class RestAuthClient {
 	
 	
 	public User getUser(String username) {
+		log.info("get user by name: "+username);
 		Map<String,Object> reqParams = new HashMap<>();
 		reqParams.put("sourceId", sourceId);
 		reqParams.put("username", username);
