@@ -6,6 +6,8 @@ public interface User {
 
 	String getDisplayName();
 
+	String getUsername();
+	
 	List<Group> getGroups();
 
 	String getId();

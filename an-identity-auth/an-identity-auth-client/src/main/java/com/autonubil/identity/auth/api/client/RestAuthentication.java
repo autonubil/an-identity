@@ -21,7 +21,7 @@ public class RestAuthentication implements Authentication {
 	
 	@Override
 	public String getName() {
-		return identity.getUser().getDisplayName();
+		return identity.getUser().getUsername();
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class RestAuthentication implements Authentication {
 
 	@Override
 	public Object getPrincipal() {
-		return identity.getUser().getDisplayName();
+		return identity.getUser().getUsername();
 	}
 
 	@Override

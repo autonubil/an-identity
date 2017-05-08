@@ -3,11 +3,9 @@ package com.autonubil.identity.auth.api.client;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.Cookie;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.client.RestTemplate;
@@ -106,12 +103,13 @@ public class RestAuthClient {
 		RestTemplate restTemplate = new RestTemplate(Collections.singletonList(new MappingJackson2HttpMessageConverter(objectMapper)));
 		UsernamePasswordCredentials upc = new UsernamePasswordCredentials(sourceId, username, password);
 		String v;
+		String u = url+"/autonubil/api/authentication/authenticate";
 		try {
 			v = objectMapper.writeValueAsString(upc);
-			log.info(" //// "+v);
+			log.info(u+" --- "+v);
 		} catch (JsonProcessingException e) {
 		}
-		ResponseEntity<Identity> ri = restTemplate.postForEntity(url+"/autonubil/api/authentication/authenticate", upc, Identity.class);
+		ResponseEntity<Identity> ri = restTemplate.postForEntity(u, upc, Identity.class);
 		Identity i = ri.getBody();
 		if(i!=null && i.getUser()!=null) {
 			return new RestAuthentication(i);
@@ -125,9 +123,16 @@ public class RestAuthClient {
 		Map<String,Object> reqParams = new HashMap<>();
 		reqParams.put("sourceId", sourceId);
 		reqParams.put("username", username);
-		return restTemplate.getForObject(url+"/autonubil/api/authentication/user?sourceId="+sourceId+"&username="+username, User.class, reqParams);
+		ResponseEntity<User> s = restTemplate.getForEntity(url+"/autonubil/api/authentication/user?sourceId="+sourceId+"&username="+username, User.class, reqParams);
+		return s.getBody();
 	}
 	
+	
+	public static void main(String[] args) {
+		RestAuthClient rac = new RestAuthClient("http://127.0.0.1:9099", "5283290f-fe0e-4e1b-a607-b0bd4519babf", "LOCAL", "admin", "hundemund");
+		rac.init();
+		rac.getUser("rmalchow");
+	}
 	
 	
 }
