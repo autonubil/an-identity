@@ -73,6 +73,8 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 	protected LdapConfig config;
 	protected DirContext ctx;
 	
+	private Hashtable<String, Object> env; 
+	
 	private List<LdapCustomsFieldConfig> customFields;
 	
 	public AbstractLdapConnection(LdapConfig config, List<LdapCustomsFieldConfig> customFields, MailService mailService) {
@@ -81,7 +83,18 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 		this.setCustomFields(customFields);
 	}
 	
+	@Override
+	public String getBaseDn() {
+		return config.getRootDse();
+	}
 	
+	
+	@Override
+	public void addEnv(String envName, Object envValue) {
+		this.env.put(envName, envValue);
+	}
+
+	@Override
 	public Date parseDate(String in) throws ParseException {
 		try {
 			return sdf1.parse(in);
@@ -99,7 +112,8 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 	}
 
 
-	private String formatDate(Date attValue) {
+	@Override
+	public String formatDate(Date attValue) {
 		if(attValue == null) return null;
 		return sdf2.format(attValue)+"Z"; 
 	}
@@ -107,9 +121,6 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 
 	public abstract String[] getUserObjectClasses();
 	
-	public String getBaseDn() {
-		return config.getRootDse();
-	}
 	
 	public Map<String,Object> addConnectionProperties() {
 		Hashtable<String, Object> env = new Hashtable<>();
@@ -118,12 +129,13 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 	
 	public DirContext connect(String username, String password, String otp) {
 		
-		Hashtable<String, Object> env = new Hashtable<>();
+		this.env = new Hashtable<>();
 		try {
 			
 			env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 			env.put(Context.SECURITY_PRINCIPAL, username);
 			String pw = password+(otp==null?"":otp);
+			
 			env.put(Context.SECURITY_CREDENTIALS, pw);
 			env.put("java.naming.ldap.version", "3");
 			
@@ -226,25 +238,60 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 	public abstract void setUserExpiryDate(String id, Date date) throws Exception;
 
 	
-	public SearchResult get(String base, String filter, String[] attributes) throws NamingException {
+	public List<SearchResult> getList(String base, String filter, String[] attributes) throws NamingException {
+		log.info(base+" / "+filter);
 		SearchControls searchControls = new SearchControls();
 	    searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-	    searchControls.setReturningAttributes(attributes);
+	    if(attributes!=null && attributes.length>0) {
+	    	searchControls.setReturningAttributes(attributes);
+	    }
 	    String dn = LdapEncoder.escapeDn(base);
 	    NamingEnumeration<SearchResult> results = ctx.search(dn,filter,searchControls);
+	    List<SearchResult> out = new ArrayList<>();
 	    try {
-	    	if(results.hasMore()) {
-	    		return results.next();
+	    	while(results.hasMore()) {
+	    		out.add(results.next());
+	    		log.info("result: +1 ---> "+out.size());
 	    	}
 		} catch (Exception e) {
 			log.warn("following referrals might yield more results, filter was: "+filter);
 		}
-    	return null;
+		log.info("result: "+out.size());
+    	return out;
+	}
+	
+	public SearchResult get(String base, String filter, String[] attributes) throws NamingException {
+		log.info(base+" / "+filter);
+		SearchControls searchControls = new SearchControls();
+		searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+		searchControls.setReturningAttributes(attributes);
+		String dn = LdapEncoder.escapeDn(base);
+		NamingEnumeration<SearchResult> results = ctx.search(dn,filter,searchControls);
+		try {
+			if(results.hasMore()) {
+				return results.next();
+			}
+		} catch (Exception e) {
+			log.warn("following referrals might yield more results, filter was: "+filter);
+		}
+		return null;
+	}
+	
+	
+
+	@Override
+	public <T> List<T> getList(String base, String filter, String[] attributes, LdapSearchResultMapper<T> mapper) throws NamingException {
+		List<T> out = new ArrayList<>();
+		for(SearchResult sr : getList(base,filter,attributes)) {
+			out.add(mapper.map(sr));
+		}
+		log.info(base+" / "+filter+" ----> "+out.size());
+    	return out;
 	}
 	
 
+	@Override
 	public <T> T get(String base, String filter, String[] attributes, LdapSearchResultMapper<T> mapper) throws NamingException {
-		log.info("filter: "+filter);
 		SearchResult sr = get(base,filter,attributes);
 		if(sr!=null) {
 			return mapper.map(sr);
@@ -401,7 +448,8 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 	}
 	
 	
-	protected void createEntry(String dn, String[] classes, Map<String,Object> attributes) throws NamingException {
+	@Override
+	public void createEntry(String dn, String[] classes, Map<String,Object> attributes) throws NamingException {
 		Attribute oc = new BasicAttribute("objectClass");
 		for(String s : classes) {
 			oc.add(s);
@@ -409,6 +457,7 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 
 		Attributes entry = new BasicAttributes();
 		entry.put(oc);
+		System.err.println(attributes.size());
 		for(Map.Entry<String, Object> e : attributes.entrySet()) {
 			String attId = e.getKey();
 			Object attValue = e.getValue();
@@ -416,6 +465,9 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 				attValue = formatDate((Date)attValue);
 			}
 			Attribute a = new BasicAttribute(attId,attValue);
+			
+			System.err.println(attId+": "+attValue);
+			
 			entry.put(a);
 		}
 	    dn = LdapEncoder.escapeDn(dn);

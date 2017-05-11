@@ -1,7 +1,9 @@
 package com.autonubil.identity.ldapotp.impl.services;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,6 +16,7 @@ import com.autonubil.identity.ldap.api.UnsupportedOperation;
 import com.autonubil.identity.ldapotp.api.LdapOtpAdapter;
 import com.autonubil.identity.ldapotp.api.LdapOtpAdapterFactory;
 import com.autonubil.identity.ldapotp.api.OtpToken;
+import com.autonubil.identity.util.totp.TotpUtil;
 
 @Service
 public class OtpTokenService {
@@ -29,9 +32,7 @@ public class OtpTokenService {
 	public LdapOtpAdapter getAdapter(String connectionId) throws UnsupportedOperation {
 		try {
 			LdapConnection conn = ldapConfigService.connect(connectionId);
-			log.info("number of factories: "+factories.size());
 			for(LdapOtpAdapterFactory f : factories) {
-				log.info("number of factories: --- "+f.getClass());
 				LdapOtpAdapter a = f.create(conn);
 				if(a!=null) {
 					return a;
@@ -49,6 +50,13 @@ public class OtpTokenService {
 	}
 	
 	public OtpToken create(String connectionId, String userId, OtpToken token) throws UnsupportedOperation {
+		UUID u = UUID.randomUUID();
+		token.setId(u.toString());
+		byte[] key = new byte[20];
+		new SecureRandom().nextBytes(key);
+		token.setSecret(TotpUtil.generateSecret());
+		token.setStepSeconds(30);
+		token.setOffsetSeconds(0);
 		LdapOtpAdapter a = getAdapter(connectionId);
 		return a.createToken(userId, token);
 	}

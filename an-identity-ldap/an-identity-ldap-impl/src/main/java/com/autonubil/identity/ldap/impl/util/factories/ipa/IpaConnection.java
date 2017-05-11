@@ -389,4 +389,11 @@ public class IpaConnection extends AbstractLdapConnection  {
 		return getUserById(id);
 	}
 	
+	@Override
+	public Map<String, Object> addConnectionProperties() {
+		Map<String, Object> out =  super.addConnectionProperties();
+		out.put("java.naming.ldap.attributes.binary", "ipatokenOTPkey");
+		return out;
+	}
+	
 }

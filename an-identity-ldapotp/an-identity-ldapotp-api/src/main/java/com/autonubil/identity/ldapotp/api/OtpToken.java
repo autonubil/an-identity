@@ -1,11 +1,14 @@
 package com.autonubil.identity.ldapotp.api;
 
+import java.util.Date;
+
 public class OtpToken {
 
 	private String id;
 	private String dn;
 	private String ownerDn;
-	private byte[] keyBytes;
+	private String secret;
+	private Date created;
 	private int offsetSeconds;
 	private int stepSeconds;
 
@@ -33,13 +36,7 @@ public class OtpToken {
 		this.ownerDn = ownerDn;
 	}
 
-	public byte[] getKeyBytes() {
-		return keyBytes;
-	}
 
-	public void setKeyBytes(byte[] keyBytes) {
-		this.keyBytes = keyBytes;
-	}
 
 	public int getOffsetSeconds() {
 		return offsetSeconds;
@@ -55,6 +52,22 @@ public class OtpToken {
 
 	public void setStepSeconds(int stepSeconds) {
 		this.stepSeconds = stepSeconds;
+	}
+
+	public String getSecret() {
+		return secret;
+	}
+
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 
 }

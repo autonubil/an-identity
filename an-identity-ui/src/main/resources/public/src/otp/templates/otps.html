@@ -1,29 +1,30 @@
 <div class="col-md-12" ng-controller="MyOtpController">
-	<div class="row">
-		<div class="col-md-12">
-			<h4>OTP Tokens</h4>
-		</div>
+	<div>
+		<h4>OTP Tokens  <button class="btn btn-sm btn-primary" ng-if="supported" ng-click="create()">+</button></h4>
 	</div>
-	<div class="row" ng-if="!supported">
-		<div class="col-md-12">
-			<span class="alert alert-warning">TOTP not supported for this account</span>
-		</div>
+	<div ng-if="!supported">
+		<span><i>TOTP not supported for this account</i></span>
 	</div>
-	<div class="row" ng-if="supported">
-		<div class="col-md-12">
-			<table>
-				<tr ng-repeat="app in apps" class="well-sm">
-					<td>
-						token
-					</td>
-					<td style="padding-right: 10px">
-						&nbsp;
-					</td>
-					<td style="padding-right: 10px">
-						tokens ... 
-					</td>
-				</tr>
-			</table>
-		</div>
+	<div ng-if="supported">
+		
+		<span ng-if="tokens.length == 0"><i>No tokens configured</i></span>
+		<table>
+			<tr ng-repeat="token in tokens" class="well-sm">
+				<td style="padding-right: 10px">
+					{{token.id}}
+				</td>
+				<td style="padding-right: 10px">
+					{{token.description}}
+				</td>
+				<td style="padding-right: 10px">
+					{{token.created}}
+					<span am-time-ago="1494501721000">
+				</td>
+				<td>
+					<img ng-if="token.secret" src="/autonubil/totp/?subject=subject@nase.de&secret={{token.secret}}&size=250" width="250">
+				</td>
+			</tr>
+		</table>
+		{{user}}
 	</div>
 </div>

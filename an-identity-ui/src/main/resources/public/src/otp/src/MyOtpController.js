@@ -1,7 +1,9 @@
 angular.module("autonubil-intranet-otp")
-.controller("MyOtpController", function($scope, OtpService) {
+.controller("MyOtpController", function($scope, OtpService, AuthService) {
 
 	$scope.supported = false;
+	
+	$scope.user = AuthService.getAuthStatus();
 	
 	$scope.update = function() {
 		OtpService.list(
@@ -19,6 +21,13 @@ angular.module("autonubil-intranet-otp")
 	
 	
 	$scope.update();
+	
+	
+	$scope.create = function() {
+		
+		OtpService.create($scope.update,$scope.update);
+		
+	}
 	
 	
 });

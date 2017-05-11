@@ -1,8 +1,11 @@
 package com.autonubil.identity.ldap.api;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 
 import com.autonubil.identity.auth.api.exceptions.AuthException;
@@ -50,5 +53,21 @@ public interface LdapConnection {
 	
 	public boolean supportsOtp();
 
+	public <T> List<T> getList(String base, String filter, String[] attributes, LdapSearchResultMapper<T> mapper) throws NamingException;
+
+	public <T> T get(String base, String filter, String[] attributes, LdapSearchResultMapper<T> mapper) throws NamingException;
+
+	public String getBaseDn();
+
+	public void createEntry(String dn, String[] classes, Map<String, Object> attributes) throws NamingException;
+
+	void addEnv(String envName, Object envValue);
+
+	String formatDate(Date attValue);
+
+	Date parseDate(String in) throws ParseException;
+	
+	
+	
 
 }

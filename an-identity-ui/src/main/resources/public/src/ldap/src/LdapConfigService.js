@@ -28,7 +28,7 @@ angular.module("autonubil-intranet-ldap")
 			return Restangular.one("autonubil/api/ldapconfig/configs/"+configId).customPOST({}).then(success,error);
 		},
 		setPassword : function(id,password,success) {
-			return Restangular.all("autonubil/api/mail/configs/"+id+"/password").customPUT("","",{"password":password}).then(success);
+			return Restangular.all("autonubil/api/ldapconfig/configs/"+id+"/password").customPUT("","",{"password":password}).then(success);
 		}
 	};
 	

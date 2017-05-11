@@ -48,6 +48,7 @@ gulp.task('build-deps', function() {
         'node_modules/bootstrap/dist/js/bootstrap.js',
         'node_modules/restangular/dist/restangular.js',
         'node_modules/moment/min/moment-with-locales.js',
+        'node_modules/angular-moment/angular-moment.js',
         'node_modules/angular-date-picker/angular-date-picker.js'
     ];
     return gulp.src(jsFiles)

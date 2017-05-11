@@ -24,14 +24,33 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 
 public class TotpUtil {
+	
+	
+	public static String toString(byte[] bytes) {
+		Base32 base32 = new Base32();
+		String secretKey = base32.encodeToString(bytes);
+		return secretKey;//.toLowerCase().replaceAll("(.{4})(?=.{4})", "$1 ");
+	}
 
+	public static byte[] toBytes(String secret) {
+		secret = secret.replaceAll(" ","");
+		System.err.println(secret);
+		System.err.println(secret.length());
+		Base32 base32 = new Base32();
+		byte[] bytes = base32.decode(secret);
+		
+		System.err.println(bytes.length);
+		return bytes;
+	}
+	
 	public static String generateSecret() {
 		SecureRandom random = new SecureRandom();
 		byte[] bytes = new byte[20];
 		random.nextBytes(bytes);
 		Base32 base32 = new Base32();
 		String secretKey = base32.encodeToString(bytes);
-		return secretKey.toLowerCase().replaceAll("(.{4})(?=.{4})", "$1 ");
+		//return secretKey.toLowerCase().replaceAll("(.{4})(?=.{4})", "$1 ");
+		return secretKey;
 	}
 
 	public static void createQRCode(OutputStream os, String barCodeData, int height, int width)
@@ -40,6 +59,12 @@ public class TotpUtil {
 		MatrixToImageWriter.writeToStream(matrix, "png", os);
 	}
 
+	public static String generateSecretUrl(byte[] bytes, String account, String issuer) {
+		Base32 base32 = new Base32();
+		String secretKey = base32.encodeToString(bytes);
+		return generateSecretUrl(secretKey, account, issuer);
+	}	
+	
 	public static String generateSecretUrl(String secretKey, String account, String issuer) {
 		String normalizedBase32Key = secretKey.replace(" ", "").toUpperCase();
 		try {

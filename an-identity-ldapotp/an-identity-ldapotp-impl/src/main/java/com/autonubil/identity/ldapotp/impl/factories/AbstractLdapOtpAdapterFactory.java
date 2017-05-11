@@ -28,19 +28,5 @@ public abstract class AbstractLdapOtpAdapterFactory implements LdapOtpAdapterFac
 		return false;
 	}
 	
-	@Override
-	public LdapOtpAdapter create(LdapConnection connection) {
-		if(!supports(connection)) {
-			return null;
-		}
-		try {
-			LdapOtpAdapter loa = getAdapterClass().newInstance();
-			loa.setDirContext(connection.getContext());
-			return loa;
-		} catch (Exception e) {
-			log.warn("error retrieving otp adapter",e);
-		}
-		return null;
-	}
-
+	
 }

@@ -178,12 +178,14 @@ public class LdapConfigServiceImpl implements LdapConfigService {
 		}
 		;
 		{
+			log.info("delete old password ... ");
 			Delete d = SqlBuilderFactory.delete("ldap_config_password");
 			d.where(Operator.AND,d.condition(d.getTable(), "ldap_config_id", Comparator.EQ, id));
 			templ.update(d.toSQL(), d.getParams());
 		}
 		;
 		{
+			log.info("insert new  password ... ");
 			Insert i = SqlBuilderFactory.insert("ldap_config_password");
 			i.addField("ldap_config_id", id);
 			i.addField("password", password);
