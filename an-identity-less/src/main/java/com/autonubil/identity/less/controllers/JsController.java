@@ -8,10 +8,5 @@ import org.webjars.RequireJS;
 @Controller
 public class JsController {
 
-	@ResponseBody
-	@RequestMapping(value = "/all_modules", produces = "application/javascript")
-	public String webjarjs() {
-	    
-	}
 	
 }
