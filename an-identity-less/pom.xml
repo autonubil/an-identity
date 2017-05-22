@@ -9,6 +9,10 @@
 	<artifactId>an-identity-less</artifactId>
 	<dependencies>
 		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.github.sommeri</groupId>
 			<artifactId>less4j</artifactId>
 			<version>1.17.2</version>

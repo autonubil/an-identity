@@ -21,6 +21,7 @@
 		<module>an-identity-persistence</module>
 		<module>an-identity-ui</module>
 		<module>an-identity-util</module>
+		<module>an-identity-ovpn</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	

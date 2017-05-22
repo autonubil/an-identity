@@ -281,6 +281,7 @@ public class IpaConnection extends AbstractLdapConnection  {
 			
 			String x = TokenGenerator.getToken(18);
 			updateUserAttribute(u.getDn(), "userPassword", x, true);
+			updateUserAttribute(u.getDn(), "krbLoginFailedCount", "0", true);
 			
 			DirContext dc = connect(u.getDn(), x, null);
 			ModificationItem[] mi =
