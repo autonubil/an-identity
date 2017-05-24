@@ -22,5 +22,6 @@
   <modules>
   	<module>an-identity-ldapotp-api</module>
   	<module>an-identity-ldapotp-impl</module>
+  	<module>an-identity-ldapotp-ui</module>
   </modules>
 </project>

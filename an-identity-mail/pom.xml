@@ -12,5 +12,6 @@
 	<modules>
 		<module>an-identity-mail-api</module>
 		<module>an-identity-mail-impl</module>
+		<module>an-identity-mail-ui</module>
 	</modules>
 </project>

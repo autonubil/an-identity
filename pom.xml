@@ -22,6 +22,7 @@
 		<module>an-identity-ui</module>
 		<module>an-identity-util</module>
 		<module>an-identity-ovpn</module>
+		<module>an-identity-me</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	

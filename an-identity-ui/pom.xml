@@ -5,9 +5,15 @@
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity</artifactId>
 		<version>0.1.13-SNAPSHOT</version>
-
 	</parent>
 	<artifactId>an-identity-ui</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>io.github.lukehutch</groupId>
+			<artifactId>fast-classpath-scanner</artifactId>
+			<version>2.0.19</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -16,11 +22,11 @@
 				<!-- Use the latest released version: https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
 				<version>1.3</version>
 				<configuration>
-			        <nodeVersion>v6.9.1</nodeVersion>
-			        <nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
-			        <workingDirectory>src/main/resources/public</workingDirectory>
-			        <installDirectory>node</installDirectory>
-        		</configuration>
+					<nodeVersion>v6.9.1</nodeVersion>
+					<nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
+					<workingDirectory>src/main/js</workingDirectory>
+					<installDirectory>node</installDirectory>
+				</configuration>
 				<executions>
 					<execution>
 						<id>install node and npm</id>
@@ -30,22 +36,22 @@
 						<phase>generate-resources</phase>
 					</execution>
 					<execution>
-					    <id>npm install</id>
-					    <goals>
-					        <goal>npm</goal>
-					    </goals>
-					    <configuration>
-					        <arguments>install</arguments>
-					    </configuration>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
 					</execution>
 					<execution>
-					    <id>gulp build</id>
-					    <goals>
-					        <goal>gulp</goal>
-					    </goals>
-					    <configuration>
-					        <arguments>build</arguments>
-					    </configuration>
+						<id>gulp build</id>
+						<goals>
+							<goal>gulp</goal>
+						</goals>
+						<configuration>
+							<arguments>build</arguments>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

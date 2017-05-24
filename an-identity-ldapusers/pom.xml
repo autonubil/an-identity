@@ -14,5 +14,6 @@
   <modules>
   	<module>an-identity-ldapusers-api</module>
   	<module>an-identity-ldapusers-impl</module>
+  	<module>an-identity-ldapusers-ui</module>
   </modules>
 </project>

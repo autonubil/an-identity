@@ -15,5 +15,6 @@
   	<module>an-identity-auth-api</module>
   	<module>an-identity-auth-impl</module>
   	<module>an-identity-auth-client</module>
+  	<module>an-identity-auth-ui</module>
   </modules>
 </project>
