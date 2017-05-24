@@ -83,7 +83,17 @@
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-mail-ui</artifactId>
+			<version>0.1.13-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-apps-impl</artifactId>
+			<version>0.1.13-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-apps-ui</artifactId>
 			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 		<dependency>

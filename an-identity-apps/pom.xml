@@ -14,5 +14,6 @@
   <modules>
   	<module>an-identity-apps-api</module>
   	<module>an-identity-apps-impl</module>
+  	<module>an-identity-apps-ui</module>
   </modules>
 </project>

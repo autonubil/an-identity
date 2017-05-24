@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
-		<artifactId>an-identity-mail</artifactId>
+		<artifactId>an-identity-apps</artifactId>
 		<version>0.1.13-SNAPSHOT</version>
 	</parent>
-	<artifactId>an-identity-mail-ui</artifactId>
+	<artifactId>an-identity-apps-ui</artifactId>
 	<build>
 		<plugins>
 			<plugin>
