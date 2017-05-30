@@ -1,0 +1,1 @@
+angular.module("templates").run(["$templateCache", function($templateCache) {$templateCache.put("ovpn/templates/dummy.html","<div class=\"row\" ng-controller=\"DummyController\">\n	<div class=\"col-md-12 page-header\">\n		<h2>OVPN</h2>\n	</div>\n</div>\n	\n\n");}]);

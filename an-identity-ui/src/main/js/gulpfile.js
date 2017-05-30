@@ -10,7 +10,7 @@ var target="../resources/public/dist/"
 gulp.task('build-js', function() {
     return gulp.src(
     		[
-    			'src/app/main.js',
+    			'src/main.js',
     			'src/**/*.js'
     		]
     	)
@@ -50,6 +50,7 @@ gulp.task('build-deps', function() {
         'node_modules/restangular/dist/restangular.js',
         'node_modules/moment/min/moment-with-locales.js',
         'node_modules/angular-moment/angular-moment.js',
+        'node_modules/angular-plugin/dist/js/angular-plugin.js',
         'node_modules/angular-date-picker/angular-date-picker.js'
     ];
     return gulp.src(jsFiles)
@@ -58,7 +59,7 @@ gulp.task('build-deps', function() {
 });
 
 gulp.task('build-templates', function() {
-    return gulp.src("src/**/templates/**/*.html")
+    return gulp.src("src/templates/**/*.html")
         .pipe(template_cache('**',{"standalone":false}))
         .pipe(concat("js/templates.js"))
         .pipe(gulp.dest(target));
