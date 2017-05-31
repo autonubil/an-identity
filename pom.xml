@@ -23,6 +23,7 @@
 		<module>an-identity-util</module>
 		<module>an-identity-ovpn</module>
 		<module>an-identity-me</module>
+		<module>an-identity-certs</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	
