@@ -13,7 +13,7 @@ import com.autonubil.identity.db.common.DataSourceFactory;
 @Configuration
 public class AppsDbConfig {
 
-	@Bean()
+	@Bean(name="appsDb")
 	public DataSource appsDb(@Autowired DataSourceFactory dataSourceFactory) {
 		DataSource ds = dataSourceFactory.getDataSource("apps");
 		try {

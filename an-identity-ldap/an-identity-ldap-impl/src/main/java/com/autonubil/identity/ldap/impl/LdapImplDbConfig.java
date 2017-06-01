@@ -13,7 +13,7 @@ import com.autonubil.identity.db.common.DataSourceFactory;
 @Configuration
 public class LdapImplDbConfig {
 
-	@Bean()
+	@Bean(name="ldapConfig")
 	public DataSource ldapConfig(@Autowired DataSourceFactory dataSourceFactory) {
 		DataSource ds = dataSourceFactory.getDataSource("ldapconfig");
 		try {

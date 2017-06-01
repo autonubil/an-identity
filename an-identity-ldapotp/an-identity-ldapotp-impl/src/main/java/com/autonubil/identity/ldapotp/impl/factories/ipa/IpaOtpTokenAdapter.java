@@ -17,7 +17,6 @@ import com.autonubil.identity.ldapotp.api.LdapOtpAdapter;
 import com.autonubil.identity.ldapotp.api.OtpToken;
 import com.autonubil.identity.util.ldap.LdapEncoder;
 import com.autonubil.identity.util.totp.TotpUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 

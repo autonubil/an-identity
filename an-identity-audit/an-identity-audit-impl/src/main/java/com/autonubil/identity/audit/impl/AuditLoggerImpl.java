@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.autonubil.identity.audit.api.AuditLogger;
 import com.autonubil.identity.audit.api.AuditLoggerHelper;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.disk0.db.sqlbuilder.SqlBuilderFactory;
 import de.disk0.db.sqlbuilder.interfaces.Insert;

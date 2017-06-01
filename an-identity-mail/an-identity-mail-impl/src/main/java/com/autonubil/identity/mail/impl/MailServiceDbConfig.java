@@ -13,7 +13,7 @@ import com.autonubil.identity.db.common.DataSourceFactory;
 @Configuration
 public class MailServiceDbConfig {
 
-	@Bean()
+	@Bean(name="mailServiceDataSource")
 	public DataSource mailServiceDataSource(@Autowired DataSourceFactory dataSourceFactory) {
 		DataSource ds = dataSourceFactory.getDataSource("mail");
 		try {

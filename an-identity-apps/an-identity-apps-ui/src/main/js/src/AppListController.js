@@ -1,4 +1,4 @@
-angular.module("autonubil-intranet-mail")
+angular.module("autonubil-intranet-apps")
 .controller("AppListController", function($scope,AuthService,AppService,$location) {
 
 	$scope.enableAdd = false;

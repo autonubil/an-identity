@@ -1,4 +1,4 @@
-angular.module("autonubil-intranet-mail")
+angular.module("autonubil-intranet-apps")
 .controller("AppEditController", function($scope,AuthService,AppService,LdapConfigService,LdapGroupService,$routeParams) {
 
 	$scope.changed = false;

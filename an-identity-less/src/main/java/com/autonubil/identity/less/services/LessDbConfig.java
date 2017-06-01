@@ -13,7 +13,7 @@ import com.autonubil.identity.db.common.DataSourceFactory;
 @Configuration
 public class LessDbConfig {
 
-	@Bean()
+	@Bean(name="lessDataSource")
 	public DataSource lessDataSource(@Autowired DataSourceFactory dataSourceFactory) {
 		DataSource ds = dataSourceFactory.getDataSource("less");
 		try {

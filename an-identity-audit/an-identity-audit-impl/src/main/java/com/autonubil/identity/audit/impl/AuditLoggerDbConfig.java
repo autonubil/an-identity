@@ -11,7 +11,7 @@ import com.autonubil.identity.db.common.DataSourceFactory;
 @Configuration
 public class AuditLoggerDbConfig {
 
-	@Bean
+	@Bean(name="auditLoggerDataSource")
 	public DataSource auditLoggerDataSource(@Autowired DataSourceFactory dataSourceFactory) {
 		return dataSourceFactory.getDataSource("audit_log");
 	}

@@ -1,7 +1,5 @@
 package com.autonubil.identity.mail.impl.entities;
 
-import java.util.Map;
-
 public class Mail {
 
 	private String sender;

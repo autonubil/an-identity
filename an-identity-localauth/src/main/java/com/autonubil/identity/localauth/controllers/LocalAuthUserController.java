@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.autonubil.identity.auth.api.exceptions.AuthException;
 import com.autonubil.identity.auth.api.util.AuthUtils;
-import com.autonubil.identity.localauth.LocalAuthProvider;
 import com.autonubil.identity.localauth.entities.LocalAuthUser;
 import com.autonubil.identity.localauth.services.LocalAuthUserService;
 import com.autonubil.identity.util.totp.TotpUtil;

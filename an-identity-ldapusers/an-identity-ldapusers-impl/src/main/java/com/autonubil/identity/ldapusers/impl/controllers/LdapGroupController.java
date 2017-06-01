@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.autonubil.identity.auth.api.util.AuthUtils;
 import com.autonubil.identity.ldap.api.LdapConfigService;
 import com.autonubil.identity.ldap.api.entities.LdapGroup;
-import com.autonubil.identity.localauth.LocalAuthProvider;
 
 @RestController
 @RequestMapping("/autonubil")

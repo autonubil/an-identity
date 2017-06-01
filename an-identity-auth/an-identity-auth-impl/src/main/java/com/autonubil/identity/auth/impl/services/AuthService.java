@@ -16,7 +16,6 @@ import com.autonubil.identity.auth.api.Credentials;
 import com.autonubil.identity.auth.api.entities.AuthenticationSource;
 import com.autonubil.identity.auth.api.entities.Identity;
 import com.autonubil.identity.auth.api.entities.User;
-import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.auth.api.exceptions.AuthException;
 import com.autonubil.identity.auth.api.exceptions.NotAuthenticatedException;
 import com.autonubil.identity.auth.api.util.PasswordReset;
