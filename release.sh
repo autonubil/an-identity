@@ -1,5 +1,19 @@
 #!/bin/bash
 
+cd `dirname $0`
+git diff --exit-code 2>&1 > /dev/null
+if [ "$?" != "0" ]; then
+	echo "there are unstaged changes"
+	exit -1
+fi
+
+git diff --cached --exit-code  2>&1 > /dev/null
+if [ "$?" != "0" ]; then
+	echo "there are uncommitted changes"
+	exit -2
+fi
+
+
 local_maven=${HOME}/maven_an
 
 if [ ! -d ${local_maven} ]; then
