@@ -4,9 +4,15 @@ import java.util.List;
 
 import com.autonubil.identity.persistence.api.filter.impl.AbstractFieldMatchingFilter;
 
-public class BasicFilterBuilder {
+public class BasicFilterBuilder<T> {
 	
-	public <T> Filter<T> equals(Class<T> clazz, String fieldname, String value) {
+	private Class<T> clazz;
+	
+	public BasicFilterBuilder(Class<T> clazz) {
+		this.clazz = clazz;
+	}
+	
+	public Filter<T> equals(String fieldname, String value) {
 		return new AbstractFieldMatchingFilter<T>(clazz,fieldname,value) {
 			@Override
 			protected boolean matchesImpl(List<Object> compare) {
@@ -20,7 +26,7 @@ public class BasicFilterBuilder {
 		};
 	}
 
-	public <T> Filter<T> startsWith(Class<T> clazz, String fieldname, String value) {
+	public Filter<T> startsWith(String fieldname, String value) {
 		return new AbstractFieldMatchingFilter<T>(clazz,fieldname,value) {
 			@Override
 			protected boolean matchesImpl(List<Object> compare) {
@@ -30,6 +36,10 @@ public class BasicFilterBuilder {
 				return false;
 			}
 		};
+	}
+	
+	public static <T> BasicFilterBuilder<T> create(Class<T> clazz) {
+		return new BasicFilterBuilder<T>(clazz);
 	}
 	
 	

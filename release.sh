@@ -2,6 +2,11 @@
 
 local_maven=${HOME}/maven_an
 
+if [ ! -d ${local_maven} ]; then
+	mkdirs -p ${local_maven}
+	git clone git@github.com:autonubil/maven.git ${local_maven}
+fi
+
 function current_version() {
 	mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version |grep "^[0-9]"
 }

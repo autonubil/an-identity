@@ -2,12 +2,14 @@ package com.autonubil.identity.persistence.api;
 
 import java.util.List;
 
-import com.autonubil.identity.persistence.api.filter.Filter;
-
 public interface PersistenceService {
 
-	public <T> List<T> getList(String component, Class<T> clazz, Filter<T> filter);
+	public <T> List<T> list(String component, Class<T> clazz, String jsonPath);
 
-	public <T> T getOne(String component, Class<T> clazz, String id);
+	public <T> T get(String component, Class<T> clazz, String id);
+	
+	public <T> T save(String component, T object);
+	
+	public void delete(String component, String id);
 	
 }
