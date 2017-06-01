@@ -13,7 +13,7 @@ import com.autonubil.identity.db.common.DataSourceFactory;
 @Configuration
 public class AutomigrateDbConfig {
 
-	@Bean
+	@Bean(name="automigrateDataSource")
 	public DataSource automigrateDataSource(@Autowired DataSourceFactory dataSourceFactory) {
 		DataSource ds = dataSourceFactory.getDataSource("automigrate");
 		try {

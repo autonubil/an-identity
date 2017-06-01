@@ -13,5 +13,16 @@
 			<artifactId>an-identity-ovpn-api</artifactId>
 			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-db-common</artifactId>
+			<version>0.1.13-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-auth-api</artifactId>
+			<version>0.1.13-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -36,6 +36,7 @@ angular.module("autonubil-intranet-me")
 	
 	
 	PluginComponentService.addItem("/me",myApps); 
+	
 	PluginComponentService.addItem("/dashboard",myApps); 
 	
 });

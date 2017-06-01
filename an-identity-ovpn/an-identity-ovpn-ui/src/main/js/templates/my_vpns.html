@@ -1,0 +1,20 @@
+<div class="col-md-12" ng-controller="MyAppsController">
+	<h4>VPNs</h4>
+	<div class="form-group">
+		<input ng-model="search" class="form-control" ng-change="updateVpns()" placeholder="type to filter">
+	</div>
+	<table>
+		<tr ng-repeat="vpn in vpns" class="well-sm">
+			<td>
+				OpenVPN
+			</td>
+			<td style="padding-right: 10px">
+				&nbsp;
+			</td>
+			<td style="padding-right: 10px">
+				<label><a href="#{{vpn.id}}">{{vpn.name}}</a></label>
+				{{vpn.description}}
+			</td>
+		</tr>
+	</table>
+</div>
