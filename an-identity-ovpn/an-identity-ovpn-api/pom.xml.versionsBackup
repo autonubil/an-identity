@@ -3,20 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
-		<artifactId>an-identity-certs</artifactId>
-		<version>0.1.13</version>
+		<artifactId>an-identity-ovpn</artifactId>
+		<version>0.1.13-SNAPSHOT</version>
 	</parent>
-	<artifactId>an-identity-certs-common</artifactId>
+	<artifactId>an-identity-ovpn-api</artifactId>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
-			<artifactId>an-identity-certs-api</artifactId>
-			<version>0.1.13</version>
-		</dependency>
-		<dependency>
-			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-api</artifactId>
-			<version>0.1.13</version>
+			<version>0.1.13-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

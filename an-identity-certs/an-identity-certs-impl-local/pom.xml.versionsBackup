@@ -2,18 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.autonubil.identity</groupId>
-    <artifactId>an-identity</artifactId>
-
-    
-
-    <version>0.1.13</version>
-
+    <artifactId>an-identity-certs</artifactId>
+    <version>0.1.13-SNAPSHOT</version>
   </parent>
-  <artifactId>an-identity-apps</artifactId>
-  <packaging>pom</packaging>
-  <modules>
-  	<module>an-identity-apps-api</module>
-  	<module>an-identity-apps-impl</module>
-  	<module>an-identity-apps-ui</module>
-  </modules>
+  <artifactId>an-identity-certs-impl-local</artifactId>
 </project>

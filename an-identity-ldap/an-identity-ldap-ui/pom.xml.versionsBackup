@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
-		<artifactId>an-identity-auth</artifactId>
-		<version>0.1.13</version>
+		<artifactId>an-identity-ldap</artifactId>
+		<version>0.1.13-SNAPSHOT</version>
 	</parent>
-	<artifactId>an-identity-auth-ui</artifactId>
+	<artifactId>an-identity-ldap-ui</artifactId>
 	<build>
 		<plugins>
 			<plugin>

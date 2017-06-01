@@ -4,25 +4,25 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity-ovpn</artifactId>
-		<version>0.1.13-SNAPSHOT</version>
+		<version>0.1.13</version>
 	</parent>
 	<artifactId>an-identity-ovpn-common</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-ovpn-api</artifactId>
-			<version>0.1.13-SNAPSHOT</version>
+			<version>0.1.13</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-common</artifactId>
-			<version>0.1.13-SNAPSHOT</version>
+			<version>0.1.13</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-api</artifactId>
-			<version>0.1.13-SNAPSHOT</version>
+			<version>0.1.13</version>
 		</dependency>
 	</dependencies>
 </project>

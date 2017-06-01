@@ -3,10 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
-		<artifactId>an-identity-auth</artifactId>
-		<version>0.1.13</version>
+		<artifactId>an-identity-ovpn</artifactId>
+		<version>0.1.13-SNAPSHOT</version>
 	</parent>
-	<artifactId>an-identity-auth-ui</artifactId>
+	<artifactId>an-identity-ovpn-ui</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-ovpn-common</artifactId>
+			<version>0.1.13-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -50,4 +57,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>
