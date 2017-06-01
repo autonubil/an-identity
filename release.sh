@@ -1,5 +1,20 @@
 #!/bin/bash
 
+realpath() {
+  OURPWD=$PWD
+  cd "$(dirname "$1")"
+  LINK=$(readlink "$(basename "$1")")
+  while [ "$LINK" ]; do
+    cd "$(dirname "$LINK")"
+    LINK=$(readlink "$(basename "$1")")
+  done
+  REALPATH="$PWD/$(basename "$1")"
+  cd "$OURPWD"
+  echo `dirname $REALPATH`
+}
+
+project_dir=`realpath $0`
+
 local_maven=${HOME}/maven_an
 
 if [ ! -d ${local_maven} ]; then
@@ -10,7 +25,10 @@ fi
 cd ${local_maven}
 git pull
 
-cd `dirname $0`
+cd ${project_dir}
+
+pwd
+
 git diff --exit-code 2>&1 > /dev/null
 if [ "$?" != "0" ]; then
 	echo "there are unstaged changes"
@@ -61,8 +79,6 @@ function next_snapshot() {
 
 
 cd `dirname $0`
-
-env
 
 set -e
 
