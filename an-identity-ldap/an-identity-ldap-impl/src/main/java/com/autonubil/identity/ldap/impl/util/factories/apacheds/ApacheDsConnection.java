@@ -46,7 +46,7 @@ public class ApacheDsConnection extends AbstractLdapConnection  {
 	
 	public ApacheDsConnection(LdapConfig config, String password, List<LdapCustomsFieldConfig> fields, MailService mailService) {
 		super(config, fields,mailService);
-		this.ctx = connect(config.getAdminBindDn(), password, null);
+		this.setContext(connect(config.getAdminBindDn(), password, null));
 	}
 
 	@Override

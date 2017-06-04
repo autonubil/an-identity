@@ -41,7 +41,7 @@ public class AdConnection extends AbstractLdapConnection {
 
 	public AdConnection(LdapConfig config, String password, List<LdapCustomsFieldConfig> customFields, MailService mailService) {
 		super(config, customFields,mailService);
-		this.ctx = connect(config.getAdminBindDn(), password, null);
+		this.setContext(connect(config.getAdminBindDn(), password, null));
 	}
 	
 	public Map<String,Object> addConnectionProperties() {
@@ -213,7 +213,7 @@ public class AdConnection extends AbstractLdapConnection {
 				ModificationItem[] items = new ModificationItem[] {
 						new ModificationItem(DirContext.REPLACE_ATTRIBUTE, new BasicAttribute("unicodePwd", ("\""+x+"\"").getBytes("UTF-16LE")))
 					};
-				ctx.modifyAttributes(u.getDn(), items);
+				this.getContext().modifyAttributes(u.getDn(), items);
 			}
 			
 			DirContext dc = connect(u.getDn(), x, null);

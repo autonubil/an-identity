@@ -14,7 +14,7 @@ public class ThreadLocalSocketFactory extends SocketFactory {
 	
 	public ThreadLocalSocketFactory() {
 	}
-	
+
 
 	@Override
 	public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
@@ -44,6 +44,5 @@ public class ThreadLocalSocketFactory extends SocketFactory {
 	public static SocketFactory getDefault() {
 		return new ThreadLocalSocketFactory();
 	}
-	
 
 }

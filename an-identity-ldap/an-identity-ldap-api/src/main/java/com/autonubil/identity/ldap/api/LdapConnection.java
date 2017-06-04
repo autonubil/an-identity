@@ -68,6 +68,6 @@ public interface LdapConnection {
 	Date parseDate(String in) throws ParseException;
 	
 	
-	
+	void initContextForSubThread();
 
 }

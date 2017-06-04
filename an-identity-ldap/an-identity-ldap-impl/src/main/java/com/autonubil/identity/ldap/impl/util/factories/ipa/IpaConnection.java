@@ -84,7 +84,7 @@ public class IpaConnection extends AbstractLdapConnection  {
 	
 	public IpaConnection(LdapConfig config, String password, List<LdapCustomsFieldConfig> fields, MailService mailService) {
 		super(config, fields,mailService);
-		this.ctx = connect(config.getAdminBindDn(), password, null);
+		this.setContext( connect(config.getAdminBindDn(), password, null) );
 	}
 	
 	@Override
