@@ -7,6 +7,7 @@ angular.module("autonubil-intranet-auth")
 		responseError : function(rejection) {
 			if(rejection.status == 401) {
 				angular.module("autonubil-intranet-auth").update();
+				angular.module("autonubil-intranet-auth").goto("/auth/login");
 			} else if(rejection.status == 403) {
 				angular.module("autonubil-intranet-auth").goto("/auth/errors/accessDenied");
 			}

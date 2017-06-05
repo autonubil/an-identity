@@ -1,14 +1,25 @@
 package com.autonubil.identity.ovpn.api.entities;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.autonubil.identity.ovpn.api.OvpnClientConfigService;
+import com.autonubil.identity.ovpn.api.OvpnConfigService;
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class OvpnSource {
+public class Ovpn {
+	
+	@Autowired
+	private OvpnConfigService ovpnConfigService;
+	
 	private String id;
 	private String name;
 	private String description;
 	private String clientConfigurationProvider;
 	private String serverConfigurationProvider;
-	private JsonNode configuration;
+	private OvpnClientConfigService clientConfigurationService;
+	
+	private JsonNode clientConfiguration;
+	private JsonNode serverConfiguration;
 	
 	public String getId() {
 		return id;
@@ -52,15 +63,20 @@ public class OvpnSource {
 	}
   
 	
-	
-	public JsonNode getConfiguration() {
-		return configuration;
+	public JsonNode getClientConfiguration() {
+		return clientConfiguration;
 	}
 
-	public void setConfiguration(JsonNode configuration) {
-		this.configuration = configuration;
+	public void setClientConfiguration(JsonNode clientConfiguration) {
+		this.clientConfiguration = clientConfiguration;
 	}
 
-	
+	public JsonNode getServerConfiguration() {
+		return serverConfiguration;
+	}
+
+	public void setServerConfiguration(JsonNode serverConfiguration) {
+		this.serverConfiguration = serverConfiguration;
+	}
 
 }

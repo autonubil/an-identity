@@ -1,5 +1,5 @@
 angular.module("autonubil-intranet-ovpn")
-.controller("SourceEditController", function($scope,AuthService,OvpnService,LdapConfigService,LdapGroupService,$routeParams) {
+.controller("VpnEditController", function($scope,AuthService,OvpnService,LdapConfigService,LdapGroupService,$routeParams) {
 
 	$scope.changed = false;
 	
@@ -9,20 +9,51 @@ angular.module("autonubil-intranet-ovpn")
 			name : "",
 	};
 
+	
 	LdapConfigService.getList({},function(configs){
 		$scope.configs=configs;
 	});
 
+ 
 	
-	$scope.update = function() {
-		OvpnService.get($routeParams.id,function(app){
-			$scope.app = app;
+	$scope.update = function() { 
+		OvpnService.get($routeParams.id,function(source){
+			$scope.source = source;
 		});
+		
 		OvpnService.listPermissions($routeParams.id,function(permissions){
 			console.log("permssions: "+permissions.length);
 			$scope.permissions = permissions;
 		});
+
+		
+		OvpnService.getClientConfigProviderList("", function(clientConfigProviders){
+			console.log("clientConfigProviders: "+clientConfigProviders.length);
+			$scope.clientConfigProviders = clientConfigProviders;
+		});
+		
+		OvpnService.getServerConfigProviderList("", function(serverConfigProviders){
+			console.log("serverConfigProviders: "+serverConfigProviders.length);
+			$scope.serverConfigProviders = serverConfigProviders;
+		});
 	};
+	
+
+	$scope.save = _.debounce(function() {
+		OvpnService.save($scope.source,function(source) {
+			$scope.source = source;
+			$scope.changed = false;
+			$scope.update();
+		});
+	},700)
+	
+	$scope.startChange = function() {
+		$scope.changed = true;
+		$scope.save();
+	};
+	
+	
+	$scope.update();
 	
 	$scope.updateGroups = function() {
 		console.log("updating groups");
@@ -36,20 +67,6 @@ angular.module("autonubil-intranet-ovpn")
 		});
 	}
 	
-
-	$scope.save = _.debounce(function() {
-		OvpnService.save($scope.app,function(app) {
-			$scope.app = app;
-			$scope.changed = false;
-			$scope.update();
-		});
-	},700)
-	
-	$scope.startChange = function() {
-		$scope.changed = true;
-		$scope.save();
-	};
-	
 	$scope.removePermission = function(source,groupId) {
 		console.log("remove permission",source,groupId);
 		OvpnService.deletePermission($routeParams.id,source,groupId,$scope.update);
@@ -60,20 +77,12 @@ angular.module("autonubil-intranet-ovpn")
 		OvpnService.addPermission(
 				$routeParams.id,
 				{
-					appId: $routeParams.id,
+					vpnId: $routeParams.id,
 					sourceId : $scope.newPermission.source.id,
 					groupId : $scope.newPermission.group.id,
 					name : $scope.newPermission.source.name+": "+$scope.newPermission.group.displayName
 				},
 				$scope.update);
 	};
-	
-	$scope.uploadSuccess = function() {
-		s = $("#icon").attr("src")+"?"+Math.random();
-		console.log("image uploaded ... new image: "+s);
-		$("#icon").attr("src", s);
-	}
-	
-	$scope.update();
 	
 })

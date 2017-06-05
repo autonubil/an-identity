@@ -1,5 +1,5 @@
 angular.module("autonubil-intranet-ovpn")
-.controller("SourceListController", function($scope,AuthService,OvpnService,$location) {
+.controller("VpnListController", function($scope,AuthService,OvpnService,$location) {
 
 	$scope.enableAdd = false;
 	
@@ -10,8 +10,8 @@ angular.module("autonubil-intranet-ovpn")
 	};
 	
 	$scope.update = function() {
-		OvpnService.getSourceList($scope.search, function(sources){
-			$scope.sources = sources;
+		OvpnService.getList($scope.search, function(vpns){
+			$scope.vpns= vpns;
 		});
 	}
 	
@@ -19,12 +19,12 @@ angular.module("autonubil-intranet-ovpn")
 	
 	$scope.add = function(id) {
 		console.log("saving OpenVPN source ... ");
-		var x = { name : $scope.search.search, description: $scope.search.search, configuration: "{}", serverConfigurationProvider: "default", clientConfigurationProvider:"default" };
-		OvpnService.addSource(
+		var x = { name : $scope.search.search, description: $scope.search.search, serverConfiguration: "{}", serverConfigurationProvider: "default", clientConfiguration: "{}", clientConfigurationProvider:"default" };
+		OvpnService.add(
 				x,
 				function(ovpn){
 					console.log("OpenVPN source saved... ",ovpn);
-					$location.path("/main/admin/ovpn/"+ovpn.id);
+					$location.path("/main/admin/ovpn/vpn/"+ovpn.id);
 				}
 		);
 	}

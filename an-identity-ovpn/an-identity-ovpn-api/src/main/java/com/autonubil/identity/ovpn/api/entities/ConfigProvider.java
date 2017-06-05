@@ -2,15 +2,16 @@ package com.autonubil.identity.ovpn.api.entities;
 
 public class ConfigProvider {
 	
-	private String name;
+	private String id;
+	private String className;
 	private String displayName;
 	private String description;
 	
-	public String getName() {
-		return name;
+	public String getClassName() {
+		return className;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setClassName(String name) {
+		this.className = name;
 	}
 	public String getDisplayName() {
 		return displayName;
@@ -23,6 +24,12 @@ public class ConfigProvider {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	

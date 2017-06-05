@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-md-12 page-header">
 		<h2>
-			<a href="#/main/admin/ovpns">OpenVPN Source</a> | {{source.name}} <span
+			<a href="#/main/admin/sources">OpenVPN Source</a> | {{source.name}} <span
 				ng-if="changed">*</span>
 		</h2>
 	</div>
@@ -12,19 +12,81 @@
 			<div class="col-md-12">
 				<h4>OpenVPN Source</h4>
 			</div>
-			<div class="col-md-12">
+			<div class="col-md-6">
 				<div class="form form-group">
-					<label>Name</label> 
-					<input ng-model="source.name" ng-change="startChange()" class="form-control" />
+					<label>Name</label> <input ng-model="source.name"
+						ng-change="startChange()" class="form-control" />
 				</div>
 			</div>
-			<div class="col-md-12">
+			<div class="col-md-6">
 				<div class="form form-group">
-					<label>Description</label>
-					<textarea cols="40" rows="20" ng-model="source.description" ng-blur="startChange()" class="form-control"></textarea>
+					<label>Description</label> <input ng-model="source.description"
+						ng-change="startChange()" class="form-control" />
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Client Configuration Provider</h4>
+				</div>
+				<div class="col-md-12"
+					ng-if="!clientConfigProviders || clientConfigProviders.length==0">
+					<div class="alert alert-warning">
+						<i>No Client Config Providers found</i>
+					</div>
+				</div>
+				<div class="col-md-12"
+					ng-if="clientConfigProviders && clientConfigProviders.length > 0">
+					<select class="form-control"
+					    ng-change="startChange()" data-ng-model="source.clientConfigurationProvider">
+					    <option ng-repeat="clientConfigProvider in clientConfigProviders" value="{{clientConfigProvider.id}}">{{clientConfigProvider.displayName}}</option>
+					</select>
+				</div>
+				<div class="col-md-12">
+					<div class="form form-group">
+						<label>Client Configuration (JSON)</label>
+						<textarea ng-model="source.clientConfiguration"
+							ng-change="startChange()" class="form-control"
+							style="width: 100%; height: 300px;"></textarea>
+
+					</div>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="col-md-´12">
+					<h4>Server Configuration Provider</h4>
+				</div>
+				<div class="col-md-12"
+					ng-if="!serverConfigProviders || serverConfigProviders.length==0">
+					<div class="alert alert-warning">
+						<i>No Server Config Providers found</i>
+					</div>
+				</div>
+				<div class="col-md-12"
+					ng-if="serverConfigProviders && serverConfigProviders.length > 0">
+					
+					<select class="form-control"
+					    ng-change="startChange()" data-ng-model="source.serverConfigurationProvider">
+					    <option ng-repeat="serverConfigProvider in serverConfigProviders" value="{{serverConfigProvider.id}}">{{serverConfigProvider.displayName}}</option>
+					</select>
+				</div>
+				<div class="col-md-12">
+					<div class="form form-group">
+						<label>Server Configuration (JSON)</label>
+						<textarea ng-model="source.serverConfiguration"
+							ng-change="startChange()" class="form-control"
+							style="width: 100%; height: 300px;"></textarea>
+
+					</div>
+				</div>
+
+			</div>
+
 		</div>
+		<div class="row">
+			<div class="col-md-12"></div>
+		</div>
+		<div class="row"></div>
 	</div>
 	<div class="col-md-6">
 		<div class="row">
@@ -73,11 +135,9 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-12">
-			</div>
+			<div class="col-md-12"></div>
 		</div>
-		<div class="row">
-		</div>
+		<div class="row"></div>
 
 	</div>
 </div>

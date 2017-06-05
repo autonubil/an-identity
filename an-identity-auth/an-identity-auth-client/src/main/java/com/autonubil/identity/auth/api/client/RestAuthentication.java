@@ -13,6 +13,10 @@ import com.autonubil.identity.auth.api.entities.Identity;
 
 public class RestAuthentication implements Authentication {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8920408288569890183L;
 	private Identity identity;
 	
 	public RestAuthentication(Identity identity) {

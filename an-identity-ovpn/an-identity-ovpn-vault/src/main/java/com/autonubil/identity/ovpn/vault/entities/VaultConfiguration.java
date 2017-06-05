@@ -1,12 +1,12 @@
 package com.autonubil.identity.ovpn.vault.entities;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.autonubil.identity.ovpn.api.entities.OvpnOptions;
 
 public class VaultConfiguration {
 	private String vaultAddress;
 	private String autPath;
 	private String username;
-	private JsonNode options;
+	private OvpnOptions ovpnOptions;
 	
 	public String getVaultAddress() {
 		return vaultAddress;
@@ -26,11 +26,22 @@ public class VaultConfiguration {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public JsonNode getOptions() {
-		return options;
+	public OvpnOptions getOvpnOptions() {
+		return ovpnOptions;
 	}
-	public void setOptions(JsonNode options) {
-		this.options = options;
+	public void setOvpnOptions(OvpnOptions ovpnOptions) {
+		this.ovpnOptions = ovpnOptions;
 	}
 	
 }
+
+/*
+
+{
+"vaultAddress": "http://vault.veb.local:8200",
+"authPath" :"ipa",
+"username" : "application-intranet".
+"password" : "secret"
+}
+
+*/

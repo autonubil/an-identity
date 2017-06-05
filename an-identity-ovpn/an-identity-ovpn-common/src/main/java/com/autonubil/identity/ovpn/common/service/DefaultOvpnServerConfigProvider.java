@@ -9,13 +9,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class DefaultOvpnServerConfigProvider implements OvpnServerConfigService {
 
 	@Override
-	public String getName() {
-		return "default";
+	public String getClassName() {
+		return this.getClass().getCanonicalName();
 	}
 
 	@Override
 	public String getDisplayName() {
-		return "Default";
+		return "Default Server Config";
 	}
 
 	@Override
@@ -32,5 +32,12 @@ public class DefaultOvpnServerConfigProvider implements OvpnServerConfigService 
 	public void setConfigruation(JsonNode configuration) {
 		
 	}
+	
+	
+	@Override
+	public String getId() {
+		return "a025b0c8-bb69-456f-855c-3ae5e46601d5";
+	}
+
 
 }

@@ -6,20 +6,19 @@ import com.autonubil.identity.auth.api.entities.Group;
 import com.autonubil.identity.ovpn.api.entities.ConfigProvider;
 import com.autonubil.identity.ovpn.api.entities.Ovpn;
 import com.autonubil.identity.ovpn.api.entities.OvpnPermission;
-import com.autonubil.identity.ovpn.api.entities.OvpnSource;
 
 public interface OvpnConfigService {
 
-	List<ConfigProvider> listClientConfigProviders(String id, String search);
-	List<ConfigProvider> listServerConfigProviders(String id, String search);
+	List<ConfigProvider> listClientConfigProviders(String search);
+	List<ConfigProvider> listServerConfigProviders(String search);
 	
-	List<OvpnSource> listSources(String id, String search);
+	List<Ovpn> listOvpns(String id, String search);
 
-	OvpnSource getSource(String id);
+	Ovpn getOvpn(String id);
 
-	OvpnSource saveSource(OvpnSource ovpnSource);
+	Ovpn saveOvpn(Ovpn ovpnSource);
 
-	void deleteSource(String id);
+	void deleteOvpn(String id);
 
 	List<OvpnPermission> listPermissions(String ovpnId, String source, String groupId);
 

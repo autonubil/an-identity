@@ -28,7 +28,6 @@ import com.autonubil.identity.ovpn.api.OvpnServerConfigService;
 import com.autonubil.identity.ovpn.api.entities.ConfigProvider;
 import com.autonubil.identity.ovpn.api.entities.Ovpn;
 import com.autonubil.identity.ovpn.api.entities.OvpnPermission;
-import com.autonubil.identity.ovpn.api.entities.OvpnSource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,12 +61,12 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 	 * String, java.lang.String)
 	 */
 	@Override
-	public List<OvpnSource> listSources(String id, String search) {
+	public List<Ovpn> listOvpns(String id, String search) {
 
-		List<OvpnSource> out = new ArrayList<>();
+		List<Ovpn> out = new ArrayList<>();
 
 		Select s = SqlBuilderFactory.select();
-		Table source = s.fromTable("ovpn_source");
+		Table source = s.fromTable("vpn");
 
 		if (id != null) {
 			s.where(Operator.AND, s.condition(source, "id", Comparator.EQ, id));
@@ -91,8 +90,8 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 	 * String)
 	 */
 	@Override
-	public OvpnSource getSource(String id) {
-		List<OvpnSource> a = listSources(id, null);
+	public Ovpn getOvpn(String id) {
+		List<Ovpn> a = listOvpns(id, null);
 		if (a.size() > 0) {
 			return a.get(0);
 		}
@@ -107,39 +106,44 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 	 * identity.ovpn.api.entities.OvpnSource)
 	 */
 	@Override
-	public OvpnSource saveSource(OvpnSource ovpnSource) {
+	public Ovpn saveOvpn(Ovpn ovpnSource) {
 		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
 		if (ovpnSource.getId() == null) {
-			Insert i = SqlBuilderFactory.insert("ovpn_source");
+			Insert i = SqlBuilderFactory.insert("vpn");
 			ovpnSource.setId(UUID.randomUUID().toString());
 			i.addField("id", ovpnSource.getId());
 			i.addField("name", ovpnSource.getName().toLowerCase());
 			i.addField("description", ovpnSource.getDescription());
 			i.addField("client_config_provider", ovpnSource.getClientConfigurationProvider());
 			i.addField("server_config_provider", ovpnSource.getServerConfigurationProvider());
-			
+
 			try {
-				i.addField("configuration", new ObjectMapper().writeValueAsString(ovpnSource.getConfiguration()));
+				i.addField("client_configuration",
+						new ObjectMapper().writeValueAsString(ovpnSource.getClientConfiguration()));
+				i.addField("server_configuration",
+						new ObjectMapper().writeValueAsString(ovpnSource.getServerConfiguration()));
 			} catch (JsonProcessingException e) {
 				throw new RuntimeException(e);
 			}
 			templ.update(i.toSQL(), i.getParams());
 		} else {
-			Update u = SqlBuilderFactory.update("ovpn_source");
+			Update u = SqlBuilderFactory.update("vpn");
 			u.set("name", ovpnSource.getName());
 			u.set("description", ovpnSource.getDescription());
-			u.set("name_lower", ovpnSource.getName().toLowerCase());
 			u.set("client_config_provider", ovpnSource.getClientConfigurationProvider());
 			u.set("server_config_provider", ovpnSource.getServerConfigurationProvider());
 			try {
-				u.set("configuration", new ObjectMapper().writeValueAsString(ovpnSource.getConfiguration()));
+				u.set("client_configuration",
+						new ObjectMapper().writeValueAsString(ovpnSource.getClientConfiguration()));
+				u.set("server_configuration",
+						new ObjectMapper().writeValueAsString(ovpnSource.getServerConfiguration()));
 			} catch (JsonProcessingException e) {
 				throw new RuntimeException(e);
 			}
 			u.where(Operator.AND, u.condition(u.getTable(), "id", Comparator.EQ, ovpnSource.getId()));
 			templ.update(u.toSQL(), u.getParams());
 		}
-		return getSource(ovpnSource.getId());
+		return getOvpn(ovpnSource.getId());
 	}
 
 	/*
@@ -150,15 +154,15 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 	 * String)
 	 */
 	@Override
-	public void deleteSource(String id) {
+	public void deleteOvpn(String id) {
 		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
 		{
-			Delete d = SqlBuilderFactory.delete("ovpn_permission");
-			d.where(Operator.AND, d.condition(d.getTable(), "ovpn_source", Comparator.EQ, id));
+			Delete d = SqlBuilderFactory.delete("vpn_permission");
+			d.where(Operator.AND, d.condition(d.getTable(), "vpn", Comparator.EQ, id));
 			templ.update(d.toSQL(), d.getParams());
 		}
 		{
-			Delete d = SqlBuilderFactory.delete("ovpn_source");
+			Delete d = SqlBuilderFactory.delete("vpn");
 			d.where(d.condition(d.getTable(), "id", Comparator.EQ, id));
 			templ.update(d.toSQL(), d.getParams());
 		}
@@ -175,13 +179,13 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 	public List<OvpnPermission> listPermissions(String ovpnId, String source, String groupId) {
 		List<OvpnPermission> out = new ArrayList<>();
 		Select s = SqlBuilderFactory.select();
-		Table app = s.fromTable("app_permission");
+		Table app = s.fromTable("vpn_permission");
 
 		if (ovpnId != null) {
-			s.where(Operator.AND, s.condition(app, "ovpn_id", Comparator.EQ, ovpnId));
+			s.where(Operator.AND, s.condition(app, "vpn_id", Comparator.EQ, ovpnId));
 		}
 		if (source != null) {
-			s.where(Operator.AND, s.condition(app, "ovpn_source", Comparator.EQ, source));
+			s.where(Operator.AND, s.condition(app, "source", Comparator.EQ, source));
 		}
 		if (groupId != null) {
 			s.where(Operator.AND, s.condition(app, "group_id", Comparator.EQ, groupId));
@@ -210,9 +214,9 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		if (ap.size() > 0) {
 			removePermission(permission.getOvpnId(), permission.getSourceId(), permission.getGroupId());
 		}
-		Insert i = SqlBuilderFactory.insert("app_permission");
-		i.addField("ovpn_id", permission.getOvpnId());
-		i.addField("ovpn_source", permission.getSourceId());
+		Insert i = SqlBuilderFactory.insert("vpn_permission");
+		i.addField("vpn_id", permission.getOvpnId());
+		i.addField("source", permission.getSourceId());
 		i.addField("group_id", permission.getGroupId());
 		i.addField("name", permission.getName());
 		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
@@ -232,9 +236,9 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		List<OvpnPermission> ap = listPermissions(appId, source, groupId);
 
 		if (ap.size() > 0) {
-			Delete d = SqlBuilderFactory.delete("app_permission");
-			d.where(Operator.AND, d.condition(d.getTable(), "ovpn_id", Comparator.EQ, appId));
-			d.where(Operator.AND, d.condition(d.getTable(), "ovpn_source", Comparator.EQ, source));
+			Delete d = SqlBuilderFactory.delete("vpn_permission");
+			d.where(Operator.AND, d.condition(d.getTable(), "vpn_id", Comparator.EQ, appId));
+			d.where(Operator.AND, d.condition(d.getTable(), "source", Comparator.EQ, source));
 			d.where(Operator.AND, d.condition(d.getTable(), "group_id", Comparator.EQ, groupId));
 			NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
 			templ.update(d.toSQL(), d.getParams());
@@ -261,21 +265,22 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		}
 
 		Select s = SqlBuilderFactory.select();
-		JoinableTable ovpn = s.fromTable("ovpn");
+		JoinableTable ovpn = s.fromTable("vpn");
 		s.select(Aggregation.NONE, ovpn, "id", "id");
 		s.select(Aggregation.NONE, ovpn, "name", "name");
-		// s.select(Aggregation.NONE, ovpn, "ovpn_source", "ovpn_source");
+		s.select(Aggregation.NONE, ovpn, "description", "description");
+		// s.select(Aggregation.NONE, ovpn, "vpn", "vpn");
 
 		if (!StringUtils.isEmpty(search)) {
 			s.where(Operator.AND, s.condition(ovpn, "name", Comparator.LIKE, "%" + search.toLowerCase() + "%"));
 		}
 
-		JoinedTable appPerm = ovpn.joinTable(JoinType.LEFT, "ovpn_permission");
-		s.select(Aggregation.NONE, appPerm, "ovpn_source", "ovpn_source");
-		s.select(Aggregation.NONE, appPerm, "group_id", "group_id");
+		JoinedTable vpnPerm = ovpn.joinTable(JoinType.LEFT, "vpn_permission");
+		s.select(Aggregation.NONE, vpnPerm, "source", "source");
+		s.select(Aggregation.NONE, vpnPerm, "group_id", "group_id");
 
-		appPerm.on(s.condition(ovpn, "id", Comparator.EQ, appPerm, "ovpn_id")
-				.and(s.condition(appPerm, "group_id", Comparator.IN, groupIds)));
+		vpnPerm.on(s.condition(ovpn, "id", Comparator.EQ, vpnPerm, "vpn_id")
+				.and(s.condition(vpnPerm, "group_id", Comparator.IN, groupIds)));
 
 		s.order(ovpn, "name", true);
 
@@ -293,11 +298,11 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		return ch.getOvpns();
 	}
 
-	private class OvpnSourceRowMapper implements RowMapper<OvpnSource> {
+	private class OvpnSourceRowMapper implements RowMapper<Ovpn> {
 
 		@Override
-		public OvpnSource mapRow(ResultSet rs, int rowNum) throws SQLException {
-			OvpnSource out = new OvpnSource();
+		public Ovpn mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Ovpn out = new Ovpn();
 			out.setId(rs.getString("id"));
 			out.setDescription(rs.getString("description"));
 			out.setName(rs.getString("name"));
@@ -305,7 +310,8 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 			out.setClientConfigurationProvider(rs.getString("client_config_provider"));
 			out.setServerConfigurationProvider(rs.getString("server_config_provider"));
 			try {
-				out.setConfiguration(new ObjectMapper().readTree(rs.getString("configuration")));
+				out.setClientConfiguration(new ObjectMapper().readTree(rs.getString("client_configuration")));
+				out.setServerConfiguration(new ObjectMapper().readTree(rs.getString("server_configuration")));
 			} catch (JsonProcessingException e) {
 				throw new RuntimeException(e);
 			} catch (IOException e) {
@@ -321,8 +327,8 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		@Override
 		public OvpnPermission mapRow(ResultSet rs, int rowNum) throws SQLException {
 			OvpnPermission out = new OvpnPermission();
-			out.setOvpnId(rs.getString("ovpn_id"));
-			out.setSourceId(rs.getString("ovpn_source"));
+			out.setOvpnId(rs.getString("vpn_id"));
+			out.setSourceId(rs.getString("source"));
 			out.setGroupId(rs.getString("group_id"));
 			out.setName(rs.getString("name"));
 			return out;
@@ -351,7 +357,7 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 				return;
 			}
 
-			String group = rs.getString("ovpn_source") + ":" + rs.getString("group_id");
+			String group = rs.getString("source") + ":" + rs.getString("group_id");
 
 			if (groups != null && groups.get(group) == null) {
 				return;
@@ -371,13 +377,13 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		}
 
 	}
-	
-    private List<OvpnClientConfigService> ovpnClientConfigServices;
 
-    @Autowired
-    protected void setOvpnClientConfigService(List<OvpnClientConfigService> ovpnClientConfigServices){
-        this.ovpnClientConfigServices = ovpnClientConfigServices;
-    }
+	private List<OvpnClientConfigService> ovpnClientConfigServices;
+
+	@Autowired
+	protected void setOvpnClientConfigService(List<OvpnClientConfigService> ovpnClientConfigServices) {
+		this.ovpnClientConfigServices = ovpnClientConfigServices;
+	}
 
 	@Override
 	public List<OvpnClientConfigService> listClientConfigServices() {
@@ -385,41 +391,49 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 	}
 
 	@Override
-	public List<ConfigProvider> listClientConfigProviders(String id, String search) {
+	public List<ConfigProvider> listClientConfigProviders(String search) {
 		List<ConfigProvider> result = new ArrayList<>();
 		for (OvpnClientConfigService configService : this.listClientConfigServices()) {
 			ConfigProvider p = new ConfigProvider();
-			p.setName(configService.getClass().getCanonicalName());
-			p.setDisplayName(configService.getName());
+			p.setId(configService.getId());
+			p.setClassName(configService.getClassName());
+			p.setDisplayName(configService.getDisplayName());
 			p.setDescription(configService.getDescription());
-			result.add(p);
+			if ((search == null || search.length() == 0) || (p.getClassName().contains(search)
+					|| p.getDescription().contains(search) || p.getDisplayName().contains(search))) {
+				result.add(p);
+			}
 		}
 		return result;
 	}
 
 	private List<OvpnServerConfigService> ovpnServerConfigServices;
 
-    @Autowired
-    protected void setOvpnServerConfigService(List<OvpnServerConfigService> ovpnClientConfigServices){
-        this.ovpnServerConfigServices = ovpnServerConfigServices;
-    }
-    
+	@Autowired
+	protected void setOvpnServerConfigService(List<OvpnServerConfigService> ovpnServerConfigServices) {
+		this.ovpnServerConfigServices = ovpnServerConfigServices;
+	}
+
 	@Override
 	public List<OvpnServerConfigService> listServerConfigServices() {
 		return this.ovpnServerConfigServices;
 	}
-    
+
 	@Override
-	public List<ConfigProvider> listServerConfigProviders(String id, String search) {
+	public List<ConfigProvider> listServerConfigProviders(String search) {
 		List<ConfigProvider> result = new ArrayList<>();
 		for (OvpnServerConfigService configService : this.listServerConfigServices()) {
-			/*
+
 			ConfigProvider p = new ConfigProvider();
-			p.setName(configService.getClass().getCanonicalName());
-			p.setDisplayName(configService.getName());
+			p.setId(configService.getId());
+			p.setClassName(configService.getClassName());
+			p.setDisplayName(configService.getDisplayName());
 			p.setDescription(configService.getDescription());
-			result.add(p);
-			*/
+			if ((search == null || search.length() == 0) || (p.getClassName().contains(search)
+					|| p.getDescription().contains(search) || p.getDisplayName().contains(search))) {
+				result.add(p);
+			}
+
 		}
 		return result;
 	}

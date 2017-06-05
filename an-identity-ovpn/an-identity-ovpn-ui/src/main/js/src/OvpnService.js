@@ -18,23 +18,13 @@ angular.module("autonubil-intranet-ovpn")
 			return ovpn.put().then(success);
 		},
 		
-		
-		getSourceList : function(params, success) {
-			return Restangular.all("autonubil/api/ovpn/sources").getList(params).then(success);
+		getServerConfigProviderList : function(search,success) {
+			return Restangular.all("autonubil/api/ovpn/server_config_providers").getList({search: search}).then(success);
 		},
-		getSource : function(id,success) {
-			return Restangular.one("autonubil/api/ovpn/sources",id).get().then(success);
+		getClientConfigProviderList : function(search,success) {
+			return Restangular.all("autonubil/api/ovpn/client_config_providers").getList({search: search}).then(success);
 		},
-		addSource : function(config,success) {
-			return Restangular.all("autonubil/api/ovpn/sources").post(config).then(success);
-		},
-		removeSource : function(id,success) {
-			return Restangular.one("autonubil/api/ovpn/vpsourcesns",id).remove().then(success);
-		},
-		saveSource : function(source,success) {
-			return source.put().then(success);
-		},
-		
+		 
 		listPermissions : function(id,success) {
 			return Restangular.all("autonubil/api/ovpn/vpns/"+id+"/permissions").getList({}).then(success);
 		},
@@ -44,6 +34,8 @@ angular.module("autonubil-intranet-ovpn")
 		deletePermission : function(ovpnId,sourceId,groupId,success) {
 			return Restangular.all("autonubil/api/ovpn/vpns/"+ovpnId+"/permissions").customDELETE("",{sourceId:sourceId,groupId:groupId}).then(success);
 		}
+		
+		
 		
 		 
 	};

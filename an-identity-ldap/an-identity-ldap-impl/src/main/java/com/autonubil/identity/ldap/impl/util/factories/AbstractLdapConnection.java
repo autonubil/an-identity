@@ -74,7 +74,7 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 	private static SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	protected LdapConfig config;
-	private ThreadLocal<DirContext> localCtx;
+	private static final ThreadLocal<DirContext> localCtx = new ThreadLocal<>();
 	private DirContext ctx;
 
 	private Hashtable<String, Object> env;
@@ -658,7 +658,8 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 			synchronized (found) {
 				Collections.sort(found);
 			}
-			log.error("looking for user groups. filter: " + filter + " / " + found.size() + " results");
+			if (log.isDebugEnabled())
+				log.debug("looking for user groups. filter: " + filter + " / " + found.size() + " results");
 		} catch (Exception e) {
 			log.error("error looking for user groups filter: " + filter, e);
 		}
@@ -687,7 +688,8 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 		try {
 			LdapSearchResultGroupMapper m = new LdapSearchResultGroupMapper();
 			groups = list(getGroupSearchBase(), filter, m, getGroupAttributes());
-			log.error("looking for user groups. filter: " + filter + " / " + groups.size() + " results");
+			if (log.isDebugEnabled())
+				log.debug("looking for user groups. filter: " + filter + " / " + groups.size() + " results");
 		} catch (Exception e) {
 			log.error("error looking for user groups filter: " + filter, e);
 		}
@@ -943,14 +945,11 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 	@Override
 	public DirContext getContext() {
 		synchronized (this.ctx) {
-			if (this.localCtx != null) {
-				if (this.localCtx.get() == null) {
-					log.warn("Local context is null, returning global context");
-					return this.ctx;
-				}
-				return this.localCtx.get();
+			if (localCtx.get() != null) {
+				return localCtx.get();
+			} else {
+				return this.ctx;
 			}
-			return this.ctx;
 		}
 	}
 
@@ -970,15 +969,15 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 			return;
 		}
 		synchronized (this.ctx) {
-			if (this.localCtx == null) {
-				this.localCtx = new ThreadLocal<DirContext>();
-				try {
-					this.localCtx.set((DirContext) this.ctx.lookup(""));
-				} catch (NamingException e) {
-					this.localCtx = null;
-					log.warn("Feailed to dereive context for thread since context" ,e );
-					throw new RuntimeException("Lookup of sub context failed", e);
+			try {
+				if (localCtx.get() == null) {
+					DirContext subContext = (DirContext) this.ctx.lookup(""); 
+					this.localCtx.set(subContext);
 				}
+			} catch (NamingException e) {
+				localCtx.set(null);
+				log.warn("Feailed to dereive context for thread" ,e );
+				throw new RuntimeException("Lookup of sub context failed", e);
 			}
 		}
 	}

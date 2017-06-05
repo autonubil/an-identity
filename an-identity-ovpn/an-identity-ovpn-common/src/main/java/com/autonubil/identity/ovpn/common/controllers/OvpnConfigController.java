@@ -3,6 +3,8 @@ package com.autonubil.identity.ovpn.common.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,13 +19,15 @@ import com.autonubil.identity.auth.api.entities.Group;
 import com.autonubil.identity.auth.api.entities.Identity;
 import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.auth.api.exceptions.AuthException;
+import com.autonubil.identity.auth.api.exceptions.NotAuthenticatedException;
+import com.autonubil.identity.auth.api.exceptions.NotAuthorizedException;
 import com.autonubil.identity.auth.api.util.AuthUtils;
 import com.autonubil.identity.auth.api.util.IdentityHolder;
+import com.autonubil.identity.ovpn.api.OvpnClientConfigService;
 import com.autonubil.identity.ovpn.api.OvpnConfigService;
 import com.autonubil.identity.ovpn.api.entities.ConfigProvider;
 import com.autonubil.identity.ovpn.api.entities.Ovpn;
 import com.autonubil.identity.ovpn.api.entities.OvpnPermission;
-import com.autonubil.identity.ovpn.api.entities.OvpnSource;
 
 @RestController
 @RequestMapping("/autonubil")
@@ -36,38 +40,38 @@ public class OvpnConfigController {
 	@RequestMapping(value="/api/ovpn/client_config_providers",method=RequestMethod.GET)
 	public List<ConfigProvider> listClientConfigProviders(@RequestParam String search) throws AuthException {
 		AuthUtils.checkAdmin();
-		return ovpnConfigService.listClientConfigProviders(null, search);
+		return ovpnConfigService.listClientConfigProviders(search);
 	}
 	@RequestMapping(value="/api/ovpn/server_config_providers",method=RequestMethod.GET)
 	public List<ConfigProvider> listServerConfigProviders(@RequestParam String search) throws AuthException {
 		AuthUtils.checkAdmin();
-		return ovpnConfigService.listServerConfigProviders(null, search);
+		return ovpnConfigService.listServerConfigProviders(search);
 	}
 	
-	@RequestMapping(value="/api/ovpn/sources",method=RequestMethod.GET)
-	public List<OvpnSource> listSources(@RequestParam String search) throws AuthException {
+	@RequestMapping(value="/api/ovpn/vpns",method=RequestMethod.GET)
+	public List<Ovpn> listVpns(@RequestParam String search) throws AuthException {
 		AuthUtils.checkAdmin();
-		return ovpnConfigService.listSources(null, search);
+		return ovpnConfigService.listOvpns(null, search);
 	}
 	
-	@RequestMapping(value="/api/ovpn/sources",method=RequestMethod.POST)
-	public OvpnSource createSource(@RequestBody OvpnSource source) throws AuthException {
+	@RequestMapping(value="/api/ovpn/vpns",method=RequestMethod.POST)
+	public Ovpn createVpn(@RequestBody Ovpn source) throws AuthException {
 		AuthUtils.checkAdmin();
 		source.setId(null);
-		return ovpnConfigService.saveSource(source);
+		return ovpnConfigService.saveOvpn(source);
 	}
 	
-	@RequestMapping(value="/api/ovpn/sources/{id}",method=RequestMethod.GET)
-	public OvpnSource getSource(@PathVariable String id) throws AuthException {
+	@RequestMapping(value="/api/ovpn/vpns/{id}",method=RequestMethod.GET)
+	public Ovpn getVpn(@PathVariable String id) throws AuthException {
 		AuthUtils.checkAdmin();
-		return ovpnConfigService.getSource(id);
+		return ovpnConfigService.getOvpn(id);
 	}
 	
-	@RequestMapping(value="/api/ovpn/sources/{id}",method=RequestMethod.PUT)
-	public OvpnSource updateSource(@PathVariable String id, @RequestBody OvpnSource source) throws AuthException {
+	@RequestMapping(value="/api/ovpn/vpns/{id}",method=RequestMethod.PUT)
+	public Ovpn updateVpns(@PathVariable String id, @RequestBody Ovpn source) throws AuthException {
 		AuthUtils.checkAdmin();
 		source.setId(id);
-		return ovpnConfigService.saveSource(source);
+		return ovpnConfigService.saveOvpn(source);
 	}
 	
 	@RequestMapping(value="/api/ovpn/vpns/{id}/permissions",method=RequestMethod.GET)
@@ -127,6 +131,54 @@ public class OvpnConfigController {
 		return new ArrayList<>();
 	}
 	
+	@RequestMapping(value="/api/ovpn/vpns/{id}/client_config",method=RequestMethod.GET)
+	public void getClientConfig(@PathVariable String id, HttpServletResponse response) throws AuthException {
+		if(!AuthUtils.isLoggedIn()) {
+			throw new NotAuthenticatedException();
+		}
 
+		Identity i = IdentityHolder.get();
+		List<Group> groups = new ArrayList<>();
+		if(i!=null) {
+			if(i.getUser()!=null) {
+				groups.addAll(i.getUser().getGroups());
+			}
+			for(User u : i.getLinked()) {
+				groups.addAll(u.getGroups());
+			}
+		}
+		Ovpn resultVpn = null; 
+		List<Ovpn> myOvpns = ovpnConfigService.listOvpnsForGroups(groups,null);
+		for(Ovpn vpn : myOvpns){
+			if (vpn.getId().equals(id)) {
+				resultVpn = vpn;
+				break;
+			}
+		}
+		
+		if (resultVpn == null) {
+			throw new NotAuthorizedException();
+		}
+		
+		response.setContentType("application/x-openvpn-profile");
+		response.setHeader("Content-Disposition", String.format("attachment; filename=%1$s-%2$s.ovpn",i.getUser().getUsername(),  resultVpn.getName() ));
 
+		OvpnClientConfigService configService;
+		try {
+			Class<?> clazz = Class.forName(resultVpn.getClientConfigurationProvider());
+			configService = (OvpnClientConfigService) clazz.newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException("Client Configuration implementation class not found", e);
+		}
+		try {
+			configService.setConfigruation(resultVpn.getClientConfiguration());
+			String clientConfig = configService.getClientConfiguration(resultVpn, i);
+			response.getOutputStream().write(clientConfig.getBytes("UTF-8"));
+		    response.flushBuffer();
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to generate client configuration", e);
+		}
+	}
+ 
+	
 }
