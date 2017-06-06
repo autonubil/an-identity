@@ -1,7 +1,11 @@
 package com.autonubil.identity.ovpn.api.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class OvpnOptions {
 
 	private String dev = "tun";
@@ -25,8 +29,16 @@ public class OvpnOptions {
 	private String cert;
 	private String tlsAuth;
 	
+	private boolean authUserPass = false;
 	
 	private List<OvpnRemote> remotes;
+
+	
+	public OvpnOptions () {
+		this.remotes = new ArrayList<>();
+	}
+
+	
 	public String getDev() {
 		return dev;
 	}
@@ -140,6 +152,16 @@ public class OvpnOptions {
 	}
 	public void setTlsAuth(String tlsAuth) {
 		this.tlsAuth = tlsAuth;
+	}
+
+
+	public boolean isAuthUserPass() {
+		return authUserPass;
+	}
+
+
+	public void setAuthUserPass(boolean authUserPass) {
+		this.authUserPass = authUserPass;
 	}
 	
 	 

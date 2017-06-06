@@ -160,13 +160,13 @@ angular.module("autonubil-intranet-ovpn")
 		OvpnService.save($scope.source,function(source) {
 			$scope.source = source;
 			$scope.changed = false;
-			$scope.update();
+			// $scope.update();
 		});
 	},700)
 	
 	$scope.startChange = function() {
 		$scope.changed = true;
-		$scope.save();
+		$scope.save(true);
 	};
 	
 	
@@ -203,6 +203,24 @@ angular.module("autonubil-intranet-ovpn")
 	};
 	
 })
+.directive('jsonText', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attr, ngModel) {            
+          function into(input) {
+            return JSON.parse(input);
+          }
+          function out(data) {
+            return JSON.stringify(data);
+          }
+          ngModel.$parsers.push(into);
+          ngModel.$formatters.push(out);
+
+        }
+    };
+});
+
 angular.module("autonubil-intranet-ovpn")
 .controller("VpnListController", function($scope,AuthService,OvpnService,$location) {
 

@@ -13,5 +13,24 @@
 			<artifactId>an-identity-ovpn-common</artifactId>
 			<version>0.1.14-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.bettercloud</groupId>
+			<artifactId>vault-java-driver</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk16</artifactId>
+			<version>1.46</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
+			<version>1.57</version>
+		</dependency>
+		
+		
+
 	</dependencies>
 </project>

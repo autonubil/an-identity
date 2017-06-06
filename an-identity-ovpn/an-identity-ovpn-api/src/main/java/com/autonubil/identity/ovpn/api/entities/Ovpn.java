@@ -1,26 +1,16 @@
 package com.autonubil.identity.ovpn.api.entities;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.autonubil.identity.ovpn.api.OvpnClientConfigService;
-import com.autonubil.identity.ovpn.api.OvpnConfigService;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class Ovpn {
-	
-	@Autowired
-	private OvpnConfigService ovpnConfigService;
-	
 	private String id;
 	private String name;
 	private String description;
 	private String clientConfigurationProvider;
 	private String serverConfigurationProvider;
-	private OvpnClientConfigService clientConfigurationService;
-	
 	private JsonNode clientConfiguration;
 	private JsonNode serverConfiguration;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -52,8 +42,7 @@ public class Ovpn {
 	public void setClientConfigurationProvider(String clientConfigurationProvider) {
 		this.clientConfigurationProvider = clientConfigurationProvider;
 	}
-  
-	
+
 	public String getServerConfigurationProvider() {
 		return serverConfigurationProvider;
 	}
@@ -61,13 +50,14 @@ public class Ovpn {
 	public void setServerConfigurationProvider(String serverConfigurationProvider) {
 		this.serverConfigurationProvider = serverConfigurationProvider;
 	}
-  
-	
+
 	public JsonNode getClientConfiguration() {
 		return clientConfiguration;
 	}
 
 	public void setClientConfiguration(JsonNode clientConfiguration) {
+		if ((clientConfiguration != null) && (!clientConfiguration.isObject()))
+			throw new IllegalArgumentException("clientConfiguration must be an JSON Object");
 		this.clientConfiguration = clientConfiguration;
 	}
 
@@ -76,6 +66,8 @@ public class Ovpn {
 	}
 
 	public void setServerConfiguration(JsonNode serverConfiguration) {
+		if ((serverConfiguration != null) && (!serverConfiguration.isObject()))
+			throw new IllegalArgumentException("serverConfiguration must be an JSON Object");
 		this.serverConfiguration = serverConfiguration;
 	}
 

@@ -76,34 +76,12 @@ public class Renderer {
 		result.put("tls-auth", ovpnOptions.getTlsAuth());
 		result.put("cert", ovpnOptions.getCert());
 		
+		result.put("remotes", ovpnOptions.getRemotes());
+		
+		result.put("auth-user-pass", ovpnOptions.isAuthUserPass());
+		
 		
 		return result;
-	}
-	
-	public Map<String,Object> getDefaultOvpnParams() {
-		Map<String,Object> result = new HashMap<>();
-		result.put("dev", "tun");
-		result.put("tun-mtu", 6000);
-		result.put("fragment ", null);
-		result.put("mssfix", 0);
-		result.put("sndbuf", 100000);
-		result.put("rcvbuf", 100000);
-		result.put("cipher", "AES-256-CBC");
-		result.put("auth", "SHA256");
-		
-		result.put("resolv-retry", "infinite");
-		result.put("nobind", true);
-		result.put("persist-key", true);
-		result.put("persist-tun", true);
-		result.put("ns-cert-type", "server");
-		result.put("setenv", "PUSH_PEER_INFO");
-		result.put("verb", 3);
-		
-		result.put("ca", null);
-		result.put("tls-auth", null);
-		result.put("cert", null);
-		
-		return result;
-	}
+	} 
 	
 }

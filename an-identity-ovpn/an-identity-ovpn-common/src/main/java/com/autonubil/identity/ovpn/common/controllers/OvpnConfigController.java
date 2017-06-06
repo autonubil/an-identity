@@ -162,11 +162,21 @@ public class OvpnConfigController {
 		
 		response.setContentType("application/x-openvpn-profile");
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%1$s-%2$s.ovpn",i.getUser().getUsername(),  resultVpn.getName() ));
+		response.setHeader("Cache-Control" ,"no-store, no-cache, must-revalidate");
 
-		OvpnClientConfigService configService;
+		OvpnClientConfigService configService = null;
 		try {
-			Class<?> clazz = Class.forName(resultVpn.getClientConfigurationProvider());
-			configService = (OvpnClientConfigService) clazz.newInstance();
+			List<ConfigProvider> clientConfigProviders = ovpnConfigService.listClientConfigProviders(resultVpn.getClientConfigurationProvider());
+			for (ConfigProvider configProvider : clientConfigProviders) {
+				if (configProvider.getId().equals(resultVpn.getClientConfigurationProvider())) {
+					Class<?> clazz = Class.forName(configProvider.getClassName());
+					configService = (OvpnClientConfigService) clazz.newInstance();
+					break;
+				}
+			}
+			if (configService == null) {
+				throw new IllegalArgumentException("Config Provider not found");
+			}
 		} catch (Exception e) {
 			throw new RuntimeException("Client Configuration implementation class not found", e);
 		}

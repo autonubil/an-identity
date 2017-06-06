@@ -1,10 +1,13 @@
 <div class="col-md-12" ng-controller="MyAppsController">
+   <div ng-if="apps && apps.length > 0">
 	<h4>Applications</h4>
+	<div ng-if="apps && apps.length > 5">
 	<div class="form-group">
 		<input ng-model="search" class="form-control" ng-change="updateApps()" placeholder="type to filter">
 	</div>
+	</div>
 	<table>
-		<tr ng-repeat="app in apps" class="well-sm">
+		<tr ng-repeat="app in apps" class="well-sm" style="margin-bottom:0.2em;">
 			<td>
 				<img src="/autonubil/api/apps/apps/{{app.id}}/icon" style="max-height: 3em; min-height: 3em"/>
 			</td>
@@ -12,9 +15,10 @@
 				&nbsp;
 			</td>
 			<td style="padding-right: 10px">
-				<label><a href="{{app.url}}">{{app.name}}</a></label>
-				{{app.url}}
+				<label><a href="{{app.url}}">{{app.name}}</a></label><br/>
+				{{app.description}}
 			</td>
 		</tr>
 	</table>
+	</div>
 </div>

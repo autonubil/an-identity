@@ -1,9 +1,21 @@
 package com.autonubil.identity.ovpn.api.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class OvpnRemote {
 	private String host;
 	private int port = 1194;
 	private String protocol ="udp";
+	
+	public OvpnRemote() {
+		
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s %d %s", this.getHost(), this.getPort(), this.getProtocol());
+	}
 	
 	public String getHost() {
 		return host;

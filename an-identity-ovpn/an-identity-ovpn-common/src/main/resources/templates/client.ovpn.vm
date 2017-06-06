@@ -1,43 +1,49 @@
 client
-#foreach ($remote in ${remotes})  
-remote ${remote}
+#foreach ($remote in $remotes)  
+remote $remote
 #end
 dev ${dev}
 tun-mtu ${tun-mtu}
-#if ( ${fragment} ) fragment 0 #end
- 
+#if ( ${fragment} )fragment 0
+#end
 mssfix ${mssfix}
 sndbuf ${sndbuf}
 rcvbuf ${rcvbuf}
-
 cipher ${cipher}
-auth  ${auth}
+auth ${auth}
+#if ( ${auth-user-pass} )auth-user-pass
+#end
 
 resolv-retry ${resolv-retry}
-#if (${nobind}) nobind #end
-#if (${persist-key}) persist-key #end
-#if (${persist-tun}) persist-tun #end
-#if (${ns-cert-type}) ns-cert-type ${ns-cert-type} #end
-#if (${setenv}) setenv ${setenv} #end
-
+#if (${nobind})nobind
+#end
+#if (${persist-key})persist-key
+#end
+#if (${persist-tun})persist-tun
+#end
+#if (${ns-cert-type})ns-cert-type ${ns-cert-type}
+#end
+#if (${setenv})setenv ${setenv}
+#end
 verb ${verb}
-
 #if (${ca})
 <ca>
 ${ca}
 </ca>
 #end
-
 #if (${cert})
 <cert>
 ${cert}
 </cert>
 #end
-
+#if (${key})
+<key>
+${key}
+</key>
+#end
 #if (${tls-auth})
 key-direction 1
 <tls-auth>
 ${tls-auth}
 </tls-auth>
 #end
- 

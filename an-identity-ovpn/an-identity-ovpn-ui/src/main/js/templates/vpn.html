@@ -44,7 +44,7 @@
 				<div class="col-md-12">
 					<div class="form form-group">
 						<label>Client Configuration (JSON)</label>
-						<textarea ng-model="source.clientConfiguration"
+						<textarea json-text ng-model="source.clientConfiguration"
 							ng-change="startChange()" class="form-control"
 							style="width: 100%; height: 300px;"></textarea>
 
@@ -66,14 +66,14 @@
 					ng-if="serverConfigProviders && serverConfigProviders.length > 0">
 					
 					<select class="form-control"
-					    ng-change="startChange()" data-ng-model="source.serverConfigurationProvider">
+					    ng-change="save()" data-ng-model="source.serverConfigurationProvider">
 					    <option ng-repeat="serverConfigProvider in serverConfigProviders" value="{{serverConfigProvider.id}}">{{serverConfigProvider.displayName}}</option>
 					</select>
 				</div>
 				<div class="col-md-12">
 					<div class="form form-group">
 						<label>Server Configuration (JSON)</label>
-						<textarea ng-model="source.serverConfiguration"
+						<textarea json-text ng-model="source.serverConfiguration"
 							ng-change="startChange()" class="form-control"
 							style="width: 100%; height: 300px;"></textarea>
 

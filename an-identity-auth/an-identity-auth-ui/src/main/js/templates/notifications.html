@@ -1,6 +1,8 @@
 <div class="col-md-12" ng-controller="NotificationController">
-	<h4>Notifications</h4>
-	<div ng-repeat="notification in status.identity.user.notifications"  ng-class="['alert',{'alert-danger':notification.level=='ERROR'},{'alert-warning':notification.level=='WARN'},{'alert-info':notification.level=='INFO'}]">
-		{{notification.message}}
-	</div>  
+	<div ng-if="status.identity.user.notifications && status.identity.user.notifications.length > 0">
+		<h4>Notifications</h4>
+		<div ng-repeat="notification in status.identity.user.notifications"
+			ng-class="['alert',{'alert-danger':notification.level=='ERROR'},{'alert-warning':notification.level=='WARN'},{'alert-info':notification.level=='INFO'}]">
+			{{notification.message}}</div>
+	</div>
 </div>

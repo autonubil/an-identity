@@ -1,14 +1,66 @@
 <div class="col-md-12" ng-controller="MyOvpnsController">
-	<h4>VPNs</h4>
-	<div class="form-group">
-		<input ng-model="search" class="form-control" ng-change="updateVpns()" placeholder="type to filter">
+	<div ng-if="vpns && vpns.length > 0">
+		<h4>VPNs</h4>
+		<div class="col-md-12" ng-if="vpns && vpns.length > 5">
+			<div class="form-group">
+				<input ng-model="search" class="form-control"
+					ng-change="updateVpns()" placeholder="type to filter">
+			</div>
+		</div>
+		<table>
+			<tr ng-repeat="vpn in vpns" class="well-sm"
+				style="padding-bottom: 0.3em;">
+				<td><img src="/ovpn/img/openvpn.png"
+					style="max-height: 3em; min-height: 3em" /></td>
+				<td style="padding-right: 10px">&nbsp;</td>
+
+				<td style="padding-right: 10px"><label><a
+						target="_blank"
+						href="autonubil/api/ovpn/vpns/{{vpn.id}}/client_config">{{vpn.name}}</a></label><br />
+					{{vpn.description}}</td>
+			</tr>
+		</table>
+
+
+		<h4>Clients</h4>
+		<table>
+			<tr class="well-sm" style="padding-bottom: 0.3em;">
+				<td style="min-width: 4em;"><a
+						target="_blank"
+						href="https://swupdate.openvpn.org/community/releases/openvpn-install-2.4.2-I601.exe"><img
+					src="/ovpn/img/windows-logo.png"
+					style="max-height: 3em; min-height: 3em" /></a><br /> <label><a
+						target="_blank"
+						href="https://swupdate.openvpn.org/community/releases/openvpn-install-2.4.2-I601.exe">Windows</a></label><br /></td>
+				<td style="padding-right: 10px">&nbsp;</td>
+
+				<td style="min-width: 4em;"><a
+						target="_blank"
+						href="http://openvpn.net/clients/index.php?client=openvpn_connect_ios"><img
+					src="/ovpn/img/Apple_logo_black.png"
+					style="max-height: 3em; min-height: 3em" /></a><br /> <label><a
+						target="_blank"
+						href="http://openvpn.net/clients/index.php?client=openvpn_connect_ios">iOS</a></label><br />
+				</td>
+				<td style="padding-right: 10px">&nbsp;</td>
+
+				<td style="min-width: 4em;"><a
+						target="_blank"
+						href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn"><img src="/ovpn/img/android.png"
+					style="max-height: 3em; min-height: 3em" /></a><br /> <label><a
+						target="_blank"
+						href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn">Android</a></label><br />
+				</td>
+				<td style="padding-right: 10px">&nbsp;</td>
+
+				<td style="min-width: 4em;"><a
+						target="_blank"
+						href="http://openvpn.net/clients/index.php?client=openvpn_linuxn"><img src="/ovpn/img/tux.png"
+					style="max-height: 3em; min-height: 3em" /></a><br /> <label><a
+						target="_blank"
+						href="http://openvpn.net/clients/index.php?client=openvpn_linuxn">Linux</a></label><br />
+				</td>
+			</tr>
+		</table>
 	</div>
-	<table>
-		<tr ng-repeat="vpn in vpns" class="well-sm">
-			<td style="padding-right: 10px">
-				<label><a href="autonubil/api/ovpn/vpns/{{vpn.id}}/client_config">{{vpn.name}}</a></label>
-				{{vpn.description}}
-			</td>
-		</tr>
-	</table>
 </div>
