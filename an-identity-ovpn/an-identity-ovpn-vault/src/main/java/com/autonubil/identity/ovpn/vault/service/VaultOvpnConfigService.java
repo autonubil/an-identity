@@ -273,14 +273,14 @@ public class VaultOvpnConfigService implements OvpnClientConfigService {
 					validityEndDate = maxvalidityEndDate;
 				
 				Map<String,String> csrParams = new HashMap<>();
-//				csrParams.put("common_name",    identity.getUser().getSourceId()+"\\:"+ identity.getUser().getUsername());
+//				csrParams.put("common_name",    +identity.getUser().getSourceId() );
 				csrParams.put("csr", csr);
 				csrParams.put("format", "pem");
 				csrParams.put("key_bits", "2048");
 				csrParams.put("key_type", "rsa");
 				
 				csrParams.put("ttl", Long.toString( (validityEndDate.getTime() - now.getTime() ) / 1000 ) );
-			 	LogicalResponse signResponse = vault.logical().write(this.configuration.getPkiPath()+"/sign-verbatim/vpnuser", csrParams);
+			 	LogicalResponse signResponse = vault.logical().write(this.configuration.getPkiPath()+"/sign/vpnuser", csrParams);
 			 	String cert = signResponse.getData().get("certificate");
 			 	
 			 	
