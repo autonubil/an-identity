@@ -9,56 +9,52 @@
 		</div>
 		<table>
 			<tr ng-repeat="vpn in vpns" class="well-sm"
-				style="padding-bottom: 0.3em;">
+				style="height: 4em;">
 				<td><img src="/ovpn/img/openvpn.png"
-					style="max-height: 3em; min-height: 3em" /></td>
+					style="max-height: 3.2em; min-height: 3.2em" /></td>
 				<td style="padding-right: 10px">&nbsp;</td>
 
 				<td style="padding-right: 10px"><label><a
-						target="_blank"
-						href="autonubil/api/ovpn/vpns/{{vpn.id}}/client_config">{{vpn.name}}</a></label><br />
+						href="autonubil/api/ovpn/vpns/{{vpn.id}}/client-config">{{vpn.name}}</a> </label>&nbsp;
+						<a title="download" href="autonubil/api/ovpn/vpns/{{vpn.id}}/client-config"><span class="glyphicon glyphicon-download"></span></a><br />
 					{{vpn.description}}</td>
 			</tr>
 		</table>
 
 
-		<h4>Clients</h4>
-		<table>
-			<tr class="well-sm" style="padding-bottom: 0.3em;">
-				<td style="min-width: 4em;"><a
+		<h5>OpenVPN Clients</h5>
+		<table style="zoom:80%">
+			<tr class="well-sm" style="height: 4em;" valign="top">
+				<td style="min-width: 4em;"><center><a
 						target="_blank"
 						href="https://swupdate.openvpn.org/community/releases/openvpn-install-2.4.2-I601.exe"><img
 					src="/ovpn/img/windows-logo.png"
-					style="max-height: 3em; min-height: 3em" /></a><br /> <label><a
-						target="_blank"
-						href="https://swupdate.openvpn.org/community/releases/openvpn-install-2.4.2-I601.exe">Windows</a></label><br /></td>
+					style="max-height: 3.2em; min-height: 3.2em" /></a><br /><label><a
+						href="https://swupdate.openvpn.org/community/releases/openvpn-install-2.4.2-I601.exe">Windows</a></label></center></td>
+						
 				<td style="padding-right: 10px">&nbsp;</td>
 
-				<td style="min-width: 4em;"><a
-						target="_blank"
+				<td style="min-width: 4em;"><center><a
 						href="http://openvpn.net/clients/index.php?client=openvpn_connect_ios"><img
 					src="/ovpn/img/Apple_logo_black.png"
-					style="max-height: 3em; min-height: 3em" /></a><br /> <label><a
+					style="max-height: 3.2em; min-height: 3.2em" /></a><br /> <label><a
 						target="_blank"
-						href="http://openvpn.net/clients/index.php?client=openvpn_connect_ios">iOS</a></label><br />
+						href="http://openvpn.net/clients/index.php?client=openvpn_connect_ios">iOS</a></label></center>
 				</td>
 				<td style="padding-right: 10px">&nbsp;</td>
 
-				<td style="min-width: 4em;"><a
-						target="_blank"
+				<td style="min-width: 4em;"><center><a
 						href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn"><img src="/ovpn/img/android.png"
-					style="max-height: 3em; min-height: 3em" /></a><br /> <label><a
-						target="_blank"
-						href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn">Android</a></label><br />
+					style="max-height: 3.2em; min-height: 3.2em" /></a><br /> <label><a
+						href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn">Android</a></label></center>
 				</td>
 				<td style="padding-right: 10px">&nbsp;</td>
 
-				<td style="min-width: 4em;"><a
-						target="_blank"
+				<td style="min-width: 4em;"><center><a
 						href="http://openvpn.net/clients/index.php?client=openvpn_linuxn"><img src="/ovpn/img/tux.png"
-					style="max-height: 3em; min-height: 3em" /></a><br /> <label><a
+					style="max-height: 3.2em; min-height: 3.2em" /></a><br /> <label><a
 						target="_blank"
-						href="http://openvpn.net/clients/index.php?client=openvpn_linuxn">Linux</a></label><br />
+						href="http://openvpn.net/clients/index.php?client=openvpn_linuxn">Linux</a></label></center>
 				</td>
 			</tr>
 		</table>

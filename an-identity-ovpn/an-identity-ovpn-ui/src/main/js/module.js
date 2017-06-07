@@ -16,10 +16,6 @@ angular.module("autonubil-intranet-ovpn")
 		controller : "VpnEditController",
 		templateUrl : "ovpn/templates/vpn.html" 
 	});
-	
-	
-
-	
 
 });
 

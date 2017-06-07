@@ -150,7 +150,7 @@ public class AdConnection extends AbstractLdapConnection {
 		byte[] b = (byte[])r.getAttributes().get("objectGUID").get();
 		user.setId(Hex.encodeHexString(b));
 		user.setDisplayName(getAttribute(r, "name", ""));
-		user.setCn(getAttribute(r, "cn", ""));
+		user.setDn(r.getNameInNamespace());
 		user.setDisplayName(getAttribute(r, "displayName", ""));
 		user.setUsername(getAttribute(r, "sAMAccountName",""));
 		user.setAccountName(getAttribute(r, "userPrincipalName",""));

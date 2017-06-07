@@ -95,7 +95,7 @@ angular.module("autonubil-intranet-ovpn")
             return JSON.parse(input);
           }
           function out(data) {
-            return JSON.stringify(data);
+            return JSON.stringify(data,null, 2);
           }
           ngModel.$parsers.push(into);
           ngModel.$formatters.push(out);

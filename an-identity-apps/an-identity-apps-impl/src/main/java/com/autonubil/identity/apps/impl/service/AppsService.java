@@ -188,6 +188,7 @@ public class AppsService {
 		JoinableTable app = s.fromTable("app");
 		s.select(Aggregation.NONE, app, "id", "id");
 		s.select(Aggregation.NONE, app, "name", "name");
+		s.select(Aggregation.NONE, app, "description", "description");
 		s.select(Aggregation.NONE, app, "url", "url");
 		
 		if(!StringUtils.isEmpty(search)) {
@@ -276,6 +277,7 @@ public class AppsService {
 			App out = new App();
 			out.setId(id);
 			out.setName(rs.getString("name"));
+			out.setDescription(rs.getString("description"));
 			out.setUrl(rs.getString("url"));
 			getApps().add(out);
 		}

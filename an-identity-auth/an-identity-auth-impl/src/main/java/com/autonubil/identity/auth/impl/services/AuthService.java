@@ -49,15 +49,21 @@ public class AuthService {
 			throw e;
 		} finally {
 			try {
-				Thread.sleep((start+1000)-System.currentTimeMillis());
+				int delay  = (int) ((start+3000)-System.currentTimeMillis());
+				if (delay > 0)
+					Thread.sleep(delay);
 			} catch (InterruptedException e) {
 			}
 		}
 		return false;
 	}
 
-	
+
 	public Identity authenticate(Credentials c) throws AuthException {
+		return authenticate(c, true);
+	}
+	
+	public Identity authenticate(Credentials c, boolean getLinked) throws AuthException {
 		Identity identity = new Identity();
 		User user = null;
 		long start = System.currentTimeMillis();
@@ -82,13 +88,15 @@ public class AuthService {
 			}
 			if(user!=null) {
 				identity.setUser(user);
-				for(AuthenticationProvider ap : authProviders) {
-					try {
-						for(User u : ap.getLinked(user)) {
-							identity.addLinked(u);
+				if (getLinked) {
+					for(AuthenticationProvider ap : authProviders) {
+						try {
+							for(User u : ap.getLinked(user)) {
+								identity.addLinked(u);
+							}
+						} catch (Exception e) {
+							log.warn("unable to get linked users: ",e);
 						}
-					} catch (Exception e) {
-						log.warn("unable to get linked users: ",e);
 					}
 				}
 				

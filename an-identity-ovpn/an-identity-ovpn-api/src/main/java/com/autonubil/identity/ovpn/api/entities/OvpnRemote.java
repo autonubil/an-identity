@@ -8,6 +8,8 @@ public class OvpnRemote {
 	private int port = 1194;
 	private String protocol ="udp";
 	
+	private OvpnProxy proxy;
+	
 	public OvpnRemote() {
 		
 	}
@@ -35,5 +37,14 @@ public class OvpnRemote {
 	public void setProtocol(String protocol) {
 		this.protocol = protocol;
 	}
+
+	public OvpnProxy getProxy() {
+		return proxy;
+	}
+
+	public void setProxy(OvpnProxy proxy) {
+		this.proxy = proxy;
+	}
+	
 	
 }

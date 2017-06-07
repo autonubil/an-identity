@@ -1,9 +1,18 @@
 client
-#foreach ($remote in $remotes)  
+#foreach ($remote in $remotes)
+<connection>  
 remote $remote
+#if ($remote.proxy)
+http-proxy ${remote.proxy}
+#if ($remote.proxy.retry)http-proxy-retry
+#end
+#if ($remote.proxy.timeout > 0)http-proxy-timeout ${remote.proxy.timeout}
+#end
+#end
+</connection>
 #end
 dev ${dev}
-tun-mtu ${tun-mtu}
+topology subnet
 #if ( ${fragment} )fragment 0
 #end
 mssfix ${mssfix}

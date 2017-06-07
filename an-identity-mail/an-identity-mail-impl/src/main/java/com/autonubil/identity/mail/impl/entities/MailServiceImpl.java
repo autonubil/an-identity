@@ -132,11 +132,6 @@ public class MailServiceImpl implements MailService {
 			}
 			throw new MailException("error sending mail" ,e);
 		}
-		
-		
-		
-		
-
 	}
 	
 	

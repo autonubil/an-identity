@@ -138,7 +138,7 @@ public class ApacheDsConnection extends AbstractLdapConnection  {
 	@Override
 	public LdapUser getUser(LdapUser user, SearchResult r) throws NamingException {
 		super.getUser(user, r);
-    	user.setMail(getAttribute(r, "mail","")+"");
+		user.setMail(getAttribute(r, "mail","")+"");
     	user.setOrganization(getAttribute(r, "o","")+"");
     	user.setDepartment(getAttribute(r, "ou","")+"");
     	user.setId(getAttribute(r, "entryUUID","")+"");

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class OvpnOptions {
 
 	private String dev = "tun";
-	private int tunMtu = 6000;
 	private int fragment;
 	private int mssfix = 0;
 	private int sndbuf = 10000;
@@ -45,12 +44,7 @@ public class OvpnOptions {
 	public void setDev(String dev) {
 		this.dev = dev;
 	}
-	public int getTunMtu() {
-		return tunMtu;
-	}
-	public void setTunMtu(int tunMtu) {
-		this.tunMtu = tunMtu;
-	}
+ 
 	public int getFragment() {
 		return fragment;
 	}
@@ -163,7 +157,7 @@ public class OvpnOptions {
 	public void setAuthUserPass(boolean authUserPass) {
 		this.authUserPass = authUserPass;
 	}
-	
+
 	 
 	
 }

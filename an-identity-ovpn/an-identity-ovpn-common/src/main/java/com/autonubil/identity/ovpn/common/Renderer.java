@@ -56,7 +56,6 @@ public class Renderer {
 		Map<String,Object> result = new HashMap<>();
 		
 		result.put("dev", ovpnOptions.getDev());
-		result.put("tun-mtu", ovpnOptions.getTunMtu());
 		result.put("fragment ", ovpnOptions.getFragment());
 		result.put("mssfix", ovpnOptions.getMssfix());
 		result.put("sndbuf", ovpnOptions.getSndbuf());

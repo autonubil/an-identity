@@ -43,6 +43,7 @@ import org.bouncycastle.jce.PKCS10CertificationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.autonubil.identity.audit.api.AuditLogger;
 import com.autonubil.identity.auth.api.entities.Identity;
 import com.autonubil.identity.ovpn.api.OvpnClientConfigService;
 import com.autonubil.identity.ovpn.api.OvpnConfigService;
@@ -65,6 +66,10 @@ public class VaultOvpnConfigService implements OvpnClientConfigService {
 
 	@Autowired
 	private OvpnConfigService ovpnConfigService;
+	
+	@Autowired
+	private AuditLogger auditLogger;
+
 
 	private VaultConfiguration configuration = new VaultConfiguration();
 
@@ -124,15 +129,15 @@ public class VaultOvpnConfigService implements OvpnClientConfigService {
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 		
 		
-		String subjectPath =  "dc="+ovpn.getName()+",CN=" + subject+ "@"+sourceId;
+		String subjectPath =  "DC="+ovpn.getName()+",CN=" + subject+"@" +sourceId ;
 		if ( (dnPrefix != null) && (dnPrefix.length() > 0) ) {
 			subjectPath = dnPrefix+","+ subjectPath;
 		}
 		X500Principal  subjectDN = new X500Principal (subjectPath);
 		
 		
-		Vector oids = new Vector();
-		Vector values = new Vector();
+		Vector<ASN1ObjectIdentifier> oids = new Vector<>();
+		Vector<X509Extension> values = new Vector<>();
         
         
         KeyUsage keyUsage = new KeyUsage(KeyUsage.digitalSignature | KeyUsage.keyAgreement);
@@ -260,7 +265,7 @@ public class VaultOvpnConfigService implements OvpnClientConfigService {
 				X509Certificate caCert = getCaCert(auth.getAuthClientToken());
 				Date caExpiry = caCert.getNotAfter();
 				Calendar calendar = Calendar.getInstance();
-				calendar.add(Calendar.MONTH, 6);
+				calendar.add(Calendar.HOUR, 8);
 				
 				Date maxvalidityEndDate = new Date(calendar.getTime().getTime());
 				/*
@@ -293,8 +298,12 @@ public class VaultOvpnConfigService implements OvpnClientConfigService {
 				userData.clear();
 				userData.put("key", keypem);
 				userData.put("cert", cert);
-				LogicalResponse writeUserDataToCubbyHoleResponse =  vault.logical().write("secret/vpn/users/" + identity.getUser().getUsername(), userData);
-			 	
+				vault.logical().write("secret/vpn/users/" + identity.getUser().getUsername(), userData);
+				try {
+					auditLogger.log("OPENVPN", "CA", "", "", identity.getUser().getSourceName()+":"+identity.getUser().getDisplayName(), "Issued new user certificate");
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 			params.put("ca", getCaPath(auth.getAuthClientToken()));
 			

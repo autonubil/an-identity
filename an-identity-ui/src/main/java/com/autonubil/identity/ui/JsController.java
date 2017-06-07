@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 
@@ -43,7 +41,7 @@ public class JsController {
 	@PostConstruct
 	public void init() throws UnsupportedEncodingException {
 		
-		ExecutorService e = Executors.newScheduledThreadPool(1);
+//		ExecutorService e = Executors.newScheduledThreadPool(1);
 
 		ConcatenateProcessor modules = new ConcatenateProcessor();
 		ConcatenateProcessor templates = new ConcatenateProcessor();
@@ -65,10 +63,16 @@ public class JsController {
 		@Override
 		public void processMatch(File classpathElt, String relativePath, byte[] fileContents) throws IOException {
 			log.info(" -----> "+classpathElt.getAbsolutePath()+":"+relativePath);
+			baos.write(("//  "+ relativePath+"\n").getBytes());
 			baos.write(fileContents);
 		}
 		
 		public byte[] getBytes() {
+			try {
+				baos.flush();
+			} catch (IOException e) {
+				log.warn("could not flush buffer", e);
+			}
 			return baos.toByteArray();
 		}
 		

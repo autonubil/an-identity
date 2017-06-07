@@ -1,6 +1,7 @@
 package com.autonubil.identity.ldap.impl.util.factories.ipa;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
+import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.lang3.StringUtils;
@@ -76,7 +78,7 @@ public class IpaConnection extends AbstractLdapConnection  {
 			"o", 
 			"gidNumber", 
 			"uidNumber", 
-			"physicalDeliveryOfficeName" 
+			"physicalDeliveryOfficeName"
 		};
 	
 	public static final String[] groupAttributes = new String[] { "ipaUniqueId", "cn", "gidNumber"};
@@ -90,6 +92,52 @@ public class IpaConnection extends AbstractLdapConnection  {
 	@Override
 	public String[] getUserObjectClasses() {
 		return userObjectClasses;
+	}
+	
+	@Override
+	public List<LdapGroup> getGroupsForUser(String userId, boolean recursive) throws Exception {
+		List<LdapGroup> groups = new ArrayList<>();
+		LdapUser lu = getUserById(userId);
+		if (lu == null) {
+			return groups;
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("(&(objectClass=groupOfNames)(|");
+
+		String groupBase = this.getGroupSearchBase();
+		
+		String filter = getUserByIdFilter(userId);
+		log.info("filter: " + filter);
+		SearchResult sr = get(this.getUserSearchBase(), filter, new String[] {"memberof"});
+		if (sr != null) {
+			Attribute a = sr.getAttributes().get("memberof");
+			for(int i=0;i<a.size();i++) {
+				String groupDn =a.get(i).toString(); 
+				if (groupDn.toString().endsWith(groupBase)) {
+					sb.append("(");
+					sb.append(a.get(i).toString().substring(0, groupDn.length() - groupBase.length() -1));
+					sb.append(")");
+				}
+			}
+		}
+		sb.append("))");
+		
+		SearchControls searchControls = new SearchControls();
+		searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+		searchControls.setReturningAttributes(getGroupAttributes());
+		filter = sb.toString();
+		try {
+			LdapSearchResultGroupMapper m = new LdapSearchResultGroupMapper();
+			groups = list(groupBase, filter, m, getGroupAttributes());
+			if (log.isDebugEnabled())
+				log.debug("looking for user groups. filter: " + filter + " / " + groups.size() + " results");
+		} catch (Exception e) {
+			log.error("error looking for user groups filter: " + filter, e);
+		}
+	 
+		Collections.sort(groups);
+		return groups;
 	}
 	
 	@Override
@@ -186,6 +234,7 @@ public class IpaConnection extends AbstractLdapConnection  {
 	@Override
 	public LdapUser getUser(LdapUser ou, SearchResult r) throws NamingException {
 		super.getUser(ou,r);
+		ou.setDn(r.getNameInNamespace());
     	ou.setMail(getAttribute(r, "mail","")+"");
     	ou.setOrganization(getAttribute(r, "o","")+"");
     	ou.setDepartment(getAttribute(r, "ou","")+"");

@@ -71,6 +71,7 @@ public class AppsController {
 	@RequestMapping(value="/api/apps/apps/{id}/icon",method=RequestMethod.GET)
 	public void getIcon(@PathVariable String id, HttpServletResponse response) throws Exception {
 		byte[] b = appsService.getIcon(id);
+		response.addHeader("Cache-Control", "privat,max-age=86400");
 		response.getOutputStream().write(b);
 	}
 	

@@ -16,10 +16,6 @@ angular.module("autonubil-intranet-ovpn")
 		controller : "VpnEditController",
 		templateUrl : "ovpn/templates/vpn.html" 
 	});
-	
-	
-
-	
 
 });
 
@@ -66,7 +62,7 @@ angular.module("autonubil-intranet-myovpns")
 			return Restangular.all("autonubil/api/authentication").customGET("authenticate").then(success);
 		},
 		getVpns : function(params,success) {
-			return Restangular.all("autonubil/api/ovpn/my_vpns").getList(params).then(success);
+			return Restangular.all("autonubil/api/ovpn/myvpns").getList(params).then(success);
 		},
 	};
 	
@@ -92,10 +88,10 @@ angular.module("autonubil-intranet-ovpn")
 		},
 		
 		getServerConfigProviderList : function(search,success) {
-			return Restangular.all("autonubil/api/ovpn/server_config_providers").getList({search: search}).then(success);
+			return Restangular.all("autonubil/api/ovpn/server-config-providers").getList({search: search}).then(success);
 		},
 		getClientConfigProviderList : function(search,success) {
-			return Restangular.all("autonubil/api/ovpn/client_config_providers").getList({search: search}).then(success);
+			return Restangular.all("autonubil/api/ovpn/client-config-providers").getList({search: search}).then(success);
 		},
 		 
 		listPermissions : function(id,success) {
@@ -212,7 +208,7 @@ angular.module("autonubil-intranet-ovpn")
             return JSON.parse(input);
           }
           function out(data) {
-            return JSON.stringify(data);
+            return JSON.stringify(data,null, 2);
           }
           ngModel.$parsers.push(into);
           ngModel.$formatters.push(out);

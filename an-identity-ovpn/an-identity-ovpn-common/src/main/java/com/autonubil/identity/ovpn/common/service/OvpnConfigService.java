@@ -97,6 +97,17 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		}
 		return null;
 	}
+	
+	@Override
+	public Ovpn getOvpnByName(String name) {
+		List<Ovpn> a = listOvpns(null, name);
+		for (Ovpn ovpn : a) {
+			if (ovpn.getName().equals(name))
+				return ovpn;
+		}
+		
+		return null;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -190,6 +201,7 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		out = templ.query(s.toSQL(), s.getParams(), new OvpnPermissionRowMapper());
 		return out;
 	}
+
 
 	/*
 	 * (non-Javadoc)

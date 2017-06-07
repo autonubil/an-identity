@@ -185,8 +185,5 @@ public class LdapUser extends LdapObject implements Comparable<LdapUser>, User {
 	public void addNotification(Notification notification) {
 		this.notifications.add(notification);
 	}
-
-
-	
 	
 }
