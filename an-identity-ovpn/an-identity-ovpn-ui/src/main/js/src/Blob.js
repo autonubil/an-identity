@@ -5,27 +5,17 @@
  * By Eli Grey, http://eligrey.com
  * By Devin Samarin, https://github.com/dsamarin
  * License: MIT
- *   See https://github.com/eligrey/Blob.js/blob/master/LICENSE.md
- */
-
-/*global self, unescape */
-/*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
-  plusplus: true */
-
-/*! @source http://purl.eligrey.com/github/Blob.js/blob/master/Blob.js */
-
-(function (view) {
+ * See https://github.com/eligrey/Blob.js/blob/master/LICENSE.md
+ */ /*global self, unescape */ /*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
+  plusplus: true */ /*! @source http://purl.eligrey.com/github/Blob.js/blob/master/Blob.js */ (function (view) {
 	"use strict";
-
 	view.URL = view.URL || view.webkitURL;
-
 	if (view.Blob && view.URL) {
 		try {
 			new Blob;
 			return;
 		} catch (e) {}
 	}
-
 	// Internally we use a BlobBuilder implementation to base Blob off of
 	// in order to support older browsers that only have BlobBuilder
 	var BlobBuilder = view.BlobBuilder || view.WebKitBlobBuilder || view.MozBlobBuilder || (function(view) {
@@ -59,10 +49,8 @@
 			, URL = real_URL
 			, btoa = view.btoa
 			, atob = view.atob
-
 			, ArrayBuffer = view.ArrayBuffer
 			, Uint8Array = view.Uint8Array
-
 			, origin = /^[\w-]+:\/*\[?[\w\.:-]+\]?(?::[0-9]+)?/
 		;
 		FakeBlob.fake = FB_proto.fake = true;
@@ -183,7 +171,6 @@
 		};
 		return FakeBlobBuilder;
 	}(view));
-
 	view.Blob = function(blobParts, options) {
 		var type = options ? (options.type || "") : "";
 		var builder = new BlobBuilder();
@@ -203,7 +190,6 @@
 		}
 		return blob;
 	};
-
 	var getPrototypeOf = Object.getPrototypeOf || function(object) {
 		return object.__proto__;
 	};
