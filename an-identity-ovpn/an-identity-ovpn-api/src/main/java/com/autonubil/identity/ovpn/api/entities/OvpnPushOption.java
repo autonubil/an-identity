@@ -50,7 +50,10 @@ public class OvpnPushOption {
 	
 	@Override
 	public String toString() {
-		return String.format("push %s %s", this.getOption(), this.getValue());
+		if ( (this.getValue() == null) || (this.getValue().toString().length() == 0) )
+			return String.format("push %s", this.getOption());
+		String strVal  =this.getValue().toString().trim().replaceAll("\"", "\\\\\"");
+		return String.format("push \"%s %s\"", this.getOption(), strVal);
 	}
 	
 	

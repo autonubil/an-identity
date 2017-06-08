@@ -52,13 +52,6 @@ public class OvpnServerConfig {
 		if (this.pushReset) {
 			sb.append("push-reset\n");
 		}
-		if (this.push != null) {
-			for (OvpnPushOption push : this.push) {
-				sb.append(push);
-				sb.append("\n");
-			}
-		}
-		
 		if (this.ifConfigPush != null) {
 			for (OvpnIfConfigPush ovpnIfConfigPush : this.ifConfigPush) {
 				sb.append(ovpnIfConfigPush);
@@ -73,6 +66,15 @@ public class OvpnServerConfig {
 			}
 		}
 		
+		
+		if (this.push != null) {
+			for (OvpnPushOption push : this.push) {
+				sb.append(push);
+				sb.append("\n");
+			}
+		}
+		
+	
 		return sb.toString();
 	}
 

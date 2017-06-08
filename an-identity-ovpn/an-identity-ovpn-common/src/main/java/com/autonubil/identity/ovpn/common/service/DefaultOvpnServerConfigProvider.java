@@ -59,16 +59,14 @@ public class DefaultOvpnServerConfigProvider implements OvpnServerConfigService 
 	public String getServerConfiguration(Ovpn ovpn,  Identity i) {
 		StringBuilder sb = new StringBuilder();
 		
-		boolean ifConfigSet = false;
 		boolean routeSet = false;
 		boolean topology = false;
+		
+		
 		if (this.configuration.getPush() != null) {
 			for (OvpnPushOption pushOption : this.configuration.getPush()) {
 				if (pushOption.getValue().equals("topology")) {
 					topology = true;
-				}
-				if (pushOption.getValue().equals("ifconfig")) {
-					ifConfigSet = true;
 				}
 				if (pushOption.getValue().equals("route-gateway")) {
 					routeSet = true;
@@ -78,9 +76,7 @@ public class DefaultOvpnServerConfigProvider implements OvpnServerConfigService 
 			if (!routeSet) {
 				this.configuration.getPush().add(0, new OvpnPushOption("route-gateway", this.getLocal() ));
 			}
-			if (!ifConfigSet) {
-				this.configuration.getPush().add(0, new OvpnPushOption("ifconfig", this.getRemote() + " " + this.getRemoteNetmask()  ));
-			}
+ 
 			if (!topology) {
 				this.configuration.getPush().add(0, new OvpnPushOption("topology", "subnet" ));
 			}

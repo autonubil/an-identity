@@ -6,7 +6,7 @@ public class OpvnIroute {
 	
 	@Override
 	public String toString() {
-		return String.format("iroute %s %s", this.getNetwork(), this.getNetmask());
+		return String.format("iroute \"%s %s\"", this.getNetwork(), this.getNetmask());
 	}
 
 	

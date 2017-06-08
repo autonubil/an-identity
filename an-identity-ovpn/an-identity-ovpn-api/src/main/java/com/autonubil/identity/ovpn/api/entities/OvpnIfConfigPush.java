@@ -6,9 +6,18 @@ public class OvpnIfConfigPush {
 	
 	@Override
 	public String toString() {
-		return String.format("ifconfig-push %s %s", this.getLocal(), this.getRemoteNetmask());
+		return String.format("ifconfig-push \"%s %s\"", this.getLocal(), this.getRemoteNetmask());
 	}
 
+	
+	public OvpnIfConfigPush(){
+		
+	}
+	
+	public OvpnIfConfigPush(String local, String remoteNetmask){
+		this.local = local;
+		this.remoteNetmask = remoteNetmask;
+	}
 	
 	
 	public String getLocal() {

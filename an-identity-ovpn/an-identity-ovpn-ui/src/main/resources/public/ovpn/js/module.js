@@ -265,7 +265,7 @@ angular.module("autonubil-intranet-myovpns")
 	
 	
 	$scope.downloadVpn = _.debounce(function(vpnId, name) {
-		MyOvpnsService.download(vpnId, AuthService.getAuthStatus().user.name + "@" + name  ,function(){
+		MyOvpnsService.download(vpnId, name  ,function(){
 			$scope.updateVpns();
 		});
 	},250);
@@ -312,7 +312,7 @@ angular.module("autonubil-intranet-myovpns")
 		    callback: function (result) {
 		        if (result) {
 		        	MyOvpnsService.revokeVpnCertificate(vpnId,function(){
-						MyOvpnsService.download(vpnId, AuthService.getAuthStatus().user.name + "@" + name  ,function(){
+						MyOvpnsService.download(vpnId,  name  ,function(){
 							$scope.updateVpns();
 						});
 					});
