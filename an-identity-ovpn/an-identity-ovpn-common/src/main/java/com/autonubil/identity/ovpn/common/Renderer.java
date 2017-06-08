@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -44,12 +45,11 @@ public class Renderer {
     public static String renderClientConfig(Map<String, Object> params) throws IOException {
 		String template;
 		try {
-			template = new String(Files.readAllBytes(Paths.get(Renderer.class.getResource("/templates/client.ovpn.vm").toURI())));
-		} catch (IOException | URISyntaxException e) {
+			template = IOUtils.toString(Renderer.class.getResourceAsStream("/com/autonubil/intranet/ovpn/templates/client.ovpn.vm"), "UTF-8");
+		} catch (IOException  e) {
 			throw new IOException("Failed to read template", e);
 		}
 		return render(template, params);
-
 	}
 	
 	public static Map<String,Object> ovpnConfigToParamMap(OvpnOptions ovpnOptions) {
