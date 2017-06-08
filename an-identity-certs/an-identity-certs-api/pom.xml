@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.autonubil.identity</groupId>
     <artifactId>an-identity-certs</artifactId>
-    <version>0.1.15-SNAPSHOT</version>
+    <version>0.1.16-SNAPSHOT</version>
   </parent>
   <artifactId>an-identity-certs-api</artifactId>
 </project>

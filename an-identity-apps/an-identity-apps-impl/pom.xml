@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity-apps</artifactId>
-		<version>0.1.15-SNAPSHOT</version>
+		<version>0.1.16-SNAPSHOT</version>
 
 	</parent>
 	<artifactId>an-identity-apps-impl</artifactId>
@@ -12,19 +12,19 @@
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-common</artifactId>
-			<version>0.1.15-SNAPSHOT</version>
+			<version>0.1.16-SNAPSHOT</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-apps-api</artifactId>
-			<version>0.1.15-SNAPSHOT</version>
+			<version>0.1.16-SNAPSHOT</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-api</artifactId>
-			<version>0.1.15-SNAPSHOT</version>
+			<version>0.1.16-SNAPSHOT</version>
 
 		</dependency>
 	</dependencies>
