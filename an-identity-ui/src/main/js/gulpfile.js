@@ -51,7 +51,8 @@ gulp.task('build-deps', function() {
         'node_modules/moment/min/moment-with-locales.js',
         'node_modules/angular-moment/angular-moment.js',
         'node_modules/angular-plugin/dist/js/angular-plugin.js',
-        'node_modules/angular-date-picker/angular-date-picker.js'
+        'node_modules/angular-date-picker/angular-date-picker.js',
+        'node_modules/bootbox/bootbox.min.js'
     ];
     return gulp.src(jsFiles)
         .pipe(concat('js/dependencies.js'))

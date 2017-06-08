@@ -3,11 +3,13 @@ package com.autonubil.identity.ovpn.common.service;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.stereotype.Service;
 
 import com.autonubil.identity.auth.api.entities.Identity;
 import com.autonubil.identity.ovpn.api.OvpnClientConfigService;
 import com.autonubil.identity.ovpn.api.entities.Ovpn;
+import com.autonubil.identity.ovpn.api.entities.StoredCertInfo;
 import com.autonubil.identity.ovpn.common.Renderer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -59,6 +61,17 @@ public class DefaultOvpnClientConfigProvider implements OvpnClientConfigService	
 	@Override
 	public String getId() {
 		return "cd59bc1a-5ec7-4034-beb3-fff0d2423e81";
+	}
+
+	@Override
+	public StoredCertInfo getCurrentCert(Ovpn resultVpn, Identity identity) {
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public void deleteClientConfiguration(Ovpn ovpn, Identity identity) {
+		throw new NotImplementedException();
+		
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.autonubil.identity.ovpn.api.entities;
 
 import com.autonubil.identity.auth.api.util.UsernamePasswordOTPCredentials;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 // PAYLOAD=$(echo "{\"source\": \"${SOURCE}\",  \"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\", \"link_mtu\" : \"${link_mtu}\", \"tun_mtu\": \"${tun_mtu}\". \"local\" : \"${ifconfig_local}\", \"netmask\" : \"${ifconfig_netmask}\"   }")
 

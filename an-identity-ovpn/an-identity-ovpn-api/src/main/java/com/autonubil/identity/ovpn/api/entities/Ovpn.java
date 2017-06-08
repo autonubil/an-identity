@@ -10,6 +10,7 @@ public class Ovpn {
 	private String serverConfigurationProvider;
 	private JsonNode clientConfiguration;
 	private JsonNode serverConfiguration;
+	
 
 	public String getId() {
 		return id;

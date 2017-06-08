@@ -29,7 +29,7 @@ public class OvpnPushOption {
 	 // "any getter" needed for serialization    
     @JsonAnyGetter
     public Map<String,Object> any() {
-    	Map map = new LinkedHashMap<>(); 
+    	Map<String,Object> map = new LinkedHashMap<>(); 
         map.put( this.option, this.value); 
         return map; 
     }

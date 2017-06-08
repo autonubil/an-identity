@@ -7,55 +7,91 @@
 					ng-change="updateVpns()" placeholder="type to filter">
 			</div>
 		</div>
-		<table>
-			<tr ng-repeat="vpn in vpns" class="well-sm"
-				style="height: 4em;">
-				<td><img src="/ovpn/img/openvpn.png"
-					style="max-height: 3.2em; min-height: 3.2em" /></td>
-				<td style="padding-right: 10px">&nbsp;</td>
-
-				<td style="padding-right: 10px"><label><a
-						href="autonubil/api/ovpn/vpns/{{vpn.id}}/client-config">{{vpn.name}}</a> </label>&nbsp;
-						<a title="download" href="autonubil/api/ovpn/vpns/{{vpn.id}}/client-config"><span class="glyphicon glyphicon-download"></span></a><br />
-					{{vpn.description}}</td>
-			</tr>
-		</table>
+		<ul class="list-group">
+			<li class="row list-group-item" ng-repeat="vpn in vpns">
+				<div class="col-md-1">
+					<img src="/ovpn/img/openvpn.png"
+						style="max-height: 3.2em; min-height: 3.2em" /><br />
+					
+				</div>
+				<div class="col-md-11">
+					<label role="button" ng-click="downloadVpn(vpn.id, vpn.name)">{{vpn.name}}</label>
+					<br /> {{vpn.description}}<br />
+					
+					<div ng-repeat="notification in vpn.notifications"
+						ng-class="['alert',{'alert-danger':notification.level=='ERROR'},{'alert-warning':notification.level=='WARN'},{'alert-info':notification.level=='INFO'}]">
+						{{notification.message}}</div>
+					<div ng-if="!vpn.valid">
+						<div ng-if="vpn.serial == ''">
+							<button title="Create Configuration"
+								class="btn btn-primary btn-xs glyphicon glyphicon-pencil"
+								ng-click="downloadVpn(vpn.id, vpn.name)"></button>
+						</div>
+						<div ng-if="vpn.serial != ''">
+							<button title="Re-create Configuration"
+								class="btn btn-primary btn-xs glyphicon glyphicon-refresh"
+								ng-click="downloadVpn(vpn.id, vpn.name)"></button>
+							<span ng-if="vpn.valid">&nbsp;</span>
+							<button title="Delete" ng-click="revokeVpnCertificate(vpn.id, vpn.name)"
+								class="{disabled: !vpn.valid} btn btn-warning btn-xs glyphicon glyphicon-remove"></button>
+						</div>
+					</div>
+					<div ng-if="vpn.valid">
+						<button title="Download Configuration"
+							class="{disabled !vpn.valid} btn btn-primary btn-xs glyphicon glyphicon-download"
+							ng-click="downloadVpn(vpn.id, vpn.name)"></button>
+						<span>&nbsp;</span>
+						<button title="Recreate Configuration" ng-click="newVpnConfig(vpn.id)"
+							class="btn btn-warning btn-xs glyphicon glyphicon-refresh"></button>
+						<span>&nbsp;</span>
+						<button title="Delete" ng-click="revokeVpnCertificate(vpn.id, vpn.name)"
+							class="btn btn-warning btn-xs glyphicon glyphicon-remove"></button>
+					</div>
+				</div>
+			</li>
+		</ul>  
 
 
 		<h5>OpenVPN Clients</h5>
-		<table style="zoom:80%">
+		<table style="zoom: 80%">
 			<tr class="well-sm" style="height: 4em;" valign="top">
-				<td style="min-width: 4em;"><center><a
-						target="_blank"
-						href="https://swupdate.openvpn.org/community/releases/openvpn-install-2.4.2-I601.exe"><img
-					src="/ovpn/img/windows-logo.png"
-					style="max-height: 3.2em; min-height: 3.2em" /></a><br /><label><a
-						href="https://swupdate.openvpn.org/community/releases/openvpn-install-2.4.2-I601.exe">Windows</a></label></center></td>
-						
+				<td style="min-width: 4em;"><center>
+						<a target="_blank"
+							href="https://swupdate.openvpn.org/community/releases/openvpn-install-2.4.2-I601.exe"><img
+							src="/ovpn/img/windows-logo.png"
+							style="max-height: 3.2em; min-height: 3.2em" /></a><br /> <label><a
+							href="https://swupdate.openvpn.org/community/releases/openvpn-install-2.4.2-I601.exe">Windows</a></label>
+					</center></td>
+
 				<td style="padding-right: 10px">&nbsp;</td>
 
-				<td style="min-width: 4em;"><center><a
-						href="http://openvpn.net/clients/index.php?client=openvpn_connect_ios"><img
-					src="/ovpn/img/Apple_logo_black.png"
-					style="max-height: 3.2em; min-height: 3.2em" /></a><br /> <label><a
-						target="_blank"
-						href="http://openvpn.net/clients/index.php?client=openvpn_connect_ios">iOS</a></label></center>
-				</td>
+				<td style="min-width: 4em;"><center>
+						<a
+							href="http://openvpn.net/clients/index.php?client=openvpn_connect_ios"><img
+							src="/ovpn/img/Apple_logo_black.png"
+							style="max-height: 3.2em; min-height: 3.2em" /></a><br /> <label><a
+							target="_blank"
+							href="http://openvpn.net/clients/index.php?client=openvpn_connect_ios">iOS</a></label>
+					</center></td>
 				<td style="padding-right: 10px">&nbsp;</td>
 
-				<td style="min-width: 4em;"><center><a
-						href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn"><img src="/ovpn/img/android.png"
-					style="max-height: 3.2em; min-height: 3.2em" /></a><br /> <label><a
-						href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn">Android</a></label></center>
-				</td>
+				<td style="min-width: 4em;"><center>
+						<a
+							href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn"><img
+							src="/ovpn/img/android.png"
+							style="max-height: 3.2em; min-height: 3.2em" /></a><br /> <label><a
+							href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn">Android</a></label>
+					</center></td>
 				<td style="padding-right: 10px">&nbsp;</td>
 
-				<td style="min-width: 4em;"><center><a
-						href="http://openvpn.net/clients/index.php?client=openvpn_linuxn"><img src="/ovpn/img/tux.png"
-					style="max-height: 3.2em; min-height: 3.2em" /></a><br /> <label><a
-						target="_blank"
-						href="http://openvpn.net/clients/index.php?client=openvpn_linuxn">Linux</a></label></center>
-				</td>
+				<td style="min-width: 4em;"><center>
+						<a
+							href="http://openvpn.net/clients/index.php?client=openvpn_linuxn"><img
+							src="/ovpn/img/tux.png"
+							style="max-height: 3.2em; min-height: 3.2em" /></a><br /> <label><a
+							target="_blank"
+							href="http://openvpn.net/clients/index.php?client=openvpn_linuxn">Linux</a></label>
+					</center></td>
 			</tr>
 		</table>
 	</div>

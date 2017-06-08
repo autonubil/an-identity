@@ -8,6 +8,9 @@ path "/pki-vpn/sign-verbatim/vpn*" {
 path "/pki-vpn/tidy" {
      policy = "write"
 }
+path "/pki-vpn/revoke" {
+     policy = "write"
+}
 
 path "/secret/vpn/*" {
      policy = "write"
@@ -19,6 +22,9 @@ path "/pki-vpn/sign/vpn*" {
         policy = "write"
 }
 path "/pki-vpn/tidy" {
+     policy = "write"
+}
+path "/pki-vpn/revoke" {
      policy = "write"
 }
 
