@@ -1,6 +1,9 @@
 <div class="col-md-12" ng-controller="MyOvpnsController">
+	<h4>VPNs</h4>
+	<div ng-if="!vpns || vpns.length == 0">
+		<i>No VPNs available!</i>
+	</div>
 	<div ng-if="vpns && vpns.length > 0">
-		<h4>VPNs</h4>
 		<div class="col-md-12" ng-if="vpns && vpns.length > 5">
 			<div class="form-group">
 				<input ng-model="search" class="form-control"

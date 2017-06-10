@@ -27,7 +27,13 @@ angular.module("autonubil-intranet-localauth")
 
 	$scope.changed = false;
 	
-	$scope.reset = {};
+	$scope.reset = {
+			resetFinished : false,
+			success: false,
+			message: "",
+			password : "",
+			passwordRepeat : ""
+	};
 	
 	LocalAuthUserService.get($routeParams.id,function(user){
 		console.log(user);
@@ -54,12 +60,18 @@ angular.module("autonubil-intranet-localauth")
 	};
 	
 	$scope.resetPassword = function() {
-		LocalAuthUserService.resetPassword($scope.user.id,
+		$scope.reset.resetFinished = false;
+		LocalAuthUserService.resetPassword($scope.user.id, undefined, $scope.reset.password, 
 			function() {
-				console.log("(controller) reset OK!")
+				$scope.reset = "(controller) reset OK!";
+				$scope.reset.resetFinished = true;
+				$scope.reset.success = true;
+				
 			},
 			function() {
-				console.log("(controller) reset ERROR!")
+				$scope.reset = "(controller) reset ERROR!";
+				$scope.reset.resetFinished = true;
+				$scope.reset.success = false;
 			}
 		);
 	};
@@ -118,8 +130,8 @@ angular.module("autonubil-intranet-localauth")
 .service("LocalAuthUserService", function(Restangular,$location, $interval) {
 	
 	return {
-		resetPassword : function(id, success, error) {
-			return Restangular.one("autonubil/api/mail/configs/"+id+"/password").customPOST({}).then(success,error);
+		resetPassword : function(id, oldPassword, newPassword, success, error) {
+			return Restangular.one("autonubil/api/localauth/users/"+id+"/password").customPOST(undefined,"",{"oldPassword" : oldPassword, "newPassword" : newPassword}).then(success,error);
 		},
 		resetOTP : function(id, success) {
 			return Restangular.one("autonubil/api/localauth/users/"+id+"/otp").customPUT({}).then(success);

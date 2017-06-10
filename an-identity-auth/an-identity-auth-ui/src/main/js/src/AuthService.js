@@ -82,8 +82,9 @@ angular.module("autonubil-intranet-auth")
 					updateAuth();
 				}
 			);
-		} 
+		},
 	
+		updateAuth : updateAuth
 		
 	}
 	

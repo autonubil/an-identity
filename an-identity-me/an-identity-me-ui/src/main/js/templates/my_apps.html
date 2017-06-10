@@ -1,6 +1,9 @@
 <div class="col-md-12" ng-controller="MyAppsController">
+	<h4>Applications</h4>
+	<div ng-if="!apps || apps.length == 0">
+		<i>No applications configured for you!</i>
+	</div>
 	<div ng-if="apps && apps.length > 0">
-		<h4>Applications</h4>
 		<div ng-if="apps && apps.length > 5">
 			<div class="form-group">
 				<input ng-model="search" class="form-control"

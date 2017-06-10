@@ -2,8 +2,8 @@ angular.module("autonubil-intranet-localauth")
 .service("LocalAuthUserService", function(Restangular,$location, $interval) {
 	
 	return {
-		resetPassword : function(id, success, error) {
-			return Restangular.one("autonubil/api/mail/configs/"+id+"/password").customPOST({}).then(success,error);
+		resetPassword : function(id, oldPassword, newPassword, success, error) {
+			return Restangular.one("autonubil/api/localauth/users/"+id+"/password").customPOST(undefined,"",{"oldPassword" : oldPassword, "newPassword" : newPassword}).then(success,error);
 		},
 		resetOTP : function(id, success) {
 			return Restangular.one("autonubil/api/localauth/users/"+id+"/otp").customPUT({}).then(success);
