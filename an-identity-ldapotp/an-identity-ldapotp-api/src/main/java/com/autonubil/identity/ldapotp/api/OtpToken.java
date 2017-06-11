@@ -8,9 +8,12 @@ public class OtpToken {
 	private String dn;
 	private String ownerDn;
 	private String secret;
+	private String hash;
+	private String comment;
 	private Date created;
 	private int offsetSeconds;
 	private int stepSeconds;
+	private int length;
 
 	public String getId() {
 		return id;
@@ -68,6 +71,30 @@ public class OtpToken {
 
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

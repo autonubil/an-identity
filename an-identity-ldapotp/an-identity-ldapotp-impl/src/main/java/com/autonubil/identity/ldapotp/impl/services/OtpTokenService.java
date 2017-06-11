@@ -55,7 +55,12 @@ public class OtpTokenService {
 		byte[] key = new byte[20];
 		new SecureRandom().nextBytes(key);
 		token.setSecret(TotpUtil.generateSecret());
-		token.setStepSeconds(30);
+		if(token.getStepSeconds()==0) {
+			token.setStepSeconds(30);
+		}
+		if(token.getHash()==null) {
+			token.setHash("sha1");
+		}
 		token.setOffsetSeconds(0);
 		LdapOtpAdapter a = getAdapter(connectionId);
 		return a.createToken(userId, token);
