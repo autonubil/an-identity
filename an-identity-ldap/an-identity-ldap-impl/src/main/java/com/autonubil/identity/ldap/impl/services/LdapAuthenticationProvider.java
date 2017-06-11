@@ -166,11 +166,9 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
 		if (!StringUtils.isEmpty(pwr.getOldPassword())) {
 			log.info("reset with old password ... ");
 			try {
-				String userId = conn.authenticate(pwr.getUsername(), pwr.getOldPassword(), pwr.getSecondFactor())
-						.getId();
-				conn.setPassword(userId, pwr.getNewPassword());
-				auditLogger.log("LDAP_AUTH", "PW_RESET", "", "", null,
-						"Password reset with old password succeeded for: " + pwr.getUsername());
+				String userId = conn.authenticate(pwr.getUsername(), pwr.getOldPassword(), pwr.getSecondFactor()).getId();
+				conn.setPassword(userId, pwr.getSecondFactor(), pwr.getNewPassword());
+				auditLogger.log("LDAP_AUTH", "PW_RESET", "", "", null, "Password reset with old password succeeded for: " + pwr.getUsername());
 				return true;
 			} catch (Exception e) {
 				log.error("error setting password (with old password): ", e);
@@ -184,7 +182,7 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
 				auditLogger.log("LDAP_AUTH", "PW_RESET", "", "", null,
 						"Password reset with token succeeded for: " + pwr.getUsername());
 				try {
-					conn.setPassword(lu.getId(), pwr.getNewPassword());
+					conn.setPassword(lu.getId(), pwr.getSecondFactor(), pwr.getNewPassword());
 				} catch (Exception e) {
 					log.error("error resetting password: ", e);
 					throw new AuthException(e.getMessage(), e);

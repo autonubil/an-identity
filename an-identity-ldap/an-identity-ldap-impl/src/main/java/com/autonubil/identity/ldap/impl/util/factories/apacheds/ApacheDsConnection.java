@@ -173,7 +173,7 @@ public class ApacheDsConnection extends AbstractLdapConnection  {
 	}
 	
 	@Override
-	public void setPassword(String id, String newPassword) {
+	public void setPassword(String id, String otp, String newPassword) {
 		try {
 			LdapObject u = getUserById(id);
 			

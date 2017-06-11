@@ -45,7 +45,7 @@ public interface LdapConnection {
 
 	public LdapObject saveUser(String id, LdapUser user) throws Exception;
 
-	public void setPassword(String id, String newPassword) throws AuthException;
+	public void setPassword(String id, String otp, String newPassword) throws AuthException;
 	
 	public String getType();
 	

@@ -224,7 +224,7 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 	public abstract LdapGroup getGroup(LdapGroup ou, SearchResult r) throws NamingException;
 
 	@Override
-	public abstract void setPassword(String id, String newPassword) throws AuthException;
+	public abstract void setPassword(String id, String otp, String newPassword) throws AuthException;
 
 	@Override
 	public abstract void setPasswordExpiryDate(String id, Date date) throws Exception;

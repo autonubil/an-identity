@@ -204,7 +204,7 @@ public class AdConnection extends AbstractLdapConnection {
 	}
 
 	@Override
-	public void setPassword(String id, String newPassword) throws AuthException {
+	public void setPassword(String id, String otp, String newPassword) throws AuthException {
 		try {
 			LdapObject u = getUserById(id);
 			

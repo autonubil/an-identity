@@ -139,6 +139,10 @@
 							<label>Email</label>
 							<input ng-model="reset.email"  class="form-control"/>
 						</div>
+						<div class="form-group" ng-if="reset.token && reset.token.length>0">
+							<label>TOTP (if applicable)</label>
+							<input ng-model="reset.secondFactor"  class="form-control"/>
+						</div>
 						<div class="form-group" ng-if="reset.email && reset.email.length>0">
 							<label>New Password</label>
 							<input ng-model="reset.newPassword"  class="form-control" type="password"/>
