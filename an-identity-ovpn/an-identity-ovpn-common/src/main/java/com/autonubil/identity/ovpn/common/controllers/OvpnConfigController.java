@@ -30,12 +30,12 @@ import com.autonubil.identity.auth.api.util.IdentityHolder;
 import com.autonubil.identity.auth.impl.services.AuthService;
 import com.autonubil.identity.ovpn.api.OvpnClientConfigService;
 import com.autonubil.identity.ovpn.api.OvpnConfigService;
-import com.autonubil.identity.ovpn.api.OvpnServerConfigService;
+import com.autonubil.identity.ovpn.api.OvpnSessionConfigService;
 import com.autonubil.identity.ovpn.api.entities.ConfigProvider;
 import com.autonubil.identity.ovpn.api.entities.MyOvpn;
 import com.autonubil.identity.ovpn.api.entities.Ovpn;
 import com.autonubil.identity.ovpn.api.entities.OvpnPermission;
-import com.autonubil.identity.ovpn.api.entities.OvpnServerConfigRequest;
+import com.autonubil.identity.ovpn.api.entities.OvpnSessionConfigRequest;
 import com.autonubil.identity.ovpn.api.entities.StoredCertInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -58,10 +58,10 @@ public class OvpnConfigController {
 		return ovpnConfigService.listClientConfigProviders(search);
 	}
 
-	@RequestMapping(value = "/api/ovpn/server-config-providers", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/ovpn/session-config-providers", method = RequestMethod.GET)
 	public List<ConfigProvider> listServerConfigProviders(@RequestParam String search) throws AuthException {
 		AuthUtils.checkAdmin();
-		return ovpnConfigService.listServerConfigProviders(search);
+		return ovpnConfigService.listSessionConfigProviders(search);
 	}
 
 	@RequestMapping(value = "/api/ovpn/vpns", method = RequestMethod.GET)
@@ -178,7 +178,7 @@ public class OvpnConfigController {
  
 	@RequestMapping(value = "/api/ovpn/vpns/{id}/server-config", method = RequestMethod.POST)
 	public void getServerConfig(@PathVariable String id, HttpServletResponse response,
-			@RequestBody OvpnServerConfigRequest configRequest) throws AuthException {
+			@RequestBody OvpnSessionConfigRequest configRequest) throws AuthException {
 		Ovpn ovpn = getOvpnForId(id);
 		if (ovpn == null) {
 			response.setStatus(404);
@@ -231,15 +231,15 @@ public class OvpnConfigController {
 			return;
 		}
 
-		OvpnServerConfigService configService = null;
+		OvpnSessionConfigService configService = null;
 		try {
-			configService = getServerConfigService(ovpn);
+			configService = getSessionConfigService(ovpn);
 			if (configService != null) {
-				configService.setConfigruation(ovpn.getServerConfiguration());
+				configService.setConfigruation(ovpn.getSessionConfiguration());
 				configService.setIfConfigInfo(configRequest.getLocal(), configRequest.getLocalNetmask(),
 						configRequest.getRemote(), configRequest.getRemoteNetmask());
 
-				String clientConfig = configService.getServerConfiguration(ovpn, i);
+				String clientConfig = configService.getSessionConfiguration(ovpn, i);
 				response.getOutputStream().write(clientConfig.getBytes("UTF-8"));
 				response.flushBuffer();
 			}
@@ -348,15 +348,15 @@ public class OvpnConfigController {
 		return resultVpn;
 	}
 
-	private OvpnServerConfigService getServerConfigService(Ovpn ovpn)
+	private OvpnSessionConfigService getSessionConfigService(Ovpn ovpn)
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-		OvpnServerConfigService configService = null;
+		OvpnSessionConfigService configService = null;
 		List<ConfigProvider> serverConfigProviders = ovpnConfigService
-				.listServerConfigProviders(ovpn.getServerConfigurationProvider());
+				.listSessionConfigProviders(ovpn.getSessionConfigurationProvider());
 		for (ConfigProvider serverProvider : serverConfigProviders) {
-			if (serverProvider.getId().equals(ovpn.getServerConfigurationProvider())) {
+			if (serverProvider.getId().equals(ovpn.getSessionConfigurationProvider())) {
 				Class<?> clazz = Class.forName(serverProvider.getClassName());
-				configService = (OvpnServerConfigService) clazz.newInstance();
+				configService = (OvpnSessionConfigService) clazz.newInstance();
 				break;
 			}
 		}

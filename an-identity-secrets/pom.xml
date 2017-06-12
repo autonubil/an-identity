@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.autonubil.identity</groupId>
+    <artifactId>an-identity</artifactId>
+    <version>0.1.17-SNAPSHOT</version>
+  </parent>
+  <artifactId>an-identity-secrets</artifactId>
+  <packaging>pom</packaging>
+  <name>Autonubil Identity Server Secrets </name>
+  <description>APIs to store secrets</description>
+  <modules>
+  	<module>an-identity-secrets-api</module>
+  	<module>an-identity-secrets-impl</module>
+  </modules>
+</project>

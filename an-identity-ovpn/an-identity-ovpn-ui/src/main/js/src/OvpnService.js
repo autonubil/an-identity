@@ -18,8 +18,8 @@ angular.module("autonubil-intranet-ovpn")
 			return ovpn.put().then(success);
 		},
 		
-		getServerConfigProviderList : function(search,success) {
-			return Restangular.all("autonubil/api/ovpn/server-config-providers").getList({search: search}).then(success);
+		getSessionConfigProviderList : function(search,success) {
+			return Restangular.all("autonubil/api/ovpn/session-config-providers").getList({search: search}).then(success);
 		},
 		getClientConfigProviderList : function(search,success) {
 			return Restangular.all("autonubil/api/ovpn/client-config-providers").getList({search: search}).then(success);

@@ -362,8 +362,8 @@ angular.module("autonubil-intranet-ovpn")
 			return ovpn.put().then(success);
 		},
 		
-		getServerConfigProviderList : function(search,success) {
-			return Restangular.all("autonubil/api/ovpn/server-config-providers").getList({search: search}).then(success);
+		getSessionConfigProviderList : function(search,success) {
+			return Restangular.all("autonubil/api/ovpn/session-config-providers").getList({search: search}).then(success);
 		},
 		getClientConfigProviderList : function(search,success) {
 			return Restangular.all("autonubil/api/ovpn/client-config-providers").getList({search: search}).then(success);
@@ -386,6 +386,51 @@ angular.module("autonubil-intranet-ovpn")
 	
 });
 
+// window.saveAs
+// Shims the saveAs method, using saveBlob in IE10. 
+// And for when Chrome and FireFox get round to implementing saveAs we have their vendor prefixes ready. 
+// But otherwise this creates a object URL resource and opens it on an anchor tag which contains the "download" attribute (Chrome)
+// ... or opens it in a new tab (FireFox)
+// @author Andrew Dodson
+// @copyright MIT, BSD. Free to clone, modify and distribute for commercial and personal use.
+
+window.saveAs || ( window.saveAs = (window.navigator.msSaveBlob ? function(b,n){ return window.navigator.msSaveBlob(b,n); } : false) || window.webkitSaveAs || window.mozSaveAs || window.msSaveAs || (function(){
+
+	// URL's
+	window.URL || (window.URL = window.webkitURL);
+
+	if(!window.URL){
+		return false;
+	}
+
+	return function(blob,name){
+		var url = URL.createObjectURL(blob);
+
+		// Test for download link support
+		if( "download" in document.createElement('a') ){
+
+			var a = document.createElement('a');
+			a.setAttribute('href', url);
+			a.setAttribute('download', name);
+
+			// Create Click event
+			var clickEvent = document.createEvent ("MouseEvent");
+			clickEvent.initMouseEvent ("click", true, true, window, 0, 
+				event.screenX, event.screenY, event.clientX, event.clientY, 
+				event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, 
+				0, null);
+
+			// dispatch click event to simulate download
+			a.dispatchEvent (clickEvent);
+
+		}
+		else{
+			// fallover, open resource in new tab.
+			window.open(url, '_blank', '');
+		}
+	};
+
+})() );
 angular.module("autonubil-intranet-ovpn")
 .controller("VpnEditController", function($scope,AuthService,OvpnService,LdapConfigService,LdapGroupService,$routeParams) {
 
@@ -513,7 +558,7 @@ angular.module("autonubil-intranet-ovpn")
 	
 	$scope.add = function(id) {
 		console.log("saving OpenVPN source ... ");
-		var x = { name : $scope.search.search, description: $scope.search.search, serverConfiguration: "{}", serverConfigurationProvider: "default", clientConfiguration: "{}", clientConfigurationProvider:"default" };
+		var x = { name : $scope.search.search, description: $scope.search.search, serverConfiguration: {}, serverConfigurationProvider: "default", clientConfiguration: {}, clientConfigurationProvider:"default" };
 		OvpnService.add(
 				x,
 				function(ovpn){
@@ -527,48 +572,3 @@ angular.module("autonubil-intranet-ovpn")
 	
 	
 })
-// window.saveAs
-// Shims the saveAs method, using saveBlob in IE10. 
-// And for when Chrome and FireFox get round to implementing saveAs we have their vendor prefixes ready. 
-// But otherwise this creates a object URL resource and opens it on an anchor tag which contains the "download" attribute (Chrome)
-// ... or opens it in a new tab (FireFox)
-// @author Andrew Dodson
-// @copyright MIT, BSD. Free to clone, modify and distribute for commercial and personal use.
-
-window.saveAs || ( window.saveAs = (window.navigator.msSaveBlob ? function(b,n){ return window.navigator.msSaveBlob(b,n); } : false) || window.webkitSaveAs || window.mozSaveAs || window.msSaveAs || (function(){
-
-	// URL's
-	window.URL || (window.URL = window.webkitURL);
-
-	if(!window.URL){
-		return false;
-	}
-
-	return function(blob,name){
-		var url = URL.createObjectURL(blob);
-
-		// Test for download link support
-		if( "download" in document.createElement('a') ){
-
-			var a = document.createElement('a');
-			a.setAttribute('href', url);
-			a.setAttribute('download', name);
-
-			// Create Click event
-			var clickEvent = document.createEvent ("MouseEvent");
-			clickEvent.initMouseEvent ("click", true, true, window, 0, 
-				event.screenX, event.screenY, event.clientX, event.clientY, 
-				event.ctrlKey, event.altKey, event.shiftKey, event.metaKey, 
-				0, null);
-
-			// dispatch click event to simulate download
-			a.dispatchEvent (clickEvent);
-
-		}
-		else{
-			// fallover, open resource in new tab.
-			window.open(url, '_blank', '');
-		}
-	};
-
-})() );

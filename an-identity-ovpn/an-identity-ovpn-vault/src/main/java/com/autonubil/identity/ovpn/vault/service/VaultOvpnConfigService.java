@@ -309,7 +309,7 @@ public class VaultOvpnConfigService implements OvpnClientConfigService {
 				X509Certificate caCert = getCaCert();
 				Date caExpiry = caCert.getNotAfter();
 				Calendar calendar = Calendar.getInstance();
-				calendar.add(Calendar.HOUR, 8);
+				calendar.add(Calendar.SECOND, (int)this.configuration.getOvpnOptions().getMaxUserCertTtl() );
 
 				Date maxvalidityEndDate = new Date(calendar.getTime().getTime());
 				/*

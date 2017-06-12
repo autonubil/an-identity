@@ -3,7 +3,7 @@ package com.autonubil.identity.ovpn.api.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OvpnServerConfig {
+public class OvpnSessionConfig {
 	private String local; 
 	private String netmask;
 	

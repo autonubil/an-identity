@@ -3,19 +3,19 @@ package com.autonubil.identity.ovpn.common.service;
 import org.springframework.stereotype.Service;
 
 import com.autonubil.identity.auth.api.entities.Identity;
-import com.autonubil.identity.ovpn.api.OvpnServerConfigService;
+import com.autonubil.identity.ovpn.api.OvpnSessionConfigService;
 import com.autonubil.identity.ovpn.api.entities.Ovpn;
 import com.autonubil.identity.ovpn.api.entities.OvpnPushOption;
-import com.autonubil.identity.ovpn.api.entities.OvpnServerConfig;
+import com.autonubil.identity.ovpn.api.entities.OvpnSessionConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class DefaultOvpnServerConfigProvider implements OvpnServerConfigService {
+public class DefaultOvpnSessionConfigProvider implements OvpnSessionConfigService {
 
-	private OvpnServerConfig configuration;
+	private OvpnSessionConfig configuration;
 	private String local; 
 	private String localNetmask;
 	private String remote; 
@@ -45,7 +45,7 @@ public class DefaultOvpnServerConfigProvider implements OvpnServerConfigService 
 	public void setConfigruation(JsonNode configuration) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		this.configuration = mapper.treeToValue(configuration, OvpnServerConfig.class);
+		this.configuration = mapper.treeToValue(configuration, OvpnSessionConfig.class);
 
 	}
 	
@@ -56,7 +56,7 @@ public class DefaultOvpnServerConfigProvider implements OvpnServerConfigService 
 	}
 
 	@Override
-	public String getServerConfiguration(Ovpn ovpn,  Identity i) {
+	public String getSessionConfiguration(Ovpn ovpn,  Identity i) {
 		StringBuilder sb = new StringBuilder();
 		
 		boolean routeSet = false;

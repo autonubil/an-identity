@@ -1,4 +1,5 @@
 client
+pull
 #foreach ($remote in $remotes)
 <connection>  
 remote $remote
@@ -22,7 +23,6 @@ cipher ${cipher}
 auth ${auth}
 #if ( ${auth-user-pass} )auth-user-pass
 #end
-
 resolv-retry ${resolv-retry}
 #if (${nobind})nobind
 #end

@@ -4,7 +4,7 @@ import com.autonubil.identity.auth.api.util.UsernamePasswordOTPCredentials;
 
 // PAYLOAD=$(echo "{\"source\": \"${SOURCE}\",  \"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\", \"link_mtu\" : \"${link_mtu}\", \"tun_mtu\": \"${tun_mtu}\". \"local\" : \"${ifconfig_local}\", \"netmask\" : \"${ifconfig_netmask}\"   }")
 
-public class OvpnServerConfigRequest extends UsernamePasswordOTPCredentials {
+public class OvpnSessionConfigRequest extends UsernamePasswordOTPCredentials {
 
 	private String local; 
 	private String localNetmask;

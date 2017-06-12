@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 
 import com.autonubil.identity.auth.api.entities.Group;
 import com.autonubil.identity.ovpn.api.OvpnClientConfigService;
-import com.autonubil.identity.ovpn.api.OvpnServerConfigService;
+import com.autonubil.identity.ovpn.api.OvpnSessionConfigService;
 import com.autonubil.identity.ovpn.api.entities.ConfigProvider;
 import com.autonubil.identity.ovpn.api.entities.Ovpn;
 import com.autonubil.identity.ovpn.api.entities.OvpnPermission;
@@ -126,21 +126,21 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 			i.addField("name", ovpnSource.getName().toLowerCase());
 			i.addField("description", ovpnSource.getDescription());
 			i.addField("client_config_provider", ovpnSource.getClientConfigurationProvider());
-			i.addField("server_config_provider", ovpnSource.getServerConfigurationProvider());
+			i.addField("session_config_provider", ovpnSource.getSessionConfigurationProvider());
 			i.addField("client_configuration", ovpnSource.getClientConfiguration().toString());
-			i.addField("server_configuration", ovpnSource.getServerConfiguration().toString());
+			i.addField("session_configuration", ovpnSource.getSessionConfiguration().toString());
 			templ.update(i.toSQL(), i.getParams());
 		} else {
 			Update u = SqlBuilderFactory.update("vpn");
 			u.set("name", ovpnSource.getName());
 			u.set("description", ovpnSource.getDescription());
 			u.set("client_config_provider", ovpnSource.getClientConfigurationProvider());
-			u.set("server_config_provider", ovpnSource.getServerConfigurationProvider());
+			u.set("session_config_provider", ovpnSource.getSessionConfigurationProvider());
 			try {
 				u.set("client_configuration",
 						new ObjectMapper().writeValueAsString(ovpnSource.getClientConfiguration()));
-				u.set("server_configuration",
-						new ObjectMapper().writeValueAsString(ovpnSource.getServerConfiguration()));
+				u.set("session_configuration",
+						new ObjectMapper().writeValueAsString(ovpnSource.getSessionConfiguration()));
 			} catch (JsonProcessingException e) {
 				throw new RuntimeException(e);
 			}
@@ -276,10 +276,10 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		s.select(Aggregation.NONE, ovpn, "description", "description");
 		
 		s.select(Aggregation.NONE, ovpn, "client_config_provider", "client_config_provider");
-		s.select(Aggregation.NONE, ovpn, "server_config_provider", "server_config_provider");
+		s.select(Aggregation.NONE, ovpn, "session_config_provider", "session_config_provider");
 		
 		s.select(Aggregation.NONE, ovpn, "client_configuration", "client_configuration");
-		s.select(Aggregation.NONE, ovpn, "server_configuration", "server_configuration");
+		s.select(Aggregation.NONE, ovpn, "session_configuration", "session_configuration");
 		
 		// s.select(Aggregation.NONE, ovpn, "vpn", "vpn");
 
@@ -320,10 +320,10 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 			out.setName(rs.getString("name"));
 
 			out.setClientConfigurationProvider(rs.getString("client_config_provider"));
-			out.setServerConfigurationProvider(rs.getString("server_config_provider"));
+			out.setSessionConfigurationProvider(rs.getString("session_config_provider"));
 			try {
 				out.setClientConfiguration(new ObjectMapper().readTree(rs.getString("client_configuration")));
-				out.setServerConfiguration(new ObjectMapper().readTree(rs.getString("server_configuration")));
+				out.setSessionConfiguration(new ObjectMapper().readTree(rs.getString("session_configuration")));
 			} catch (JsonProcessingException e) {
 				throw new RuntimeException(e);
 			} catch (IOException e) {
@@ -382,10 +382,10 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 			out.setName(rs.getString("name"));
 			out.setDescription(rs.getString("description"));
 			out.setClientConfigurationProvider(rs.getString("client_config_provider"));
-			out.setServerConfigurationProvider(rs.getString("server_config_provider"));
+			out.setSessionConfigurationProvider(rs.getString("session_config_provider"));
 			try {
 				out.setClientConfiguration(new ObjectMapper().readTree(rs.getString("client_configuration")));
-				out.setServerConfiguration(new ObjectMapper().readTree(rs.getString("server_configuration")));
+				out.setSessionConfiguration(new ObjectMapper().readTree(rs.getString("session_configuration")));
 			} catch (JsonProcessingException e) {
 				throw new RuntimeException(e);
 			} catch (IOException e) {
@@ -432,22 +432,22 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		return result;
 	}
 
-	private List<OvpnServerConfigService> ovpnServerConfigServices;
+	private List<OvpnSessionConfigService> ovpnServerConfigServices;
 
 	@Autowired
-	protected void setOvpnServerConfigService(List<OvpnServerConfigService> ovpnServerConfigServices) {
+	protected void setOvpnServerConfigService(List<OvpnSessionConfigService> ovpnServerConfigServices) {
 		this.ovpnServerConfigServices = ovpnServerConfigServices;
 	}
 
 	@Override
-	public List<OvpnServerConfigService> listServerConfigServices() {
+	public List<OvpnSessionConfigService> listSessionConfigServices() {
 		return this.ovpnServerConfigServices;
 	}
 
 	@Override
-	public List<ConfigProvider> listServerConfigProviders(String search) {
+	public List<ConfigProvider> listSessionConfigProviders(String search) {
 		List<ConfigProvider> result = new ArrayList<>();
-		for (OvpnServerConfigService configService : this.listServerConfigServices()) {
+		for (OvpnSessionConfigService configService : this.listSessionConfigServices()) {
 
 			ConfigProvider p = new ConfigProvider();
 			p.setId(configService.getId());

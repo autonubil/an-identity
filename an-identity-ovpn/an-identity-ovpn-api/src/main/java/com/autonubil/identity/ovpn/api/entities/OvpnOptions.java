@@ -28,6 +28,9 @@ public class OvpnOptions {
 	private String cert;
 	private String tlsAuth;
 	
+	// 6 month
+	private long maxUserCertTtl = 60*60*24*182;
+	
 	private boolean authUserPass = false;
 	
 	private List<OvpnRemote> remotes;
@@ -158,6 +161,17 @@ public class OvpnOptions {
 		this.authUserPass = authUserPass;
 	}
 
-	 
+
+	public long getMaxUserCertTtl() {
+		return maxUserCertTtl;
+	}
+
+
+	public void setMaxUserCertTtl(long maxUserCertTtl) {
+		this.maxUserCertTtl = maxUserCertTtl;
+	}
+
+
+		 
 	
 }

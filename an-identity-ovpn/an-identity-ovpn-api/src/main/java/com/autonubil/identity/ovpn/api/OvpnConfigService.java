@@ -10,9 +10,9 @@ import com.autonubil.identity.ovpn.api.entities.OvpnPermission;
 public interface OvpnConfigService {
 	List<Ovpn> listOvpns(String id, String search);
 	List<ConfigProvider> listClientConfigProviders(String search);
-	List<ConfigProvider> listServerConfigProviders(String search);
+	List<ConfigProvider> listSessionConfigProviders(String search);
 	List<OvpnClientConfigService> listClientConfigServices();
-	List<OvpnServerConfigService> listServerConfigServices();
+	List<OvpnSessionConfigService> listSessionConfigServices();
 
 	Ovpn getOvpn(String id);
 	Ovpn getOvpnByName(String name);

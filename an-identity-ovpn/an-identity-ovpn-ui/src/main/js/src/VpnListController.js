@@ -19,7 +19,7 @@ angular.module("autonubil-intranet-ovpn")
 	
 	$scope.add = function(id) {
 		console.log("saving OpenVPN source ... ");
-		var x = { name : $scope.search.search, description: $scope.search.search, serverConfiguration: "{}", serverConfigurationProvider: "default", clientConfiguration: "{}", clientConfigurationProvider:"default" };
+		var x = { name : $scope.search.search, description: $scope.search.search, serverConfiguration: {}, serverConfigurationProvider: "default", clientConfiguration: {}, clientConfigurationProvider:"default" };
 		OvpnService.add(
 				x,
 				function(ovpn){

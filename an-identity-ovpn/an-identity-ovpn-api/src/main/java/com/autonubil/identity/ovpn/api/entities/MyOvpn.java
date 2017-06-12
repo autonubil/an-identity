@@ -25,9 +25,9 @@ public class MyOvpn extends Ovpn {
 		this.setDescription(ovpn.getDescription());
 		this.setName(ovpn.getName());
 		this.setClientConfigurationProvider(ovpn.getClientConfigurationProvider());
-		this.setServerConfigurationProvider(ovpn.getServerConfigurationProvider());
+		this.setSessionConfigurationProvider(ovpn.getSessionConfigurationProvider());
 		this.setClientConfiguration(ovpn.getClientConfiguration());
-		this.setServerConfiguration(ovpn.getServerConfiguration());
+		this.setSessionConfiguration(ovpn.getSessionConfiguration());
 	}
 	
 	public Date getValidFrom() {
@@ -65,8 +65,8 @@ public class MyOvpn extends Ovpn {
 	}
 	
 	@JsonIgnore
-	public String getServerConfigurationProvider() {
-		return super.getServerConfigurationProvider();
+	public String getSessionConfigurationProvider() {
+		return super.getSessionConfigurationProvider();
 	}
 	
 	@JsonIgnore
@@ -75,8 +75,8 @@ public class MyOvpn extends Ovpn {
 	}
 
 	@JsonIgnore
-	public JsonNode getServerConfiguration() {
-		return super.getServerConfiguration();
+	public JsonNode getSessionConfiguration() {
+		return super.getSessionConfiguration();
 	}
 
 	public boolean isValid() {

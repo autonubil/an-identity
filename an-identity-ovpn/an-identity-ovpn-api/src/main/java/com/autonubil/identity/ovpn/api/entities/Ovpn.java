@@ -7,9 +7,9 @@ public class Ovpn {
 	private String name;
 	private String description;
 	private String clientConfigurationProvider;
-	private String serverConfigurationProvider;
+	private String sessionConfigurationProvider;
 	private JsonNode clientConfiguration;
-	private JsonNode serverConfiguration;
+	private JsonNode sessionConfiguration;
 	
 
 	public String getId() {
@@ -44,12 +44,12 @@ public class Ovpn {
 		this.clientConfigurationProvider = clientConfigurationProvider;
 	}
 
-	public String getServerConfigurationProvider() {
-		return serverConfigurationProvider;
+	public String getSessionConfigurationProvider() {
+		return sessionConfigurationProvider;
 	}
 
-	public void setServerConfigurationProvider(String serverConfigurationProvider) {
-		this.serverConfigurationProvider = serverConfigurationProvider;
+	public void setSessionConfigurationProvider(String serverConfigurationProvider) {
+		this.sessionConfigurationProvider = serverConfigurationProvider;
 	}
 
 	public JsonNode getClientConfiguration() {
@@ -62,14 +62,14 @@ public class Ovpn {
 		this.clientConfiguration = clientConfiguration;
 	}
 
-	public JsonNode getServerConfiguration() {
-		return serverConfiguration;
+	public JsonNode getSessionConfiguration() {
+		return sessionConfiguration;
 	}
 
-	public void setServerConfiguration(JsonNode serverConfiguration) {
-		if ((serverConfiguration != null) && (!serverConfiguration.isObject()))
+	public void setSessionConfiguration(JsonNode sessionConfiguration) {
+		if ((sessionConfiguration != null) && (!sessionConfiguration.isObject()))
 			throw new IllegalArgumentException("serverConfiguration must be an JSON Object");
-		this.serverConfiguration = serverConfiguration;
+		this.sessionConfiguration = sessionConfiguration;
 	}
 
 }

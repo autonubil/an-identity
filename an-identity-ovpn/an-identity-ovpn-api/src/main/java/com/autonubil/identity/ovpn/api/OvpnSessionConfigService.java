@@ -5,7 +5,7 @@ import com.autonubil.identity.ovpn.api.entities.Ovpn;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
-public interface OvpnServerConfigService {
+public interface OvpnSessionConfigService {
 	String getId();
 	String getClassName();
 	String getDisplayName();
@@ -13,6 +13,6 @@ public interface OvpnServerConfigService {
 	
 	JsonNode getConfigruation();
 	void setConfigruation(JsonNode  configuration) throws JsonProcessingException;
-	String getServerConfiguration(Ovpn ovpn, Identity i);
+	String getSessionConfiguration(Ovpn ovpn, Identity i);
 	void setIfConfigInfo(String local, String localNetmask, String remote, String remoteNetmask);
 }
