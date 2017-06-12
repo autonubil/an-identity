@@ -211,7 +211,7 @@ public class LocalAuthUserService {
 		return null;
 	}
 	
-	private void setPassword(String userId, String password) {
+	public void setPassword(String userId, String password) {
 		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
 		
 		// delete existing password

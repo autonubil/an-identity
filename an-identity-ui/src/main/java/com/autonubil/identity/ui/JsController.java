@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,36 +25,48 @@ public class JsController {
 	private static Log log = LogFactory.getLog(ConcatenateProcessor.class);
 
 	private String modules, templates;
+
+	@Value("${ui.cacheJs}")
+	private boolean cacheJs;
 	
 	
 	@RequestMapping(value="/modules",method=RequestMethod.GET)
 	@ResponseBody
-	public String getModules() {
+	public String getModules() throws IOException {
+		if(modules==null || !cacheJs) {
+			log.info("reloading modules ... ");
+			modules = concatenate(".*[\\/]module.js");
+		}
 		return modules;
 	}
-
+	
 	@RequestMapping(value="/templates",method=RequestMethod.GET)
 	@ResponseBody
-	public String getTemplates() {
+	public String getTemplates() throws IOException {
+		if(templates==null || !cacheJs) {
+			log.info("reloading templates ... ");
+			templates = concatenate(".*[\\/]templates.js");
+		}
 		return templates;
 	}
 	
 	@PostConstruct
-	public void init() throws UnsupportedEncodingException {
-		
-//		ExecutorService e = Executors.newScheduledThreadPool(1);
+	public void init() throws IOException {
 
-		ConcatenateProcessor modules = new ConcatenateProcessor();
-		ConcatenateProcessor templates = new ConcatenateProcessor();
+		getModules();
+		getTemplates();
+		
+	}
+	
+	
+	public String concatenate(String pattern) throws UnsupportedEncodingException {
+		ConcatenateProcessor p = new ConcatenateProcessor();
 		
 		FastClasspathScanner fcs = new FastClasspathScanner();
-		fcs.matchFilenamePattern(".*[\\/]module.js", modules); 
-		fcs.matchFilenamePattern(".*[\\/]templates.js", templates); 
+		fcs.matchFilenamePattern(pattern, p); 
 		fcs.scan();
 		
-		this.modules = new String(modules.getBytes(),"utf-8");
-		this.templates = new String(templates.getBytes(),"utf-8");
-		
+		return new String(p.getBytes(),"utf-8");
 	}
 	
 	private class ConcatenateProcessor implements FileMatchContentsProcessorWithContext {

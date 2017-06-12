@@ -1,6 +1,6 @@
 <div class="col-md-12" ng-controller="MyOtpController">
 	<div>
-		<h4>OTP Tokens  <button class="btn btn-sm btn-primary" ng-if="supported" ng-click="create()">+</button></h4>
+		<h4>OTP Tokens  </h4>
 	</div>
 	<div ng-if="!supported">
 		<span><i>TOTP not supported for this account</i></span>
@@ -8,23 +8,52 @@
 	<div ng-if="supported">
 		
 		<span ng-if="tokens.length == 0"><i>No tokens configured</i></span>
-		<table>
+		<table class="table table-striped table-compact">
+			<tr>
+				<th>token ID</th>
+				<th>created</th>
+				<th>hash</th>
+				<th>step</th>
+				<th>offset</th>
+			</tr>
 			<tr ng-repeat="token in tokens" class="well-sm">
-				<td style="padding-right: 10px">
+				<td>
 					{{token.id}}
 				</td>
 				<td style="padding-right: 10px">
-					{{token.description}}
-				</td>
-				<td style="padding-right: 10px">
-					{{token.created}}
-					<span am-time-ago="1494501721000">
+					<span am-time-ago="token.created">
 				</td>
 				<td>
-					<img ng-if="token.secret" src="/autonubil/totp/?subject=subject@nase.de&secret={{token.secret}}&size=250" width="250">
+					{{token.hash}}
+				</td>
+				<td>
+					{{token.stepSeconds}}
+				</td>
+				<td>
+					{{token.offsetSeconds}}
 				</td>
 			</tr>
 		</table>
-		{{user}}
+		<div class="form-group">
+			<div class="alert alert-danger" ng-if="requestError">
+				{{requestError}}
+			</div>
+			<div class="alert alert-success" ng-if="imageUrl">
+				<table>
+					<tr>
+						<td width="50%">
+							<h1>{{countdown}}</h1>
+						</td>
+						<td width="50%">
+							 <img src="{{imageUrl}}">
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="form-inline">
+				<input class="form-control" ng-model="tokenRequest.comment">
+				<button class="btn btn-primary" ng-click="addToken()"><i class="glyhpicon glyhpicon-plus-sign"></i> add</button>
+			</div>
+		</div>
 	</div>
 </div>

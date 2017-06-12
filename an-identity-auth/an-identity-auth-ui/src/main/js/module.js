@@ -6,7 +6,10 @@ angular.module("autonubil-intranet-auth")
 	return {
 		responseError : function(rejection) {
 			if(rejection.status == 401) {
-				angular.module("autonubil-intranet-auth").update();
+				console.log(rejection);
+				if(!rejection.data.path.endsWith("/api/authentication/authenticate")) {
+					angular.module("autonubil-intranet-auth").update();
+				}
 				angular.module("autonubil-intranet-auth").goto("/auth/login");
 			} else if(rejection.status == 403) {
 				angular.module("autonubil-intranet-auth").goto("/auth/errors/accessDenied");
@@ -45,6 +48,7 @@ angular.module("autonubil-intranet-auth")
 	
 	angular.module("autonubil-intranet-auth").update = function() {
 		console.log("updating auth status");
+		console.log(AuthService);
 		AuthService.updateAuth();
 	};
 	

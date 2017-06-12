@@ -6,7 +6,10 @@ angular.module("autonubil-intranet-auth")
 	return {
 		responseError : function(rejection) {
 			if(rejection.status == 401) {
-				angular.module("autonubil-intranet-auth").update();
+				console.log(rejection);
+				if(!rejection.data.path.endsWith("/api/authentication/authenticate")) {
+					angular.module("autonubil-intranet-auth").update();
+				}
 				angular.module("autonubil-intranet-auth").goto("/auth/login");
 			} else if(rejection.status == 403) {
 				angular.module("autonubil-intranet-auth").goto("/auth/errors/accessDenied");
@@ -45,6 +48,7 @@ angular.module("autonubil-intranet-auth")
 	
 	angular.module("autonubil-intranet-auth").update = function() {
 		console.log("updating auth status");
+		console.log(AuthService);
 		AuthService.updateAuth();
 	};
 	
@@ -98,7 +102,7 @@ angular.module("autonubil-intranet-auth")
 	};
 	
 
-	var setAuthStatus = function(l,a,n) {
+	var setAuthStatus = function(l,a,n,un) {
 		changed = false;
 		if(l!=AuthStatus.loggedIn) {
 			AuthStatus.loggedIn = l;
@@ -110,6 +114,7 @@ angular.module("autonubil-intranet-auth")
 		}
 		if(n!=AuthStatus.user.name) {
 			AuthStatus.user.name = n;
+			AuthStatus.user.username = un;
 			changed = true;
 		}
 		console.log ( "Auth changed? "+changed);
@@ -129,7 +134,7 @@ angular.module("autonubil-intranet-auth")
 							x = true;
 						}
 					});
-					setAuthStatus(true,x,e.user.displayName);
+					setAuthStatus(true,x,e.user.displayName,e.user.username);
 				},
 				function(e) {
 					setAuthStatus(false,false,"anonymous");
@@ -170,8 +175,9 @@ angular.module("autonubil-intranet-auth")
 					updateAuth();
 				}
 			);
-		} 
+		},
 	
+		updateAuth : updateAuth
 		
 	}
 	

@@ -1,7 +1,7 @@
 
 angular.module("autonubil-intranet").requires.push("autonubil-intranet-otp");
 
-angular.module("autonubil-intranet-otp", [ "angular-plugin", "restangular","autonubil-intranet-ldap"]);
+angular.module("autonubil-intranet-otp", [ "angular-plugin", "restangular","autonubil-intranet-ldap", "angularMoment"]);
 angular.module("autonubil-intranet-otp")
 .run(function(PluginMenuService, PluginComponentService, $location) {
 

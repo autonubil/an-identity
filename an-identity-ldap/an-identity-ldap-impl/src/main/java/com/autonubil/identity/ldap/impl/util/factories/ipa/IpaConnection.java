@@ -323,7 +323,7 @@ public class IpaConnection extends AbstractLdapConnection  {
 	}
 	
 	@Override
-	public void setPassword(String id, String newPassword) throws AuthException {
+	public void setPassword(String id, String otp, String newPassword) throws AuthException {
 		try {
 			LdapObject u = getUserById(id);
 			
@@ -331,7 +331,7 @@ public class IpaConnection extends AbstractLdapConnection  {
 			updateUserAttribute(u.getDn(), "userPassword", x, true);
 			updateUserAttribute(u.getDn(), "krbLoginFailedCount", "0", true);
 			
-			DirContext dc = connect(u.getDn(), x, null);
+			DirContext dc = connect(u.getDn(), x, otp);
 			ModificationItem[] mi =
 					new ModificationItem[] {
 						new  ModificationItem(DirContext.REPLACE_ATTRIBUTE, new BasicAttribute("userPassword",newPassword))

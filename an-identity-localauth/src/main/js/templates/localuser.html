@@ -3,7 +3,7 @@
 		<h2><a href="#/main/admin/localusers">Local Users</a> | {{user.username}} <span ng-if="changed">*</span></h2>
 	</div>
 </div>
-<div class="row">
+<div class="row" ng-if="user">
 	<div class="col-md-6">
 		<div class="form form-group">
 			<label>email</label>
@@ -26,10 +26,25 @@
 			<hr>
 		</div>
 		<div class="form form-group">
+			{{reset}}
 			<label>Reset Password</label>
-			<form method="POST" action="{{resetUrl}}" target="_new">
-				<input type="submit" class="btn btn-primary form-control">
-			</form>
+			<div class="alert alert-danger" ng-if="reset.resetFinished && !reset.success">
+				Error: {{reset.message}}!
+			</div>
+			<div class="alert alert-success" ng-if="reset.resetFinished && reset.success">
+				Success: {{reset.message}}!
+			</div>
+			<div class="form form-group">
+				<label>New Password</label>
+				<input type="password" class="form-control" ng-model="reset.password">
+			</div>
+			<div class="form form-group">
+				<label>New Password (repeat)</label>
+				<input type="password" class="form-control" ng-model="reset.passwordRepeat">
+			</div>
+			<div class="form form-group">
+				<input type="submit" class="btn btn-primary form-control" ng-click="resetPassword()" ng-disabled="reset.password.length==0 || reset.password != reset.passwordRepeat">
+			</div>
 		</div>
 		<div class="form form-group">
 		</div>

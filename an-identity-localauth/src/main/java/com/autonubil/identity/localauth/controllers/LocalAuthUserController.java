@@ -73,7 +73,11 @@ public class LocalAuthUserController {
 	@RequestMapping(value="/api/localauth/users/{id}/password",method={RequestMethod.POST})
 	public void resetPassword(@PathVariable String id, @RequestParam(required=false) String token, @RequestParam(required=false) String newPassword) throws AuthException {
 		AuthUtils.checkAdmin();
-		localAuthUserService.resetPassword(id);
+		if(newPassword==null) {
+			localAuthUserService.resetPassword(id);
+		} else {
+			localAuthUserService.setPassword(id, newPassword);
+		}
 	}
 	
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)

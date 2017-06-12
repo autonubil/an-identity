@@ -46,7 +46,7 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 			List<OtpToken> tokens = ldapConnection.getList(
 					ldapConnection.getBaseDn(), 
 					otpFilter, 
-					new String[] {"ipatokenUniqueID", "description", "createTimestamp", "ipatokenTOTPtimeStep", "ipatokenOTPkey", "ipatokenOTPalgorithm", "ipatokenOTPdigits" }, 
+					new String[] {"ipatokenUniqueID", "description", "createTimestamp", "ipatokenTOTPtimeStep", "ipatokenOTPkey", "ipatokenOTPalgorithm", "ipatokenOTPdigits", "ipatokenTOTPclockOffset" }, 
 					new LdapSearchResultMapper<OtpToken>() {
 						
 						public OtpToken map(SearchResult r) {
@@ -54,6 +54,8 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 								OtpToken out = new OtpToken();
 								out.setDn(r.getNameInNamespace());
 								out.setOwnerDn(user.getDn());
+								out.setHash(r.getAttributes().get("ipatokenOTPalgorithm").get()+"");
+								out.setOffsetSeconds(Integer.parseInt(r.getAttributes().get("ipatokenTOTPclockOffset").get()+""));
 								out.setCreated(ldapConnection.parseDate(r.getAttributes().get("createTimestamp").get()+""));
 								out.setStepSeconds(Integer.parseInt(r.getAttributes().get("ipatokenTOTPtimeStep").get()+""));
 								byte[] bytes = (byte[])r.getAttributes().get("ipatokenOTPkey").get();
@@ -95,9 +97,9 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 			attributes.put("ipatokenTOTPtimeStep", new Integer(token.getStepSeconds())+"");
 			attributes.put("ipatokenUniqueID", token.getId());
 			attributes.put("ipatokenOTPkey", bytes);
-			attributes.put("ipatokenOTPdigits", new Integer(6)+"");
+			attributes.put("ipatokenOTPdigits", token.getLength()+"");
 			attributes.put("ipatokenOwner", user.getDn());
-			attributes.put("ipatokenOTPalgorithm", "sha1");
+			attributes.put("ipatokenOTPalgorithm", token.getHash());
 			attributes.put("ipatokenTOTPclockOffset", "0");
 			
 			ldapConnection.createEntry("ipatokenuniqueid="+token.getId()+",cn=otp,"+ldapConnection.getBaseDn(), new String[] {"ipatoken", "ipatokentotp"} , attributes);
