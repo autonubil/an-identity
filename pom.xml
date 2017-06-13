@@ -25,7 +25,8 @@
 		<module>an-identity-automigrate</module>
 		<module>an-identity-certs</module>
 		<module>an-identity-persistence</module>
-                <module>an-identity-secrets</module>
+		<module>an-identity-secrets</module>
+>>>>>>> 4af1e5a8f61669420a87f6069e7b68f219d157a9
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	
