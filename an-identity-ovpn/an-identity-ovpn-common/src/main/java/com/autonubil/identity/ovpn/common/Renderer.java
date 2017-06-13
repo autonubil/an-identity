@@ -3,9 +3,6 @@ package com.autonubil.identity.ovpn.common;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +49,17 @@ public class Renderer {
 		return render(template, params);
 	}
 	
+    public static String renderServerConfig(Map<String, Object> params) throws IOException {
+		String template;
+		try {
+			template = IOUtils.toString(Renderer.class.getResourceAsStream("/com/autonubil/intranet/ovpn/templates/server.conf.vm"), "UTF-8");
+		} catch (IOException  e) {
+			throw new IOException("Failed to read template", e);
+		}
+		return render(template, params);
+	}
+	
+    
 	public static Map<String,Object> ovpnConfigToParamMap(OvpnOptions ovpnOptions) {
 		Map<String,Object> result = new HashMap<>();
 		

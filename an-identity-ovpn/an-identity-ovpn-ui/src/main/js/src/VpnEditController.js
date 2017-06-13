@@ -36,6 +36,10 @@ angular.module("autonubil-intranet-ovpn")
 			console.log("serverConfigProviders: "+serverConfigProviders.length);
 			$scope.serverConfigProviders = serverConfigProviders;
 		});
+		OvpnService.getSessionConfigProviderList("", function(sessionConfigProviders){
+			console.log("sessionConfigProviders: "+sessionConfigProviders.length);
+			$scope.sessionConfigProviders = sessionConfigProviders;
+		});
 	};
 	
 

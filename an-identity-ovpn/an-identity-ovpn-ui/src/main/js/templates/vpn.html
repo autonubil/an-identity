@@ -36,9 +36,10 @@
 				</div>
 				<div class="col-md-12"
 					ng-if="clientConfigProviders && clientConfigProviders.length > 0">
-					<select class="form-control"
-					    ng-change="startChange()" data-ng-model="source.clientConfigurationProvider">
-					    <option ng-repeat="clientConfigProvider in clientConfigProviders" value="{{clientConfigProvider.id}}">{{clientConfigProvider.displayName}}</option>
+					<select class="form-control" ng-change="startChange()"
+						data-ng-model="source.clientConfigurationProvider">
+						<option ng-repeat="clientConfigProvider in clientConfigProviders"
+							value="{{clientConfigProvider.id}}">{{clientConfigProvider.displayName}}</option>
 					</select>
 				</div>
 				<div class="col-md-12">
@@ -54,25 +55,27 @@
 			<div class="row">
 
 				<div class="col-md-´12">
-					<h4>Server Configuration Provider</h4>
+					<h4>Session Configuration Provider</h4>
 				</div>
 				<div class="col-md-12"
 					ng-if="!sessionConfigProviders || sessionConfigProviders.length==0">
 					<div class="alert alert-warning">
-						<i>No Server Config Providers found</i>
+						<i>No Session Config Providers found</i>
 					</div>
 				</div>
 				<div class="col-md-12"
 					ng-if="sessionConfigProviders && sessionConfigProviders.length > 0">
-					
-					<select class="form-control"
-					    ng-change="save()" data-ng-model="source.sessionConfigurationProvider">
-					    <option ng-repeat="sessionConfigProvider in sessionConfigProviders" value="{{sessionConfigProvider.id}}">{{sessionConfigProvider.displayName}}</option>
+
+					<select class="form-control" ng-change="save()"
+						data-ng-model="source.sessionConfigurationProvider">
+						<option
+							ng-repeat="sessionConfigProvider in sessionConfigProviders"
+							value="{{sessionConfigProvider.id}}">{{sessionConfigProvider.displayName}}</option>
 					</select>
 				</div>
 				<div class="col-md-12">
 					<div class="form form-group">
-						<label>Server Configuration (JSON)</label>
+						<label>Session Configuration (JSON)</label>
 						<textarea json-text ng-model="source.sessionConfiguration"
 							ng-change="startChange()" class="form-control"
 							style="width: 100%; height: 300px;"></textarea>
@@ -84,10 +87,39 @@
 
 		</div>
 		<div class="row">
-			<div class="col-md-12"></div>
+
+			<div class="col-md-´12">
+				<h4>Server Configuration Provider</h4>
+			</div>
+			<div class="col-md-12"
+				ng-if="!serverConfigProviders || serverConfigProviders.length==0">
+				<div class="alert alert-warning">
+					<i>No Server Config Providers found</i>
+				</div>
+			</div>
+			<div class="col-md-12"
+				ng-if="serverConfigProviders && serverConfigProviders.length > 0">
+
+				<select class="form-control" ng-change="save()"
+					data-ng-model="source.serverConfigurationProvider">
+					<option ng-repeat="serverConfigProvider in serverConfigProviders"
+						value="{{serverConfigProvider.id}}">{{serverConfigProvider.displayName}}</option>
+				</select>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Server Configuration (JSON)</label>
+					<textarea json-text ng-model="source.serverConfiguration"
+						ng-change="startChange()" class="form-control"
+						style="width: 100%; height: 300px;"></textarea>
+
+				</div>
+			</div>
+
 		</div>
-		<div class="row"></div>
+
 	</div>
+
 	<div class="col-md-6">
 		<div class="row">
 			<div class="col-md-12">
@@ -134,10 +166,11 @@
 				</button>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-12"></div>
-		</div>
-		<div class="row"></div>
-
 	</div>
+	
+	<div class="row">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row"></div>
+	
 </div>

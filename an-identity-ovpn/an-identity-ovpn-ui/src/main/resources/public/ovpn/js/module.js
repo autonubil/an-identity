@@ -363,12 +363,17 @@ angular.module("autonubil-intranet-ovpn")
 		},
 		
 		getSessionConfigProviderList : function(search,success) {
-			return Restangular.all("autonubil/api/ovpn/session-config-providers").getList({search: search}).then(success);
+			return Restangular.all("autonubil/api/ovpn/providers/session").getList({search: search}).then(success);
 		},
 		getClientConfigProviderList : function(search,success) {
-			return Restangular.all("autonubil/api/ovpn/client-config-providers").getList({search: search}).then(success);
+			return Restangular.all("autonubil/api/ovpn/providers/client").getList({search: search}).then(success);
 		},
+		getServerConfigProviderList : function(search,success) {
+			return Restangular.all("autonubil/api/ovpn/providers/server").getList({search: search}).then(success);
+		},		 
+		
 		 
+		
 		listPermissions : function(id,success) {
 			return Restangular.all("autonubil/api/ovpn/vpns/"+id+"/permissions").getList({}).then(success);
 		},
@@ -469,6 +474,10 @@ angular.module("autonubil-intranet-ovpn")
 			console.log("serverConfigProviders: "+serverConfigProviders.length);
 			$scope.serverConfigProviders = serverConfigProviders;
 		});
+		OvpnService.getSessionConfigProviderList("", function(sessionConfigProviders){
+			console.log("sessionConfigProviders: "+sessionConfigProviders.length);
+			$scope.sessionConfigProviders = sessionConfigProviders;
+		});
 	};
 	
 
@@ -558,7 +567,12 @@ angular.module("autonubil-intranet-ovpn")
 	
 	$scope.add = function(id) {
 		console.log("saving OpenVPN source ... ");
-		var x = { name : $scope.search.search, description: $scope.search.search, serverConfiguration: {}, serverConfigurationProvider: "default", clientConfiguration: {}, clientConfigurationProvider:"default" };
+		var x = { name : $scope.search.search, 
+				secretsProvider: "internal",   description: $scope.search.search, 
+				serverConfiguration: {}, serverConfigurationProvider: "default", 
+				sessionConfiguration: {}, sessionConfigurationProvider: "default", 
+				clientConfiguration: {}, clientConfigurationProvider: "default"
+		};
 		OvpnService.add(
 				x,
 				function(ovpn){

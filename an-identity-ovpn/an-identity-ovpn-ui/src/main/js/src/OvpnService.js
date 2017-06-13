@@ -19,12 +19,17 @@ angular.module("autonubil-intranet-ovpn")
 		},
 		
 		getSessionConfigProviderList : function(search,success) {
-			return Restangular.all("autonubil/api/ovpn/session-config-providers").getList({search: search}).then(success);
+			return Restangular.all("autonubil/api/ovpn/providers/session").getList({search: search}).then(success);
 		},
 		getClientConfigProviderList : function(search,success) {
-			return Restangular.all("autonubil/api/ovpn/client-config-providers").getList({search: search}).then(success);
+			return Restangular.all("autonubil/api/ovpn/providers/client").getList({search: search}).then(success);
 		},
+		getServerConfigProviderList : function(search,success) {
+			return Restangular.all("autonubil/api/ovpn/providers/server").getList({search: search}).then(success);
+		},		 
+		
 		 
+		
 		listPermissions : function(id,success) {
 			return Restangular.all("autonubil/api/ovpn/vpns/"+id+"/permissions").getList({}).then(success);
 		},

@@ -8,8 +8,11 @@ public class Ovpn {
 	private String description;
 	private String clientConfigurationProvider;
 	private String sessionConfigurationProvider;
+	private String serverConfigurationProvider;
+	private String secretsStore;
 	private JsonNode clientConfiguration;
 	private JsonNode sessionConfiguration;
+	private JsonNode serverConfiguration;
 	
 
 	public String getId() {
@@ -71,5 +74,30 @@ public class Ovpn {
 			throw new IllegalArgumentException("serverConfiguration must be an JSON Object");
 		this.sessionConfiguration = sessionConfiguration;
 	}
+
+	public String getServerConfigurationProvider() {
+		return serverConfigurationProvider;
+	}
+
+	public void setServerConfigurationProvider(String serverConfigurationProvider) {
+		this.serverConfigurationProvider = serverConfigurationProvider;
+	}
+
+	public String getSecretsStore() {
+		return secretsStore;
+	}
+
+	public void setSecretsStore(String secretsStore) {
+		this.secretsStore = secretsStore;
+	}
+
+	public JsonNode getServerConfiguration() {
+		return serverConfiguration;
+	}
+
+	public void setServerConfiguration(JsonNode serverConfiguration) {
+		this.serverConfiguration = serverConfiguration;
+	}
+
 
 }

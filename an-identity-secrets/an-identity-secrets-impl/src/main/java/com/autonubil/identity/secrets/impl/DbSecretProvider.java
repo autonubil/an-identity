@@ -55,12 +55,12 @@ public class DbSecretProvider implements SecretsProvider{
 	
 	@Override
 	public String getId() {
-		return "fd687235-7ed3-4eb9-b322-6954ff2e78ae";
+		return "07c4377a-f058-46f3-b90e-300a55a7ed57";
 	}
 
 	@Override
 	public String getName() {
-		return "Simple DB";
+		return "internal";
 	}
 
 	@Override

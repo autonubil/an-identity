@@ -28,12 +28,12 @@ public class DefaultOvpnSessionConfigProvider implements OvpnSessionConfigServic
 
 	@Override
 	public String getDisplayName() {
-		return "Default Server Config";
+		return "Default Session Config";
 	}
 
 	@Override
 	public String getDescription() {
-		return "Default Server Config Provider";
+		return "Default Session Config Provider";
 	}
 
 	@Override
