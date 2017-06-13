@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity-ldapotp</artifactId>
-		<version>0.1.18-SNAPSHOT</version>
+		<version>0.1.18</version>
 	</parent>
 	<artifactId>an-identity-ldapotp-ui</artifactId>
 	<build>

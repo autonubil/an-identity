@@ -6,7 +6,7 @@
 
     
 
-    <version>0.1.18-SNAPSHOT</version>
+    <version>0.1.18</version>
 
   </parent>
   <artifactId>an-identity-ldapusers-api</artifactId>
