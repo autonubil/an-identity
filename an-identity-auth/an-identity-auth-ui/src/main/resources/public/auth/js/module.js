@@ -102,7 +102,7 @@ angular.module("autonubil-intranet-auth")
 	};
 	
 
-	var setAuthStatus = function(l,a,n,un) {
+	var setAuthStatus = function(l,a,n,un,notifications) {
 		changed = false;
 		if(l!=AuthStatus.loggedIn) {
 			AuthStatus.loggedIn = l;
@@ -115,6 +115,7 @@ angular.module("autonubil-intranet-auth")
 		if(n!=AuthStatus.user.name) {
 			AuthStatus.user.name = n;
 			AuthStatus.user.username = un;
+			AuthStatus.user.notifications = notifications;
 			changed = true;
 		}
 		console.log ( "Auth changed? "+changed);
@@ -134,7 +135,7 @@ angular.module("autonubil-intranet-auth")
 							x = true;
 						}
 					});
-					setAuthStatus(true,x,e.user.displayName,e.user.username);
+					setAuthStatus(true,x,e.user.displayName,e.user.username,e.user.notifications);
 				},
 				function(e) {
 					setAuthStatus(false,false,"anonymous");
