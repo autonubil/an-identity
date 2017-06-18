@@ -11,6 +11,7 @@
 		<table class="table table-striped table-compact">
 			<tr>
 				<th>token ID</th>
+				<th>description</th>
 				<th>created</th>
 				<th>hash</th>
 				<th>step</th>
@@ -19,6 +20,9 @@
 			<tr ng-repeat="token in tokens" class="well-sm">
 				<td>
 					{{token.id}}
+				</td>
+				<td>
+					{{token.comment}}
 				</td>
 				<td style="padding-right: 10px">
 					<span am-time-ago="token.created">
@@ -50,7 +54,14 @@
 					</tr>
 				</table>
 			</div>
-			<div class="form-inline">
+		</div>
+		<div class="form-group">
+			<h5>Add a new token</h5>
+			To add a new token, modify the default description to your liking, then press "add". You will be
+			presented with a barcode you can scan. Please have your OTP app ready to scan.<br>
+		</div>
+		<div class="form-group">
+			<div class="form-inline" ng-if="!imageUrl">
 				<input class="form-control" ng-model="tokenRequest.comment">
 				<button class="btn btn-primary" ng-click="addToken()"><i class="glyhpicon glyhpicon-plus-sign"></i> add</button>
 			</div>

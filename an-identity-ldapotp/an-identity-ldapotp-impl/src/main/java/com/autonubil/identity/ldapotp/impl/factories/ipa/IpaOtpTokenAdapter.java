@@ -54,6 +54,7 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 								OtpToken out = new OtpToken();
 								out.setDn(r.getNameInNamespace());
 								out.setOwnerDn(user.getDn());
+								out.setComment(r.getAttributes().get("description").get()+"");
 								out.setHash(r.getAttributes().get("ipatokenOTPalgorithm").get()+"");
 								out.setOffsetSeconds(Integer.parseInt(r.getAttributes().get("ipatokenTOTPclockOffset").get()+""));
 								out.setCreated(ldapConnection.parseDate(r.getAttributes().get("createTimestamp").get()+""));
@@ -100,6 +101,7 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 			attributes.put("ipatokenOTPdigits", token.getLength()+"");
 			attributes.put("ipatokenOwner", user.getDn());
 			attributes.put("ipatokenOTPalgorithm", token.getHash());
+			attributes.put("description", token.getComment());
 			attributes.put("ipatokenTOTPclockOffset", "0");
 			
 			ldapConnection.createEntry("ipatokenuniqueid="+token.getId()+",cn=otp,"+ldapConnection.getBaseDn(), new String[] {"ipatoken", "ipatokentotp"} , attributes);

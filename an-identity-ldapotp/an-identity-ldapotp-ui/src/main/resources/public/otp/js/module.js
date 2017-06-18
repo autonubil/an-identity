@@ -56,7 +56,7 @@ angular.module("autonubil-intranet-otp")
 	
 	
 	$scope.update();
-	
+	$scope.newTokenRequest();
 	
 	
 	
