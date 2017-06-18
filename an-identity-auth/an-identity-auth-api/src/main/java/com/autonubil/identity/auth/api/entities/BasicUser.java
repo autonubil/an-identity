@@ -97,6 +97,7 @@ public class BasicUser implements User {
 		this.admin = admin;
 	}
 
+	@Override
 	public List<Notification> getNotifications() {
 		return new ArrayList<>(notifications);
 	}
@@ -108,6 +109,7 @@ public class BasicUser implements User {
 		}
 	}
 	
+	@Override
 	public void addNotification(Notification notification) {
 		this.notifications.add(notification);
 	}
