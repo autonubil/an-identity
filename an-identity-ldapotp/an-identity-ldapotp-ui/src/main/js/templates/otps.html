@@ -16,6 +16,7 @@
 				<th>hash</th>
 				<th>step</th>
 				<th>offset</th>
+				<th>remove</th>
 			</tr>
 			<tr ng-repeat="token in tokens" class="well-sm">
 				<td>
@@ -35,6 +36,9 @@
 				</td>
 				<td>
 					{{token.offsetSeconds}}
+				</td>
+				<td width="20">
+					<span class="btn btn-danger" ng-click="deleteToken(token.id)"><i class="glyphicon glyphicon-remove"> </i></span>
 				</td>
 			</tr>
 		</table>

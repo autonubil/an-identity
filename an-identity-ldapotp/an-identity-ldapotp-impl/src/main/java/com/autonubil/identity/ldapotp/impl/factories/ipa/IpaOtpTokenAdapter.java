@@ -126,8 +126,31 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 
 	@Override
 	public void deleteToken(String userId, String tokenId) {
-		
 		try {
+			LdapUser user = ldapConnection.getUserById(userId);
+			log.info("deleting token: "+tokenId+" for user: "+user.getDisplayName());
+			List<String> tokenDns = ldapConnection.getList(
+					ldapConnection.getBaseDn(), 
+					String.format("(&(objectClass=ipatokentotp)(ipatokenowner=%1$s)(ipatokenuniqueid=%2$s))",LdapEncoder.escapeDn(user.getDn()),tokenId),
+					new String[] { "entrydn" }, 
+					new LdapSearchResultMapper<String>() {
+						
+						public String map(SearchResult r) {
+							try {
+								return r.getAttributes().get("entrydn").get()+"";
+							} catch (Exception e) {
+								throw new RuntimeException(e);
+							}
+						}
+					}
+				);
+			
+			log.info("deleting token: "+tokenId+" for user: "+user.getDisplayName()+", found "+tokenDns.size()+" tokens");
+			for(String tokenDn : tokenDns) {
+				log.info("deleting token: "+tokenId+" for user: "+user.getDisplayName()+", token dn is: "+tokenDn);
+				ldapConnection.getContext().unbind(tokenDn);
+			}
+			
 			List<OtpToken> tokens = listTokens(userId, null);
 			if(tokens.size()==0) {
 				updateOtpGroup(ldapConnection.getConfig().getOtpGroup());
