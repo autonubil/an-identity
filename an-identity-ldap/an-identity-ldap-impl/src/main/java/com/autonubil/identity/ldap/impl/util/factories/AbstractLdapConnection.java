@@ -712,11 +712,11 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 	}
 
 	class SearchGroupsRunner implements Runnable {
-		AbstractLdapConnection conn;
+		LdapConnection conn;
 		List<LdapGroup> groups;
 		LdapGroup group;
 
-		public SearchGroupsRunner(AbstractLdapConnection conn, List<LdapGroup> groups, LdapGroup g) {
+		public SearchGroupsRunner(LdapConnection conn, List<LdapGroup> groups, LdapGroup g) {
 			this.conn = conn;
 			this.groups = groups;
 			this.group = g;
@@ -816,6 +816,7 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 
 	}
 
+	@Override
 	public LdapConfig getConfig() {
 		return config;
 	}
@@ -952,7 +953,7 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 			}
 		}
 	}
-
+	
 	protected void setContext(DirContext context) {
 		this.ctx = context;
 	}

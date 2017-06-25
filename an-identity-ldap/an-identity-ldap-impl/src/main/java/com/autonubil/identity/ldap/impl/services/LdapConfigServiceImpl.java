@@ -118,6 +118,7 @@ public class LdapConfigServiceImpl implements LdapConfigService {
 			i.addField("auth", config.getAuth().name());
 			i.addField("admin_bind_dn", config.getAdminBindDn());
 			i.addField("root_dse", config.getRootDse());
+			i.addField("otp_group", config.getOtpGroup());
 			i.addField("server_type", config.getServerType());
 			i.addField("use_as_auth", config.isUseAsAuth() ? 1 : 0);
 			i.addField("use_otp", config.isUseOtp() ? 1 : 0);
@@ -133,6 +134,7 @@ public class LdapConfigServiceImpl implements LdapConfigService {
 			u.set("auth", config.getAuth().name());
 			u.set("admin_bind_dn", config.getAdminBindDn());
 			u.set("root_dse", config.getRootDse());
+			u.set("otp_group", config.getOtpGroup());
 			u.set("server_type", config.getServerType());
 			u.set("use_as_auth", config.isUseAsAuth() ? 1 : 0);
 			u.set("use_otp", config.isUseOtp() ? 1 : 0);

@@ -12,5 +12,6 @@ public interface LdapOtpAdapter {
 	public void deleteToken(String userId, String tokenId);
 
 	public void setDirContext(DirContext context);
+	public void updateOtpGroup(String otpGroup);
 	
 }

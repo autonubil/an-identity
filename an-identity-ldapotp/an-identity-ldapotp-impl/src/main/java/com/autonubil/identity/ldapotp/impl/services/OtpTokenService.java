@@ -8,17 +8,21 @@ import java.util.UUID;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.autonubil.identity.ldap.api.LdapConfigService;
 import com.autonubil.identity.ldap.api.LdapConnection;
 import com.autonubil.identity.ldap.api.UnsupportedOperation;
+import com.autonubil.identity.ldap.api.entities.LdapConfig;
 import com.autonubil.identity.ldapotp.api.LdapOtpAdapter;
 import com.autonubil.identity.ldapotp.api.LdapOtpAdapterFactory;
 import com.autonubil.identity.ldapotp.api.OtpToken;
 import com.autonubil.identity.util.totp.TotpUtil;
 
 @Service
+@EnableScheduling
 public class OtpTokenService {
 
 	private static Log log = LogFactory.getLog(OtpTokenService.class);
@@ -70,6 +74,24 @@ public class OtpTokenService {
 		LdapOtpAdapter a = getAdapter(connectionId);
 		a.deleteToken(userId, tokenId);
 	}
+	
+	
+	@Scheduled(fixedDelay=60000)
+	public void updateOtpGroup() {
+		for(LdapConfig lc : ldapConfigService.list(null, null, null)) {
+			if(lc.getOtpGroup().length()>0) {
+				try {
+					LdapOtpAdapter loa = getAdapter(lc.getId());
+					if(loa!=null) {
+						loa.updateOtpGroup(lc.getOtpGroup());
+					}
+				} catch (Exception e) {
+					log.error("error updating OTP group: "+lc.getName(),e);
+				}
+			}
+		}
+	}
+	
 	
 	
 }

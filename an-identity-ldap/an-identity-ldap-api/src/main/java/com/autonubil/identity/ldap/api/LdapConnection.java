@@ -9,6 +9,7 @@ import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 
 import com.autonubil.identity.auth.api.exceptions.AuthException;
+import com.autonubil.identity.ldap.api.entities.LdapConfig;
 import com.autonubil.identity.ldap.api.entities.LdapGroup;
 import com.autonubil.identity.ldap.api.entities.LdapObject;
 import com.autonubil.identity.ldap.api.entities.LdapUser;
@@ -67,7 +68,8 @@ public interface LdapConnection {
 
 	Date parseDate(String in) throws ParseException;
 	
-	
 	void initContextForSubThread();
+
+	LdapConfig getConfig();
 
 }

@@ -55,6 +55,12 @@
 			</div>
 			<div class="col-md-12">
 				<div class="form form-group">
+					<label>OTP Group</label>
+					<input ng-model="ldapConfig.otpGroup" ng-change="startChange()" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
 					<label>encryption</label>
 					<select ng-model="ldapConfig.encryption" ng-change="startChange()" class="form-control">
 						<option>NONE</option>
