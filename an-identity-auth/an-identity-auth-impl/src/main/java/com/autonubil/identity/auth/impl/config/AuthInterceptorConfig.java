@@ -10,8 +10,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.autonubil.identity.auth.impl.controllers.AuthInterceptor;
 import com.autonubil.identity.auth.impl.controllers.CookieAuthInterceptor;
-import com.autonubil.identity.auth.impl.controllers.HeaderAuthInterceptor;
 
 @Configuration
 @PropertySource(value = { "auth.properties" })
@@ -21,7 +21,7 @@ public class AuthInterceptorConfig extends WebMvcConfigurerAdapter {
 	private CookieAuthInterceptor cookieAuthInterceptor;
 	
 	@Autowired
-	private HeaderAuthInterceptor headerAuthInterceptor;
+	private AuthInterceptor headerAuthInterceptor;
 	
 	
 	@Override
