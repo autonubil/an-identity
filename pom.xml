@@ -25,6 +25,7 @@
 		<module>an-identity-automigrate</module>
 		<module>an-identity-certs</module>
 		<module>an-identity-persistence</module>
+		<module>an-identity-openid</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>	

@@ -12,5 +12,6 @@
   	<module>an-identity-ovpn-common</module>
   	<module>an-identity-ovpn-vault</module>
   	<module>an-identity-ovpn-ui</module>
+  	<module>an-identity-ovpn-impl</module>
   </modules>
 </project>

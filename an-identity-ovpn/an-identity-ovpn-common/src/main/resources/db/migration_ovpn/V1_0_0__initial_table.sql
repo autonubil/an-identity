@@ -4,8 +4,8 @@ CREATE TABLE vpn (
    description VARCHAR(256),
    client_config_provider VARCHAR(36) NOT NULL,
    server_config_provider VARCHAR(36) NOT NULL,
-   client_configuration TEXT NOT NULL,
-   server_configuration TEXT NOT NULL,
+   client_configuration TEXT NOT NULL DEFAULT '{}',
+   server_configuration TEXT NOT NULL DEFAULT '{}',
    PRIMARY KEY (id) 
 );
 
