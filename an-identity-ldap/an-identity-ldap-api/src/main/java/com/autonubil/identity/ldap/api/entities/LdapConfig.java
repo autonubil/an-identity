@@ -19,6 +19,7 @@ public class LdapConfig {
 	private AUTH auth = AUTH.SIMPLE;
 	private String adminBindDn = "";
 	private String rootDse = "";
+	private String otpGroup = "";
 	
 	private String cert; 
 	
@@ -124,6 +125,15 @@ public class LdapConfig {
 
 	public void setUseOtp(boolean useOtp) {
 		this.useOtp = useOtp;
+	}
+
+	public String getOtpGroup() {
+		if(otpGroup==null) otpGroup = "";
+		return otpGroup;
+	}
+
+	public void setOtpGroup(String otpGroup) {
+		this.otpGroup = otpGroup;
 	}
 	
 }

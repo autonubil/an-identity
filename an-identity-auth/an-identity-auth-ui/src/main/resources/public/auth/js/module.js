@@ -213,6 +213,17 @@ angular.module("autonubil-intranet-auth")
 	};
 	
 	AuthService.getSources(function(sources) {
+		var x = [];
+		_.forEach(sources,function(e) {
+			if(e.sourceId!="LOCAL" || $routeParams["local"]) {
+				console.log("matches: ",e);
+				x.push(e);
+			} else {
+				console.log("doesnt match: ",e);
+			}
+		});
+		sources = x;
+		
 		if($scope.config.sourceId=="") {
 			$scope.config.sourceId = sources[0].sourceId;
 		};

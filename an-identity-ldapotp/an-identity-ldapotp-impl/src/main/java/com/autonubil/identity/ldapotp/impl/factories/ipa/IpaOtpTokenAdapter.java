@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.naming.NamingEnumeration;
+import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.autonubil.identity.ldap.api.LdapConnection;
 import com.autonubil.identity.ldap.api.LdapSearchResultMapper;
@@ -20,6 +26,8 @@ import com.autonubil.identity.util.totp.TotpUtil;
 
 public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 
+	private static Log log = LogFactory.getLog(IpaOtpTokenAdapter.class);
+	
 	private DirContext context;
 	private LdapConnection ldapConnection;
 	
@@ -91,9 +99,7 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 		Map<String,Object> attributes = new HashMap<>();
 		try {
 			byte[] bytes = TotpUtil.toBytes(token.getSecret());
-			
-			System.err.println(token.getSecret()+" ---> "+bytes+"   ("+bytes.length+" bytes)");
-			
+			token.setId(UUID.randomUUID().toString());
 			LdapUser user = ldapConnection.getUserById(userId);
 			attributes.put("ipatokenTOTPtimeStep", new Integer(token.getStepSeconds())+"");
 			attributes.put("ipatokenUniqueID", token.getId());
@@ -103,8 +109,15 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 			attributes.put("ipatokenOTPalgorithm", token.getHash());
 			attributes.put("description", token.getComment());
 			attributes.put("ipatokenTOTPclockOffset", "0");
-			
 			ldapConnection.createEntry("ipatokenuniqueid="+token.getId()+",cn=otp,"+ldapConnection.getBaseDn(), new String[] {"ipatoken", "ipatokentotp"} , attributes);
+			try {
+				List<OtpToken> tokens = listTokens(userId, null);
+				if(tokens.size()==1) {
+					updateOtpGroup(ldapConnection.getConfig().getOtpGroup());
+				}
+			} catch (Exception e) {
+				log.warn("unable to update otp group",e);
+			}
 			return token;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -113,8 +126,38 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 
 	@Override
 	public void deleteToken(String userId, String tokenId) {
-		
-
+		try {
+			LdapUser user = ldapConnection.getUserById(userId);
+			log.info("deleting token: "+tokenId+" for user: "+user.getDisplayName());
+			List<String> tokenDns = ldapConnection.getList(
+					ldapConnection.getBaseDn(), 
+					String.format("(&(objectClass=ipatokentotp)(ipatokenowner=%1$s)(ipatokenuniqueid=%2$s))",LdapEncoder.escapeDn(user.getDn()),tokenId),
+					new String[] { "entrydn" }, 
+					new LdapSearchResultMapper<String>() {
+						
+						public String map(SearchResult r) {
+							try {
+								return r.getAttributes().get("entrydn").get()+"";
+							} catch (Exception e) {
+								throw new RuntimeException(e);
+							}
+						}
+					}
+				);
+			
+			log.info("deleting token: "+tokenId+" for user: "+user.getDisplayName()+", found "+tokenDns.size()+" tokens");
+			for(String tokenDn : tokenDns) {
+				log.info("deleting token: "+tokenId+" for user: "+user.getDisplayName()+", token dn is: "+tokenDn);
+				ldapConnection.getContext().unbind(tokenDn);
+			}
+			
+			List<OtpToken> tokens = listTokens(userId, null);
+			if(tokens.size()==0) {
+				updateOtpGroup(ldapConnection.getConfig().getOtpGroup());
+			}
+		} catch (Exception e) {
+			log.warn("unable to update otp group",e);
+		}
 	}
 
 	@Override
@@ -122,4 +165,80 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 		this.context = context;
 	}
 
+	@Override
+	public void updateOtpGroup(String otpGroup) {
+		if(otpGroup==null || otpGroup.length()==0) {
+			return;
+		}
+		try {
+			List<String> tokenOwners = ldapConnection.getList(
+				ldapConnection.getBaseDn(), 
+				"(objectClass=ipatokentotp)", 
+				new String[] { "ipatokenowner" }, 
+				new LdapSearchResultMapper<String>() {
+					
+					public String map(SearchResult r) {
+						try {
+							return r.getAttributes().get("ipatokenowner").get()+"";
+						} catch (Exception e) {
+							throw new RuntimeException(e);
+						}
+					}
+				}
+			);
+			List<List<String>> tokenGroupMembers = ldapConnection.getList(
+					otpGroup, 
+					"(objectClass=groupofnames)", 
+					new String[] { "member" }, 
+					new LdapSearchResultMapper<List<String>>() {
+						
+						public List<String> map(SearchResult r) {
+							try {
+								NamingEnumeration<?> ne = r.getAttributes().get("member").getAll();
+								List<String> out = new ArrayList<>();
+								while(ne.hasMore()) {
+									out.add(ne.next()+"");
+								}
+								return out; 
+							} catch (Exception e) {
+								throw new RuntimeException(e);
+							}
+						}
+					}
+					);
+
+			List<String> toRemove = new ArrayList<>(); 
+
+			for(List<String> ms : tokenGroupMembers) {
+				for(String m : ms) {
+					if(tokenOwners.contains(m)) {
+						tokenOwners.remove(m);
+					} else {
+						toRemove.add(m);
+					}
+				}
+			}
+			
+			ModificationItem[] items = new ModificationItem[tokenOwners.size()+toRemove.size()];
+			int index=0;
+			
+			for(String s : tokenOwners) {
+				log.info(s+" should be added");
+				items[index] = new ModificationItem(DirContext.ADD_ATTRIBUTE, new BasicAttribute("member", s));
+				index++;
+			}
+			for(String s : toRemove) {
+				log.info(s+" should be removed");
+				items[index] = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, new BasicAttribute("member", s));
+				index++;
+			}
+			
+			ldapConnection.getContext().modifyAttributes(otpGroup, items);
+			
+ 		} catch (Exception e) {
+			log.error("error updating otp group: ",e);
+		}
+		
+	}
+	
 }

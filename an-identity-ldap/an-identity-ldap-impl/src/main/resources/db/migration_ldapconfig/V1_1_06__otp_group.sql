@@ -1,0 +1,1 @@
+ALTER TABLE ldap_config ADD COLUMN otp_group VARCHAR(256);

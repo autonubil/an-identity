@@ -7,6 +7,9 @@ angular.module("autonubil-intranet-otp")
 		},
 		create : function(token,success,error) {
 			return Restangular.one("autonubil/api/ldapotp/mytokens").customPOST(token).then(success,error);
+		},
+		remove : function(id,success) {
+			return Restangular.one("autonubil/api/ldapotp/mytokens",id).remove().then(success);
 		}
 	};
 	

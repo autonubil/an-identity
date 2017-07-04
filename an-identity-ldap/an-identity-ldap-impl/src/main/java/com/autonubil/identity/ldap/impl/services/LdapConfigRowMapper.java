@@ -22,6 +22,7 @@ public class LdapConfigRowMapper implements RowMapper<LdapConfig> {
 		out.setAdminBindDn(rs.getString("admin_bind_dn"));
 		out.setServerType(rs.getString("server_type"));
 		out.setRootDse(rs.getString("root_dse"));
+		out.setOtpGroup(rs.getString("otp_group"));
 		
 		out.setCert(rs.getString("cert"));
 		out.setTrustAll(rs.getBoolean("trust_all"));

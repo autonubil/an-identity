@@ -38,6 +38,9 @@ angular.module("autonubil-intranet-otp")
 	$scope.update();
 	$scope.newTokenRequest();
 	
+	$scope.deleteToken = function(tokenId) {
+		OtpService.remove(tokenId, $scope.update);
+	};
 	
 	
 	$scope.addToken = function() {
