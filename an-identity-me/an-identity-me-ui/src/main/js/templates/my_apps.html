@@ -1,5 +1,4 @@
-<div class="col-md-12" ng-controller="MyAppsController">
-	<h4>Applications</h4>
+<div ng-controller="MyAppsController">
 	<div ng-if="apps">
 		<div class="form-group">
 			<input ng-model="search.term" class="form-control" ng-change="updateApps()" placeholder="type to filter">
@@ -10,7 +9,7 @@
 		<table class="table table-striped table-compact">
 			
 			<tr ng-repeat="app in apps">
-				<td>
+				<td width="3.5em" valign="center">
 					<a target="{{app.id}}" href="{{app.url}}"><img
 						src="/autonubil/api/apps/apps/{{app.id}}/icon"
 						style="max-height: 3.2em; min-height: 3.2em" /></a>

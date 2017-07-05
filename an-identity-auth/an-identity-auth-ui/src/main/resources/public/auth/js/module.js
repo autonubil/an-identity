@@ -68,7 +68,9 @@ angular.module("autonubil-intranet-auth")
 	// notifications component
 	var notifications = {
 			visible : true,
+			defaultItem: true,
 			title : "Notifications",
+			id: "notifications",
 			templateUrl : "auth/templates/notifications.html" 
 		};
 		
@@ -190,6 +192,9 @@ angular.module("autonubil-intranet-auth")
 	
 	$scope.status = AuthService.getAuthStatus();
 
+	$scope.selectedTab = $routeParams.selectedTab || "applications";
+	
+	
 	$scope.config = {
 		sourceId : $routeParams.sourceId || "",
 		mode : $routeParams.mode || "login",
@@ -204,7 +209,7 @@ angular.module("autonubil-intranet-auth")
 			token: $routeParams.token||"",
 			email: $routeParams.email||"",
 			oldPassword:"",
-			newPassword:""
+			newPassword:"",
 	};
 	
 	$scope.credentials = {
@@ -215,7 +220,7 @@ angular.module("autonubil-intranet-auth")
 	AuthService.getSources(function(sources) {
 		var x = [];
 		_.forEach(sources,function(e) {
-			if(e.sourceId!="LOCAL" || $routeParams["local"]) {
+			if (e.sourceId!="LOCAL" || $routeParams["local"] || (sources.length == 1) ) {
 				console.log("matches: ",e);
 				x.push(e);
 			} else {

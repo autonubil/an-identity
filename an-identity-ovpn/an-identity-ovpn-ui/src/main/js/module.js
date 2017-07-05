@@ -29,7 +29,11 @@ angular.module("autonubil-intranet-myovpns")
 	
 	myVpns= {
 			visible : true,
-			status : "My VPNs",
+			defaultItem: true,
+			id: "vpns",
+			status: "My VPNs",
+			title: "VPNs",
+			
 			templateUrl : "ovpn/templates/my_vpns.html"
 	};
 	

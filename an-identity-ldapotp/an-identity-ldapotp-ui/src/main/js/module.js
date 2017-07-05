@@ -9,11 +9,14 @@ angular.module("autonubil-intranet-otp")
 	
 	myOtps = {
 		visible : true,
+		defaultItem: true,
 		title : "OTP Tokens",
+		id: "otptokens",
 		templateUrl : "otp/templates/otps.html" 
 	};
 	
 	PluginComponentService.addItem("/me",myOtps);
+	PluginComponentService.addItem("/dashboard",myOtps);
 	
 	
 });

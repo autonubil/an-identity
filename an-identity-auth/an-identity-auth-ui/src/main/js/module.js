@@ -68,7 +68,9 @@ angular.module("autonubil-intranet-auth")
 	// notifications component
 	var notifications = {
 			visible : true,
+			defaultItem: true,
 			title : "Notifications",
+			id: "notifications",
 			templateUrl : "auth/templates/notifications.html" 
 		};
 		

@@ -1,6 +1,6 @@
 angular.module("templates", []);
 
-angular.module("autonubil-intranet",["templates","ngRoute"]);
+angular.module("autonubil-intranet",["templates","ngRoute", "angular-plugin"]);
 
 angular.module("autonubil-intranet")
  .run(function(PluginMenuService) {
@@ -13,3 +13,5 @@ angular.module("autonubil-intranet")
 	PluginMenuService.setDefault("/auth/login");
 	
 });
+
+

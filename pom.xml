@@ -12,7 +12,6 @@
 		<module>an-identity-auth</module>
 		<module>an-identity-db</module>
 		<module>an-identity-ldap</module>
-		<module>an-identity-ldapotp</module>
 		<module>an-identity-ldapusers</module>
 		<module>an-identity-less</module>
 		<module>an-identity-localauth</module>
@@ -21,6 +20,7 @@
 		<module>an-identity-util</module>
 		<module>an-identity-ovpn</module>
 		<module>an-identity-me</module>
+		<module>an-identity-ldapotp</module>
 		<module>an-identity-secrets</module>
 		<module>an-identity-automigrate</module>
 		<module>an-identity-certs</module>
