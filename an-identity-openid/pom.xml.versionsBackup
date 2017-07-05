@@ -2,8 +2,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.autonubil.identity</groupId>
-    <artifactId>an-identity-secrets</artifactId>
-    <version>0.1.21</version>
+    <artifactId>an-identity</artifactId>
+    <version>0.1.21-SNAPSHOT</version>
   </parent>
-  <artifactId>an-identity-secrets-api</artifactId>
+  <artifactId>an-identity-openid</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+  	<module>an-identity-openid-impl</module>
+  </modules>
 </project>
