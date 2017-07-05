@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.naming.NamingEnumeration;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
@@ -114,13 +116,48 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 				List<OtpToken> tokens = listTokens(userId, null);
 				if(tokens.size()==1) {
 					updateOtpGroup(ldapConnection.getConfig().getOtpGroup());
+					setOtpUserAuthType(user, true);
 				}
 			} catch (Exception e) {
 				log.warn("unable to update otp group",e);
 			}
+			
 			return token;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	private void setOtpUserAuthType(LdapUser user, boolean enable) {
+		// set OTP Flag in UserAuthType
+		try {
+			Attributes userAuthTypeAttrs = ldapConnection.getContext().getAttributes(user.getDn(), new String[] {"ipaUserAuthType"} );
+			Attribute userAuthTypeAttr = userAuthTypeAttrs.get("ipaUserAuthType");
+			boolean otpMethodSet = false;
+			if (userAuthTypeAttr != null) {
+				for (int i=0; i< userAuthTypeAttr.size(); i++) {
+					if (userAuthTypeAttr.get(i).toString().compareToIgnoreCase("otp") == 0) {
+						otpMethodSet = true;
+						break;
+					}
+				}
+			}
+			
+			if (enable != otpMethodSet) {
+				if (enable) {
+					if (userAuthTypeAttr  == null) {
+						userAuthTypeAttr  = new BasicAttribute("ipaUserAuthType");
+					}
+					userAuthTypeAttr.add("otp");
+				} else {
+					userAuthTypeAttr.remove("otp");
+				}
+				ModificationItem[] items = new ModificationItem[] { new ModificationItem(DirContext.REPLACE_ATTRIBUTE, userAuthTypeAttr) };
+				ldapConnection.getContext().modifyAttributes(user.getDn() , items);
+				log.info("Set OTP UserAuthType flag for " + user.getUsername()+" in IPA" );
+			}
+		} catch (Exception e) {
+			log.warn("Failed to set useerAuthType",e);
 		}
 	}
 
@@ -154,6 +191,8 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 			List<OtpToken> tokens = listTokens(userId, null);
 			if(tokens.size()==0) {
 				updateOtpGroup(ldapConnection.getConfig().getOtpGroup());
+				setOtpUserAuthType(user, false);
+				
 			}
 		} catch (Exception e) {
 			log.warn("unable to update otp group",e);
