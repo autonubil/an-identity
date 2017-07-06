@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.autonubil.identity</groupId>
     <artifactId>an-identity-secrets</artifactId>
-    <version>0.1.21</version>
+    <version>0.1.22-SNAPSHOT</version>
   </parent>
   <artifactId>an-identity-secrets-api</artifactId>
 </project>
