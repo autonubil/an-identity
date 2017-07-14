@@ -1,7 +1,9 @@
 <div ng-controller="NotificationController">
+<!--  
 	<div ng-if="!status.user.notifications || status.user.notifications.length == 0">
 		<i>No notifications!</i>
 	</div>
+ -->	
 	<div ng-if="status.user.notifications && status.user.notifications.length > 0">
 		<div ng-repeat="notification in status.user.notifications"
 			ng-class="['alert',{'alert-danger':notification.level=='ERROR'},{'alert-warning':notification.level=='WARN'},{'alert-info':notification.level=='INFO'}]">

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity-openid</artifactId>
-		<version>0.1.21</version>
+		<version>0.1.23-SNAPSHOT</version>
 	</parent>
 	<artifactId>an-identity-openid-impl</artifactId>
 
@@ -18,14 +18,45 @@
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-api</artifactId>
-			<version>0.1.20-SNAPSHOT</version>
-
+			<version>0.1.23-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-auth-impl</artifactId>
+			<version>0.1.23-SNAPSHOT</version>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-db-common</artifactId>
+			<version>0.1.23-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-audit-api</artifactId>
-			<version>0.1.20-SNAPSHOT</version>
+			<version>0.1.23-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-ldap-api</artifactId>
+			<version>0.1.23-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-apps-api</artifactId>
+			<version>0.1.23-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.autonubil.identity</groupId>
+			<artifactId>an-identity-openid-api</artifactId>
+			<version>0.1.23-SNAPSHOT</version>
+		</dependency>
 
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.2.0</version>
 		</dependency>
 	</dependencies>
 </project>

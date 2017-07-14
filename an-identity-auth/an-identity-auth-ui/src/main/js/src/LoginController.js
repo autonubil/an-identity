@@ -1,19 +1,28 @@
 angular.module("autonubil-intranet-auth")
-.controller("LoginController", function($scope,AuthService,$location,$routeParams) {
+.controller("LoginController", function($scope, AuthService, $location, $routeParams, usSpinnerService) {
 	
 	$scope.status = AuthService.getAuthStatus();
 
-	$scope.selectedTab = $routeParams.selectedTab || "applications";
+	$scope.isLoggingIn = false;
 	
+	$scope.startSpin = function(){
+		$scope.isLoggingIn = true;
+	 	usSpinnerService.spin('login-spinner');
+	}
+	 
+	$scope.stopSpin = function(){
+		$scope.isLoggingIn = false;
+	    usSpinnerService.stop('login-spinner');
+	}
 	
+
 	$scope.config = {
 		sourceId : $routeParams.sourceId || "",
 		mode : $routeParams.mode || "login",
-		username : $routeParams.username || ""
+		username : $routeParams.username || "",
+		redirect: "/auth/dashboard"
 	};
 
-	console.log($scope.config);
-	
 	$scope.reset = {
 			username: $scope.config.username,
 			secondFactor: "",
@@ -27,6 +36,7 @@ angular.module("autonubil-intranet-auth")
 			username : $scope.reset.username,
 			password : ""
 	};
+	
 	
 	AuthService.getSources(function(sources) {
 		var x = [];
@@ -51,16 +61,34 @@ angular.module("autonubil-intranet-auth")
 		$scope.sources = sources;
 	});
 	
+	$scope.showDashboard = function() {
+		angular.module("autonubil-intranet-auth").goto("/auth/dashboard");
+	}
+	
 	$scope.login = function() {
 		$scope.success = undefined;
 		$scope.error = undefined;
-		$scope.credentials.sourceId = $scope.config.sourceId; 
+		$scope.credentials.sourceId = $scope.config.sourceId;
+		$scope.startSpin();
 		AuthService.login($scope.credentials,
 				function(user) {
 					$scope.status.loggedIn = true;
+					if ($routeParams.return_url && $routeParams.return_url.length > 0 ) {
+						redirect =$routeParams.return_url;
+					} else {
+						redirect = $scope.config.redirect;
+					}
+					if (redirect [0] != '#'){
+						if (redirect [0] == '/') {
+							angular.module("autonubil-intranet-auth").goto(redirect );
+						} else {
+							window.location=redirect;
+						}
+					}
 				},
 				function(response) { 
 					$scope.error = response;
+					$scope.stopSpin();
 				}
 		);
 	};

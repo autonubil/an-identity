@@ -1,6 +1,8 @@
 angular.module("autonubil-intranet-ovpn")
 .controller("VpnEditController", function($scope,AuthService,OvpnService,LdapConfigService,LdapGroupService,$routeParams) {
 
+	AuthService.updateAuth();
+	
 	$scope.changed = false;
 	
 	$scope.newPermission = {

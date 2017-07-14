@@ -26,15 +26,15 @@ angular.module("autonubil-intranet-auth")
 			AuthStatus.user.notifications = notifications;
 			changed = true;
 		}
-		console.log ( "Auth changed? "+changed);
 		if(changed) {
+			console.log ( "Auth changed to "+AuthStatus.loggedIn);
 			$rootScope.$emit("authChanged",AuthStatus);
 		}
 	} 
 	
 	
 	var updateAuth = function() {
-		console.log ( " update Auth ... ");
+//		console.log ( " update Auth ... ");
 		Restangular.all("autonubil/api/authentication").customGET("authenticate").then(
 				function(e) {
 					x = false;
@@ -44,6 +44,7 @@ angular.module("autonubil-intranet-auth")
 						}
 					});
 					setAuthStatus(true,x,e.user.displayName,e.user.username,e.user.notifications);
+					updateAuthPromise = $interval(updateAuth,10000,1);
 				},
 				function(e) {
 					setAuthStatus(false,false,"anonymous");
@@ -51,8 +52,7 @@ angular.module("autonubil-intranet-auth")
 		);
 	};
 	
-	$interval(updateAuth,10000);
-	updateAuth();
+//	updateAuth();
 
 	return {
 		getSources : function(callback) { 

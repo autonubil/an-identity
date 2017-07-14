@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.autonubil.identity.auth.api.entities.ExpiringUser;
 import com.autonubil.identity.auth.api.entities.Group;
 import com.autonubil.identity.auth.api.entities.Notification;
-import com.autonubil.identity.auth.api.entities.User;
 
-public class LdapUser extends LdapObject implements Comparable<LdapUser>, User {
+public class LdapUser extends LdapObject implements Comparable<LdapUser>, ExpiringUser {
 
 	private String sourceId;
 	private String sourceName;
@@ -16,6 +16,7 @@ public class LdapUser extends LdapObject implements Comparable<LdapUser>, User {
 	private String accountName;
 	private String displayName;
 	private String cn;
+	private String givenName;
 	private String sn;
 	private String mail;
 	private String phone;
@@ -126,6 +127,13 @@ public class LdapUser extends LdapObject implements Comparable<LdapUser>, User {
 		this.sn = sn;
 	}
 
+	public String getGivenName() {
+		return givenName;
+	}
+
+	public void setGivenName(String givenName) {
+		this.sn = givenName;
+	}
 	public String getPhone() {
 		return phone;
 	}
@@ -184,6 +192,11 @@ public class LdapUser extends LdapObject implements Comparable<LdapUser>, User {
 	
 	public void addNotification(Notification notification) {
 		this.notifications.add(notification);
+	}
+
+	@Override
+	public boolean isExpired() {
+		return  ( (this.userExpires == null) && (this.userExpires.getTime() > 0)  && (this.userExpires.getTime() < new Date().getTime()));
 	}
 	
 }

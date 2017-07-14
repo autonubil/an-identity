@@ -26,11 +26,11 @@ import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.auth.api.exceptions.AuthException;
 import com.autonubil.identity.auth.api.exceptions.AuthenticationFailedException;
 import com.autonubil.identity.auth.api.exceptions.NotAuthenticatedException;
+import com.autonubil.identity.auth.api.services.AuthService;
 import com.autonubil.identity.auth.api.util.AuthUtils;
 import com.autonubil.identity.auth.api.util.IdentityHolder;
 import com.autonubil.identity.auth.api.util.UsernamePasswordOTPCredentials;
 import com.autonubil.identity.auth.api.util.UsernamePasswordOTPReset;
-import com.autonubil.identity.auth.impl.services.AuthService;
 
 @RestController
 @RequestMapping("/autonubil/api/authentication")
@@ -75,6 +75,11 @@ public class AuthController {
 	    	}
 		}
 
+		// no creds, no auth...
+		if (credentials == null) {
+			return null;
+		}
+		
     	// authenticate and (if successful) set new cookie
 		Identity i = authService.authenticate(credentials);
 		if(i!=null) {

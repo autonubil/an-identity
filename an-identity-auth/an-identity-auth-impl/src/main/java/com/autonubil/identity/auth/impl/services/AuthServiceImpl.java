@@ -18,12 +18,13 @@ import com.autonubil.identity.auth.api.entities.Identity;
 import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.auth.api.exceptions.AuthException;
 import com.autonubil.identity.auth.api.exceptions.NotAuthenticatedException;
+import com.autonubil.identity.auth.api.services.AuthService;
 import com.autonubil.identity.auth.api.util.PasswordReset;
 
 @Service
-public class AuthService {
+public class AuthServiceImpl implements AuthService {
 
-	private static Log log = LogFactory.getLog(AuthService.class);
+	private static Log log = LogFactory.getLog(AuthServiceImpl.class);
 
 	@Autowired
 	private List<AuthenticationProvider> authProviders = new ArrayList<>();
@@ -31,6 +32,11 @@ public class AuthService {
 	@Autowired(required=false)
 	private List<AuthenticationListener> authListeners = new ArrayList<>();
 	
+	
+	/* (non-Javadoc)
+	 * @see com.autonubil.identity.auth.impl.services.AuthServiceX#reset(com.autonubil.identity.auth.api.util.PasswordReset)
+	 */
+	@Override
 	public boolean reset(PasswordReset pwr) throws AuthException {
 		long start = System.currentTimeMillis();
 		log.info("auth: check password reset ... ");
@@ -59,10 +65,18 @@ public class AuthService {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.autonubil.identity.auth.impl.services.AuthServiceX#authenticate(com.autonubil.identity.auth.api.Credentials)
+	 */
+	@Override
 	public Identity authenticate(Credentials c) throws AuthException {
 		return authenticate(c, true);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.autonubil.identity.auth.impl.services.AuthServiceX#authenticate(com.autonubil.identity.auth.api.Credentials, boolean)
+	 */
+	@Override
 	public Identity authenticate(Credentials c, boolean getLinked) throws AuthException {
 		Identity identity = new Identity();
 		User user = null;
@@ -136,6 +150,10 @@ public class AuthService {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.autonubil.identity.auth.impl.services.AuthServiceX#getSources()
+	 */
+	@Override
 	@Autowired
 	public List<AuthenticationSource> getSources() {
 		List<AuthenticationSource> out = new ArrayList<>();
@@ -146,6 +164,10 @@ public class AuthService {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.autonubil.identity.auth.impl.services.AuthServiceX#getUser(java.lang.String, java.lang.String)
+	 */
+	@Override
 	public User getUser(String sourceId, String username) {
 		for(AuthenticationProvider p : authProviders) {
 			User u = p.getUser(sourceId, username);
