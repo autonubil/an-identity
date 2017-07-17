@@ -4,14 +4,14 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity-persistence</artifactId>
-		<version>0.1.26-SNAPSHOT</version>
+		<version>0.1.27-SNAPSHOT</version>
 	</parent>
 	<artifactId>an-identity-persistence-impl</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-persistence-api</artifactId>
-			<version>0.1.26-SNAPSHOT</version>
+			<version>0.1.27-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
