@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.autonubil.identity</groupId>
     <artifactId>an-identity-ldapotp</artifactId>
-    <version>0.1.24-SNAPSHOT</version>
+    <version>0.1.24</version>
   </parent>
   <artifactId>an-identity-ldapotp-api</artifactId>
 </project>
