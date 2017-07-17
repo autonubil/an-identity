@@ -25,12 +25,11 @@ import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.auth.api.exceptions.AuthException;
 import com.autonubil.identity.auth.api.exceptions.NotAuthenticatedException;
 import com.autonubil.identity.auth.api.exceptions.NotAuthorizedException;
+import com.autonubil.identity.auth.api.services.AuthService;
 import com.autonubil.identity.auth.api.util.AuthUtils;
 import com.autonubil.identity.auth.api.util.IdentityHolder;
-import com.autonubil.identity.auth.impl.services.AuthService;
 import com.autonubil.identity.ovpn.api.OvpnClientConfigService;
 import com.autonubil.identity.ovpn.api.OvpnConfigService;
-import com.autonubil.identity.ovpn.api.OvpnServerConfigService;
 import com.autonubil.identity.ovpn.api.OvpnSessionConfigService;
 import com.autonubil.identity.ovpn.api.entities.ConfigProvider;
 import com.autonubil.identity.ovpn.api.entities.MyOvpn;
@@ -387,20 +386,5 @@ public class OvpnConfigController {
 		return configService;
 	}
 
-	private OvpnServerConfigService getServerConfigService(Ovpn resultVpn)
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException, JsonProcessingException {
-		OvpnServerConfigService configService = null;
-		List<ConfigProvider> serverConfigProviders = ovpnConfigService
-				.listClientConfigProviders(resultVpn.getClientConfigurationProvider());
-		for (ConfigProvider configProvider : serverConfigProviders) {
-			if (configProvider.getId().equals(resultVpn.getClientConfigurationProvider())) {
-				Class<?> clazz = Class.forName(configProvider.getClassName());
-				configService = (OvpnServerConfigService) clazz.newInstance();
-				configService.setConfigruation(resultVpn.getClientConfiguration());
-				break;
-			}
-		}
-		return configService;
-	}
-
+ 
 }

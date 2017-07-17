@@ -1,4 +1,4 @@
-package com.autonubil.identity.apps.impl.entities;
+package com.autonubil.identity.apps.api.entities;
 
 public class AppPermission {
 

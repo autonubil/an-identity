@@ -49,8 +49,8 @@
 						<td width="50%">
 							<h1>{{countdown}}</h1>
 						</td>
-						<td width="50%">
-							 <img src="{{imageUrl}}">
+						<td width="50%" >
+							 <img ng-src="{{ imageUrl }}">
 						</td>
 					</tr>
 				</table>
@@ -60,6 +60,7 @@
 			<h5>Add a new token</h5>
 			To add a new token, modify the default description to your liking, then press "add". You will be
 			presented with a barcode you can scan. Please have your OTP app ready to scan.<br>
+			If you don not have an application that is capable of scanning the barcode you can enter the code directly: <i>{{ token.secret }}</i>
 		</div>
 		<div class="form-group">
 			<div class="form-inline" ng-if="!imageUrl">

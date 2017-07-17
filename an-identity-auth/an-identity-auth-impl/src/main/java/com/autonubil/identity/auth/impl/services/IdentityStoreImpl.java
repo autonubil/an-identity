@@ -17,9 +17,10 @@ import com.autonubil.identity.util.TokenGenerator;
 @Service
 public class IdentityStoreImpl implements IdentityStore {
 
+	// TODO: Make Scalable (Redis?)
 	private Map<String,Identity> identities = new HashMap<>();
 	
-	public static final int LIFETIME = 60; 
+	public static final int LIFETIME = 60*5; 
 	
 	@Autowired
 	private AuditLogger auditLogger;

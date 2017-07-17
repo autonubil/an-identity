@@ -9,9 +9,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.autonubil.identity.audit.api.AuditLogger;
 import com.autonubil.identity.auth.api.entities.Identity;
+import com.autonubil.identity.auth.api.services.AuthService;
 import com.autonubil.identity.auth.api.util.IdentityHolder;
 import com.autonubil.identity.auth.api.util.UsernamePasswordOTPCredentials;
-import com.autonubil.identity.auth.impl.services.AuthService;
 
 @Component
 public class AuthInterceptor extends HandlerInterceptorAdapter {

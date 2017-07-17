@@ -173,7 +173,7 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
 		{
 			Delete d = SqlBuilderFactory.delete("vpn_permission");
-			d.where(Operator.AND, d.condition(d.getTable(), "vpn", Comparator.EQ, id));
+			d.where(Operator.AND, d.condition(d.getTable(), "vpn_id", Comparator.EQ, id));
 			templ.update(d.toSQL(), d.getParams());
 		}
 		{

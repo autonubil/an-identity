@@ -2,7 +2,7 @@ angular.module("autonubil-intranet-otp")
 .controller("MyOtpController", function($scope, OtpService, AuthService, $location, $rootScope, $timeout) {
 
 	$scope.supported = false;
-	
+	AuthService.updateAuth();
 	$scope.status = AuthService.getAuthStatus();
 	
 	$scope.update = function() {
@@ -49,7 +49,7 @@ angular.module("autonubil-intranet-otp")
 		OtpService.create(
 			$scope.tokenRequest,
 			function (t) {
-				$scope.countdown = 20;
+				$scope.countdown = 600;
 				$scope.update();
 				
 				var cdf = 

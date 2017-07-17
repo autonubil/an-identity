@@ -1,6 +1,5 @@
 package com.autonubil.identity.auth.api.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface User {

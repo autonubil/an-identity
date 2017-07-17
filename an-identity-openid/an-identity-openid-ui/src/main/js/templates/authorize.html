@@ -1,0 +1,46 @@
+<div class="col-md-12 page-header">
+	<h2>Authorize {{ app.name }}</h2>
+</div>
+
+<div class="row" ng-if="!status.loggedIn">
+	<div class="col-md-4">
+		<!-- <div >Please authorize {{ app.name }}</div> -->
+		<div ng-if="scopes.length > 0">
+			The application request the following informations:<br />
+			<ul>
+				<li ng-repeat="scope in scopes" ng-switch="scope">
+					<div ng-switch-when="openid">
+						<img src="/openid/img/openid.svg" width="20" height="20" />&nbsp;Identity information via openID
+					</div>
+					<div ng-switch-when="email">
+						<img src="/openid/img/email.svg" width="20" height="20" />&nbsp;Primary eMail Address
+					</div>
+					<div ng-switch-when="profile">
+						<img src="/openid/img/profile.svg" width="20" height="20" />&nbsp;Profile information
+					</div>
+					<div ng-switch-when="phone">
+						<img src="/openid/img/phone.svg" width="20" height="20" />&nbsp;Telephone number
+					</div>
+					<div ng-switch-default="">
+						{{scope}}
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div ng-if="scopes.length == 0">
+			<img src="/openid/img/oauth.svg" width="20" height="20" />&nbsp;Identity information via OAuth2
+			
+		</div>
+	</div>
+	<div ng-controller="LoginController"  ng-init="config.redirect='#'">
+		<ng-include src="'auth/templates/login_form.html'" />
+	</div>
+</div>
+
+<div class="row" ng-if="status.loggedIn">
+	<div class="col-md-12">Your are beeing sent back to the
+		application that requested authentication....</div>
+
+</div>
+
+

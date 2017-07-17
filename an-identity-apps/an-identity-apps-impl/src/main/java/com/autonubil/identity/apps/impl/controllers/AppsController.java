@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.autonubil.identity.apps.impl.entities.App;
-import com.autonubil.identity.apps.impl.entities.AppPermission;
+import com.autonubil.identity.apps.api.entities.App;
+import com.autonubil.identity.apps.api.entities.AppPermission;
 import com.autonubil.identity.apps.impl.service.AppsService;
 import com.autonubil.identity.auth.api.entities.Group;
 import com.autonubil.identity.auth.api.entities.Identity;

@@ -12,25 +12,27 @@
 		</title>
 	</head>
 	<body ng-app="autonubil-intranet">
+	
 	<nav class="navbar navbar-default navbar-fixed-top">
-	      <div class="container">
-	        <div id="navbar" class="navbar-collapse collapse">
-	          <ul class="nav navbar-nav">
-	            <li menu-item="" path="/main" ng-class="{inverted : item.active}" >
-	            	<a href="#{{item.path}}"  class="dropdown-toggle" data-toggle="dropdown"  ng-if="item.visible"><span class="glyphicon glyphicon-chevron-right" ng-style="{'visibility': item.active ? 'visible' : 'hidden'}"> </span> {{item.title}}</a>
-	            	<ul class="dropdown-menu" ng-if="children.length > 0">
-	            		<li menu-item="" path="{{item.path}}" ng-class="{inverted : item.active}">
-	            			<a href="#{{item.path}}"  ng-if="item.visible">{{item.title}}</a>
-	            		</li>
-	            	</ul>
-	            </li>
-	          </ul>
-	          <ul class="nav navbar-nav navbar-right" include-components="" path="/topRight">
-		          	<li ng-include="item.templateUrl" class="nav navbar-nav"></li>
-	          </ul>
-	        </div><!--/.nav-collapse -->
-	      </div>
-	    </nav>
+    <div class="container">
+       <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav ng-cloak">
+            <li menu-item="" path="/main" ng-class="{inverted : item.active}">
+            	<a href="#{{item.path}}"  class="dropdown-toggle" data-toggle="dropdown" ng-if="item.visible"><span class="glyphicon glyphicon-chevron-right" ng-style="{'visibility': item.active ? 'visible' : 'hidden'}"> </span>{{item.title}}</a>
+            	<ul class="dropdown-menu" ng-if="children.length > 0">
+            		<li menu-item="" path="{{item.path}}" ng-class="{inverted : item.active}">
+            			<a href="#{{item.path}}"  ng-if="item.visible">{{item.title}}</a>
+            		</li>
+            	</ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right" include-components="" path="/topRight">
+	          	<li ng-include="item.templateUrl" class="nav navbar-nav"></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+	</nav>
+    
     	<div class="container" style="margin-top: 50px" ng-view="">
 		</div> 
 	</body>

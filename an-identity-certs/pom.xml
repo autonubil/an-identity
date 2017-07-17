@@ -11,5 +11,6 @@
   	<module>an-identity-certs-api</module>
   	<module>an-identity-certs-common</module>
   	<module>an-identity-certs-impl-local</module>
+  	<module>an-identity-certs-impl-acme</module>
   </modules>
 </project>

@@ -1,0 +1,137 @@
+<div class="row">
+	<div class="col-md-12 page-header">
+		<h2>
+			<a href="#/main/admin/oauth/applications">OAuth Application</a> | {{application.name}} <span ng-if="changed">*</span>
+		</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>OAuth2 Application</h4>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Name</label> <input ng-model="application.name" ng-change="startChange()" class="form-control" />
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Callback URL</label> <input ng-model="application.callbackUrl" ng-change="startChange()" class="form-control" />
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form form-group">
+					<label>Client ID</label> <input ng-model="application.id" ng-change="startChange()" class="form-control" />
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form form-group">
+					<label>Secret</label> <input ng-model="application.secret" ng-change="startChange()" class="form-control" />
+				</div>
+			</div>
+			
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Scopes</label>	</br>	
+					<img src="/openid/img/openid.svg" width="20" height="20" />&nbsp;<input  type="checkbox" checklist-model="application.scopes" id="scope_openid" checklist-change="startChange()"  checklist-value="'openid'"/>
+						<label for="scope_openid">Identity information via openID</label><br/>
+					<img src="/openid/img/email.svg" width="20" height="20" />&nbsp;<input type="checkbox" checklist-model="application.scopes" id="scope_email"   checklist-change="startChange()"  checklist-value="'email'"/>
+						<label for="scope_email">Primary eMail Address</label><br/>
+					<img src="/openid/img/profile.svg" width="20" height="20" />&nbsp;<input type="checkbox" checklist-model="application.scopes"  id="scope_profile"  checklist-change="startChange()"   checklist-value="'profile'"/>
+						<label for="scope_profile">Profile information</label><br/>
+					<img src="/openid/img/phone.svg" width="20" height="20" />&nbsp;<input type="checkbox" checklist-model="application.scopes"  id="scope_phone"   checklist-change="startChange()"   checklist-value="'phone'"/>
+						<label for="scope_phone">Telephone number</label><br/>
+				</div>
+			</div>
+			
+			<div class="col-md-12">
+				<div class="form form-group">
+					<select ng-model="application.clienntSigningAlg" ng-change="startChange()">
+						<option value="RS256">RS256 (Asysmetric)</option>
+						<!-- 
+						<option>RS384</option>
+						<option>RS512</option>
+						 -->
+						<option value="HS256">HS256 (Symetric)</option>
+						<!--
+						<option>HS384</option>
+						<option>HS512</option>
+						-->
+					</select>
+				</div>
+			</div>
+			
+			
+			<div class="col-md-12">
+				<span ng-click="testOAuthApp()" class="btn btn-primary">Test Access for current User</span>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Access</h4>
+			</div>
+			<div class="col-md-12">
+				<div class="form form-group">
+					<label>Linked Application</label>	</br>	
+					 <select ng-model="application.linkedAppId" ng-change="startChange()">
+						 <option value="">Not linked to an application</option>
+						 <option ng-repeat="app in apps" value="{{ app.id }}"><img ng-src="/api/apps/apps/{app.id}/icon"/>{{ app.name }}</option>
+					 </select>
+				</div>
+			</div>
+			<div class="col-md-12" ng-if="!permissions || permissions.length==0">
+				<div class="alert alert-warning">
+					<i>No groups configured here</i>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<table class="table table-striped table-compact">
+					<tr ng-repeat="permission in permissions">
+						<td>{{permission.name}}</td>
+						<td width="20">
+							<button
+								ng-click="removePermission(permission.sourceId,permission.groupId)"
+								class="btn btn-danger form-control">
+								<i class="glyphicon glyphicon-minus"> </i>
+							</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<select class="form-control" ng-model="newPermission.source"
+					ng-change="updateGroups()"
+					ng-options="config as config.name for config in configs">
+				</select>
+			</div>
+			<div class="col-md-6">
+				<select class="form-control" ng-model="newPermission.group"
+					ng-options="group as group.displayName for group in groups"
+					ng-disable="!groups">
+				</select>
+			</div>
+			<div class="col-md-2">
+				<button ng-click="addPermission()"
+					class="btn btn-primary form-control"
+					ng-disabled="newPermission.group.id.length == 0">
+					<i class="glyphicon glyphicon-plus"> </i>
+				</button>
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="row">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row"></div>
+	
+</div>

@@ -52,6 +52,9 @@ gulp.task('build-deps', function() {
         'node_modules/angular-moment/angular-moment.js',
         'node_modules/angular-plugin/dist/js/angular-plugin.js',
         'node_modules/angular-date-picker/angular-date-picker.js',
+        'node_modules/angular-date-picker/angular-date-picker.js',
+        'node_modules/spin.js/spin.min.js',
+        'node_modules/angular-spinner/dist/angular-spinner.min.js',
         'node_modules/bootbox/bootbox.min.js'
     ];
     return gulp.src(jsFiles)

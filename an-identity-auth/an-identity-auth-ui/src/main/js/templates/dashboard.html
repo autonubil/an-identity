@@ -1,0 +1,54 @@
+<div class="row" ng-if="!status.loggedIn">
+	Your are not logged in
+	{{$location.path("/auth/login")}}
+</div>
+
+<div class="row" ng-if="status.loggedIn">
+	<div class="col-md-12 page-header">
+		<h2 welcome-title>Welcome</h2>
+	</div>
+	<div welcome-text class="col-md-12"></div>
+
+	<div class="col-md-12">
+	
+		
+	
+		<div class="row well well-sm">
+			<div ng-include="'auth/templates/notifications.html'">
+			</div>
+			<br/>
+			<ul class="nav nav-tabs">
+				<!--  hardcoded order -->
+				<li ng-class="[{'active': 'applications'==selectedTab}]">
+					<a href="#/auth/dashboard?selectedTab=applications">Applications</a>
+				</li>
+				<li ng-class="[{'active': 'vpns'==selectedTab}]">
+					<a href="#/auth/dashboard?selectedTab=vpns">VPNs</a>
+				</li>
+				<li ng-class="[{'active': 'accounts'==selectedTab}]">
+					<a href="#/auth/dashboard?selectedTab=accounts">Accounts</a>
+				</li>
+				<li ng-class="[{'active': 'otptokens'==selectedTab}]">
+					<a href="#/auth/dashboard?selectedTab=otptokens">OTP Tokens</a>
+				</li>
+				<!--  dynamic rest -->
+				<li include-components path="/dashboard" ng-class="[{'active': item.id ==selectedTab}]">
+					<a ng-if="item.visible && !item.defaultItem" href="#/auth/dashboard?selectedTab={{ item.id }}">{{item.title}}</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<br/>
+				<div include-components path="/dashboard"  >
+					<div ng-if="item.visible" id="tab_{{item.id}}" ng-show="item.id==selectedTab"  ng-class="[{'active': item.id==selectedTab},tab-pane,fade]" ng-include="item.templateUrl"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--  
+	<div class="col-md-12" include-components path="/dashboard">
+		<div class="row" ng-include="item.templateUrl">
+		</div>
+	</div>
+	 -->
+</div>

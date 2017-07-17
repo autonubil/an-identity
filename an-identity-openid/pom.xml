@@ -3,11 +3,13 @@
   <parent>
     <groupId>com.autonubil.identity</groupId>
     <artifactId>an-identity</artifactId>
-    <version>0.1.21</version>
+    <version>0.1.23-SNAPSHOT</version>
   </parent>
   <artifactId>an-identity-openid</artifactId>
   <packaging>pom</packaging>
   <modules>
   	<module>an-identity-openid-impl</module>
+  	<module>an-identity-openid-ui</module>
+  	<module>an-identity-openid-api</module>
   </modules>
 </project>

@@ -1,19 +1,19 @@
 package com.autonubil.identity.secrets.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Base64;
+import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.sql.DataSource;
@@ -34,18 +34,12 @@ public class DbSecretProvider implements SecretsProvider{
 
 	private static Log log = LogFactory.getLog(DbSecretProvider.class);
 
+	private static byte[] iv = {0xa, 0xd, 0x1, 0x4, 0x2, 0x2, 0x3, 0xc, 0xa, 0xd, 0x1, 0x4, 0x2, 0x2, 0x3, 0xc};
+	private IvParameterSpec ivspec = new IvParameterSpec( iv);
+
 	
-	@Value("secrets.db.keyLength")
-	private int keyLength;
-		
-	@Value("secrets.db.algorythm")
-	private String algorythm;
-		
-	@Value("secrets.db.cipher")
-	private String cipher;
-		
-	@Value("secrets.db.key")
-	private String key;
+	@Value("secrets.db.master_secrety")
+	private String masterSecret;
 	
 	
 	@Autowired
@@ -68,41 +62,42 @@ public class DbSecretProvider implements SecretsProvider{
 		return "Store Secrets in local Database";
 	}
 	
-	private byte[] encrypt(String data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-		byte[] encodedKey     = Base64.getDecoder().decode(this.key);
-		SecretKey secretKey = new SecretKeySpec(encodedKey, 0, this.keyLength, this.algorythm);
- 
-		byte[] iv = new byte[this.keyLength / 8];
-		SecureRandom prng = new SecureRandom();
-		prng.nextBytes(iv);
-		
-		 Cipher cipher = Cipher.getInstance(this.cipher);
-	
-		 cipher.init(Cipher.ENCRYPT_MODE, secretKey, new IvParameterSpec(iv));
-		 
-		 byte[] byteDataToEncrypt = data.getBytes();
-		byte[] byteCipherText = cipher.doFinal(byteDataToEncrypt);
-			
-			
-		 return byteCipherText;
+	private byte[] encrypt(String data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException {
+		 MessageDigest sha = MessageDigest.getInstance("SHA-1");
+	        
+	        if (data.length() % 8 != 0) {
+	        	data = data + "        ".substring(0,data.length() % 8);
+	        }
+	        
+	        byte key[] = sha.digest(this.masterSecret.getBytes());
+	        key = Arrays.copyOf(key, 16); // use only first 128 bit
+	        SecretKeySpec secret = new SecretKeySpec(key, "AES");
+	        
+	        byte[] crypted = null;
+	        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+	        cipher.init(Cipher.ENCRYPT_MODE, secret,ivspec);
+	        byte[] ptext = data.getBytes("UTF-8");
+	        crypted = cipher.doFinal(ptext);
+	        return crypted;
 	}
 	
-	private String decrypt(byte[] data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-		byte[] encodedKey     = Base64.getDecoder().decode(this.key);
-		SecretKey secretKey = new SecretKeySpec(encodedKey, 0, this.keyLength, this.algorythm);
- 
-		byte[] iv = new byte[this.keyLength / 8];
-		SecureRandom prng = new SecureRandom();
-		prng.nextBytes(iv);
-		
-		 Cipher cipher = Cipher.getInstance(this.cipher);
-	
-		 cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
-		 
-  		 byte[] byteCipherText = cipher.doFinal(data);
-			
-			
-		 return new String(byteCipherText);
+	private String decrypt(byte[] data) throws Exception {
+		  byte[] output = null;
+	        
+	        MessageDigest sha = MessageDigest.getInstance("SHA-1");
+	        byte key[] = sha.digest(this.masterSecret.getBytes());
+	        key = Arrays.copyOf(key, 16); // use only first 128 bit
+	        SecretKeySpec secret = new SecretKeySpec(key, "AES");
+	        
+	        Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding"); //Change here
+	        cipher.init(Cipher.DECRYPT_MODE, secret,ivspec);
+	        output = cipher.doFinal(data);
+	        if(output==null){
+	            throw new Exception();
+	        }
+
+	        // return new String[]{new String(output),iv};
+	        return new String(output,"UTF-8").trim();
 	}
 	
 	
@@ -146,12 +141,12 @@ public class DbSecretProvider implements SecretsProvider{
 		try {
 
 			c = dataSource.getConnection();
-			ps = c.prepareStatement("DELETE FROM secrets WHERE id = key");
+			ps = c.prepareStatement("DELETE FROM secrets WHERE id = ?");
 			ps.setString(1, key);
 			ps.executeUpdate();
 			ps.close();
 
-			ps = c.prepareStatement("INSERT INTO serets (id,secret) VALUES (?,?)");
+			ps = c.prepareStatement("INSERT INTO secrets (id,secret) VALUES (?,?)");
 			ps.setString(1, key);
 			
 			byte[] data;

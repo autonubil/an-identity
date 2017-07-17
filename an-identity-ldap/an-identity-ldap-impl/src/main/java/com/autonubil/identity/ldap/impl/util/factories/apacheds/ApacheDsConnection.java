@@ -38,7 +38,7 @@ public class ApacheDsConnection extends AbstractLdapConnection  {
 			"ipaSshGroupOfPubKeys",
 			"mepOriginEntry" 
 		};
-	public static final String[] userAttributes = new String[] { "entryUUID",  "uid", "mail" , "cn",  "vebLoginName", "telephoneNumber", "mobileTelephoneNumber", "sn", "displayName", "ou", "o", "vebLoginName" };
+	public static final String[] userAttributes = new String[] { "entryUUID",  "uid", "mail" , "cn",  "vebLoginName", "telephoneNumber", "mobileTelephoneNumber", "sn", "givenName", "displayName", "ou", "o", "vebLoginName" };
 	public static final String[] groupAttributes = new String[] { "entryUUID", "cn" };
 	
 	
@@ -147,6 +147,8 @@ public class ApacheDsConnection extends AbstractLdapConnection  {
     	user.setDisplayName(getAttribute(r, "displayName",""));
     	user.setCn(getAttribute(r, "cn",""));
     	user.setSn(getAttribute(r, "sn",""));
+    	user.setGivenName(getAttribute(r, "givenName",""));
+    	
     	user.setPhone(getAttribute(r, "telephoneNumber", ""));
     	user.setMobilePhone(getAttribute(r, "mobileTelephoneNumber", ""));
     	user.setUsername(getAttribute(r, "uid",""));

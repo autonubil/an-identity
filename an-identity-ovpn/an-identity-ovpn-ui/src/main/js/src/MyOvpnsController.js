@@ -1,6 +1,8 @@
 angular.module("autonubil-intranet-myovpns")
 .controller("MyOvpnsController", function($scope,MeService, MyOvpnsService, AuthService, $location) {
 	
+	AuthService.updateAuth();
+	
 	$scope.search =  "";
 
 	$scope.updateVpns = _.debounce(function() {

@@ -23,8 +23,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import com.autonubil.identity.apps.impl.entities.App;
-import com.autonubil.identity.apps.impl.entities.AppPermission;
+import com.autonubil.identity.apps.api.entities.App;
+import com.autonubil.identity.apps.api.entities.AppPermission;
 import com.autonubil.identity.auth.api.entities.Group;
 
 import de.disk0.db.sqlbuilder.SqlBuilderFactory;
@@ -41,7 +41,7 @@ import de.disk0.db.sqlbuilder.interfaces.Table;
 import de.disk0.db.sqlbuilder.interfaces.Update;
 
 @Service
-public class AppsService {
+public class AppsService implements com.autonubil.identity.apps.api.service.AppsService {
 	
 	private static Log log = LogFactory.getLog(AppsService.class);
 
@@ -71,6 +71,10 @@ public class AppsService {
 		return out;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.autonubil.identity.apps.impl.service.iAppsService#get(java.lang.String)
+	 */
+	@Override
 	public App get(String id) {
 		List<App> a = list(id, null);
 		if(a.size()>0) {
@@ -173,6 +177,7 @@ public class AppsService {
 		}
 	}
 	
+	@Override
 	public List<App> listAppsForGroups(List<Group> groups, String search) {
 		
 		if(groups == null || groups.size()==0) {
@@ -193,6 +198,7 @@ public class AppsService {
 		
 		if(!StringUtils.isEmpty(search)) {
 			s.where(Operator.AND, s.condition(app,"name_lower",Comparator.LIKE, "%"+search.toLowerCase()+"%"));
+			s.where(Operator.OR, s.condition(app,"id",Comparator.EQ, search.toLowerCase()));
 		}
 		
 		JoinedTable appPerm = app.joinTable(JoinType.LEFT, "app_permission");
@@ -268,10 +274,14 @@ public class AppsService {
 			
 			String group = rs.getString("source")+":"+rs.getString("group_id"); 
 			
-			if(groups!=null && groups.get(group)==null) {
-				return;
+			if ("null:null". equals(group)) {
+				// the "any" group
+				group="any";
+			} else {
+				if(groups!=null && groups.get(group)==null) {
+					return;
+				}
 			}
-			
 			found.add(id);
 
 			App out = new App();
