@@ -2,8 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.autonubil.identity</groupId>
-    <artifactId>an-identity-secrets</artifactId>
-    <version>0.1.24-SNAPSHOT</version>
+    <artifactId>an-identity</artifactId>
+    <version>0.1.23-SNAPSHOT</version>
   </parent>
-  <artifactId>an-identity-secrets-api</artifactId>
+  <artifactId>an-identity-aws</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+  	<module>an-identity-aws-impl</module>
+  	<module>an-identity-aws-api</module>
+  </modules>
 </project>

@@ -3,29 +3,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
-		<artifactId>an-identity-certs</artifactId>
-		<version>0.1.24-SNAPSHOT</version>
+		<artifactId>an-identity-openid</artifactId>
+		<version>0.1.23-SNAPSHOT</version>
 	</parent>
-	<artifactId>an-identity-certs-impl-acme</artifactId>
+	<artifactId>an-identity-openid-api</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
-			<artifactId>an-identity-secrets-impl</artifactId>
-			<version>0.1.24-SNAPSHOT</version>
+			<artifactId>an-identity-auth-api</artifactId>
+			<version>0.1.23-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
-			<artifactId>an-identity-certs-api</artifactId>
-			<version>0.1.24-SNAPSHOT</version>
+			<artifactId>an-identity-apps-api</artifactId>
+			<version>0.1.23-SNAPSHOT</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.shredzone.acme4j</groupId>
-			<artifactId>acme4j-client</artifactId>
-			<version>0.10</version>
-		</dependency>
-
-
  
 	</dependencies>
 </project>
