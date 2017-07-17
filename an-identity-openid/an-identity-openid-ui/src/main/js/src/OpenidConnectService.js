@@ -22,6 +22,9 @@ angular.module("autonubil-intranet-openid")
 			return Restangular.all(".well-known/openid-configuration").customGET().then(success);
 		},
 		
+		openApplication : function(success) {
+			return Restangular.all(".well-known/openid-configuration").customGET().then(success);
+		},
 		
 		
 		listPermissions : function(id,success) {

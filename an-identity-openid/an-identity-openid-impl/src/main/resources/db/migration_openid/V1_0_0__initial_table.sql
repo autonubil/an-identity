@@ -4,7 +4,9 @@ CREATE TABLE application (
    secret bytea NOT NULL,
    scopes VARCHAR(64)  NOT NULL default '',
    linked_app_id character varying(36),
+   callback_url character varying(256),
    trusted_app boolean default false,
+   cliennt_signing_alg  character varying(5) not NULL default 'RS256',
    PRIMARY KEY (client_id) 
 );
 

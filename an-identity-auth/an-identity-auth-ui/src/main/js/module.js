@@ -7,7 +7,7 @@ angular.module("autonubil-intranet-auth")
 	return {
 		responseError : function(rejection) {
 			if(rejection.status == 401) {
-				if(!rejection.data.path.endsWith("/api/authentication/authenticate")) {
+				if( (rejection.data.path == undefined) || (  (rejection.data.path != undefined) && !rejection.data.path.endsWith("/api/authentication/authenticate")) ) {
 					console.log(rejection);
 					angular.module("autonubil-intranet-auth").update();
 				}

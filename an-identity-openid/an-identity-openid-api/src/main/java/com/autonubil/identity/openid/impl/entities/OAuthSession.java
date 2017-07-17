@@ -35,10 +35,10 @@ public class OAuthSession {
 	}
 
 	public OAuthSession(String clientId, String code, String state) {
-		this(clientId, code, state, null, null, null);
+		this(clientId, code, state, null, null, null, null);
 	}
 
-	public OAuthSession(String clientId, String code, String state, String nonce, OAuthApp app, List<String> scopes) {
+	public OAuthSession(String clientId, String code, String state, String nonce, OAuthApp app, List<String> scopes, User user) {
 		this.clientId = clientId;
 		SecureRandom random = null;
 		if (code == null) {
@@ -61,6 +61,9 @@ public class OAuthSession {
 		this.application = app;
 		this.issued = new Date();
 		this.expires = new Date(this.issued.getTime() + (APPROVAL_VAILIDITY * 1000));
+		if (user != null) {
+			this.setUser(user);
+		}
 	}
 
 	public OAuthApp getApplication() {
@@ -169,6 +172,22 @@ public class OAuthSession {
 			User user = authService.getUser(this.userSourceId, this.userName );
 			return user;
 		}
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserSourceId() {
+		return userSourceId;
+	}
+
+	public void setUserSourceId(String userSourceId) {
+		this.userSourceId = userSourceId;
 	}
 
 }

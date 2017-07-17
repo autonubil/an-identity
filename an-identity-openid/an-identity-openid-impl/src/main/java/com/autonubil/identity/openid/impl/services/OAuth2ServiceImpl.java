@@ -3,17 +3,30 @@ package com.autonubil.identity.openid.impl.services;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.InvalidParameterException;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -30,12 +43,18 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import com.auth0.jwt.interfaces.RSAKeyProvider;
 import com.autonubil.identity.auth.api.entities.Group;
+import com.autonubil.identity.auth.api.entities.User;
+import com.autonubil.identity.openid.RsaJwk;
 import com.autonubil.identity.openid.impl.entities.OAuthApp;
 import com.autonubil.identity.openid.impl.entities.OAuthPermission;
 import com.autonubil.identity.openid.impl.entities.OAuthSession;
+import com.autonubil.identity.secrets.impl.DbSecretProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import de.disk0.db.sqlbuilder.SqlBuilderFactory;
 import de.disk0.db.sqlbuilder.enums.Aggregation;
@@ -52,19 +71,30 @@ import de.disk0.db.sqlbuilder.interfaces.Update;
 
 @Service
 @PropertySource(value="openid.properties")
-public class OAuth2ServiceImpl {
+public class OAuth2ServiceImpl  implements RSAKeyProvider {
 	private static Log log = LogFactory.getLog(OAuth2ServiceImpl.class);
 
 	@Value("${openid.master_secret}")
 	private String masterSecret;
 	
+	@Value("${openid.key_bits}")
+	private int keyBits;
+
+	
 	@Autowired
 	@Qualifier("openidDb")
 	private DataSource dataSource;
 
+	@Autowired
+	DbSecretProvider secretsProvider;
+
+	
+	
 	
 	private long PURGE_INTERVALL = 60 * 10 * 1000;
 	private long lastPurge = 0;
+
+	private static final String SECRETSTORE_KEY = "openid/privateKey";
 
 	private static byte[] iv = {0xc, 0xa, 0xd, 0x1, 0x4, 0x2, 0x2, 0x3, 0xc, 0xa, 0xd, 0x1, 0x4, 0x2, 0x2, 0x3};
 	private IvParameterSpec ivspec = new IvParameterSpec( iv);
@@ -75,19 +105,82 @@ public class OAuth2ServiceImpl {
 	 */
 
 	public OAuth2ServiceImpl() {
+		
+		
+	}
+	
+	private RsaJwk currentKey;
+	PublicKey publicKey = null;
+	PrivateKey privateKey = null;
+	
+	@PostConstruct
+	public void init() throws InvalidKeySpecException, NoSuchAlgorithmException {
+		String privatkeyBase64 = secretsProvider.getSecret(SECRETSTORE_KEY);
+		this.publicKey = null;
+		this.privateKey = null;
+
+		if (privatkeyBase64 == null) {
+			log.info("Creating new private key");
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+			kpg.initialize(2048);
+			KeyPair keyPair = kpg.genKeyPair();
+			
+			this.publicKey = keyPair.getPublic();
+			this.privateKey = keyPair.getPrivate();
+			RSAPrivateKey rsaPrivateKey  = ((RSAPrivateKey)privateKey);
+			byte[] encoded = rsaPrivateKey.getEncoded();
+			PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(encoded);
+			
+			 
+			
+			secretsProvider.setSecret(SECRETSTORE_KEY, Base64.getEncoder().encodeToString(spec.getEncoded()));
+		} else {
+			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+			
+			PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privatkeyBase64.getBytes()) );
+			this.privateKey = keyFactory .generatePrivate(spec);
+			RSAPrivateKey rasPrivKey = (RSAPrivateKey) privateKey;
+			RSAPublicKeySpec publicKeySpec = new java.security.spec.RSAPublicKeySpec(rasPrivKey.getModulus(), BigInteger.valueOf(65537));
+			this.publicKey = keyFactory.generatePublic(publicKeySpec);
+		}
+		
+		this.currentKey = new RsaJwk( (RSAPublicKey) publicKey);
+		this.knownKeys.put(this.currentKey.getId(), (RSAPublicKey) publicKey);
+		
 	}
 
-	public OAuthSession addApproval(String clientId, String code, String state, String nonce, OAuthApp app, List<String> scopes) {
+	public com.autonubil.identity.openid.impl.entities.Jwk getJwk() {
+		return this.currentKey;
+	}
+	
+	public ObjectNode getJwks() {
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode result = mapper.createObjectNode();
+		ArrayNode keys = result.putArray("keys");
+		for(String keyId : this.knownKeys.keySet()) {
+			keys.add( mapper.valueToTree(new RsaJwk(this.getPublicKeyById(keyId))) );
+		}
+		
+		return result;
+	}
+
+	public OAuthSession addApproval(String clientId, String code, String state, String nonce, OAuthApp app, List<String> scopes, User user) {
 		this.purge();
-		OAuthSession approval; 
+		OAuthSession session; 
 		if (code != null) {
-			approval = this.getApproval(code);
+			session = this.getApproval(code);
+			// new user?
+			if ( (user != null) && ( (session.getUserName() == null) || (session.getUserSourceId() == null) ||  (!user.getUsername().equals(session.getUserName())) ||  (!user.getSourceId().equals(session.getUserSourceId())) ) ) {
+				session.setUser(user);
+				this.updateSession(session);
+				
+			}
 		} else { 
-			 approval = new OAuthSession(clientId, code, state, nonce, app, scopes);
-			 this.saveSession(approval );
+			 session = new OAuthSession(clientId, code, state, nonce, app, scopes, user);
+			 this.saveSession(session );
 			 
 		 }
-		 return approval;
+		 return session;
 	}
 	
 	public OAuthSession getApproval(String code) {
@@ -197,6 +290,9 @@ public class OAuth2ServiceImpl {
 		}
 		i.addField("trusted_app", !application.isUserApprovalRequired());
 		
+		i.addField("callback_url", application.getCallbackUrl());
+		i.addField("cliennt_signing_alg", application.getClienntSigningAlg());
+		
 		byte[] encryptedSecret =encrypt(application.getSecret()) ; 
 		
 		i.addField("secret",encryptedSecret);
@@ -222,6 +318,9 @@ public class OAuth2ServiceImpl {
 		}
 		u.set("trusted_app", !application.isUserApprovalRequired());
 		u.set("secret", encrypt(application.getSecret()) );
+		u.set("callback_url", application.getCallbackUrl());
+		u.set("cliennt_signing_alg", application.getClienntSigningAlg());
+
 		
 		u.where(Operator.AND, u.condition(u.getTable(), "client_id", Comparator.EQ, application.getId()));
 		
@@ -259,7 +358,7 @@ public class OAuth2ServiceImpl {
 		Table source = s.fromTable("session");
 
 		s.where(Operator.AND, s.condition(source, "id", Comparator.EQ, id));
-		s.where(Operator.AND, s.condition(source, "expires", Comparator.LT, new Date().getTime()));
+		s.where(Operator.AND, s.condition(source, "expires", Comparator.GT, new Date().getTime()));
 
 		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
 		List<OAuthSession> out = new ArrayList<>();
@@ -274,6 +373,28 @@ public class OAuth2ServiceImpl {
 	}
 	
 
+	public void updateSession(OAuthSession session) {
+		if (session == null) {
+			throw new NullPointerException("session must not be null");
+		}
+		
+		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
+		
+		Update u = SqlBuilderFactory.update("session");
+		ObjectMapper mapper = new ObjectMapper(); 
+		
+	 
+		try {
+			u.set("definition", mapper.writeValueAsString(session));
+		} catch (JsonProcessingException e) {
+			throw new IllegalArgumentException("Failed to serialize session", e);
+		}
+		
+		u.where(Operator.AND, u.condition(u.getTable(), "id", Comparator.EQ, session.getCode()));
+		
+		templ.update(u.toSQL(), u.getParams());
+	}
+	
 	public void saveSession(OAuthSession session) {
 		if (session == null) {
 			throw new NullPointerException("session must not be null");
@@ -386,6 +507,10 @@ public class OAuth2ServiceImpl {
 		out.setUserApprovalRequired(!rs.getBoolean("trusted_app"));
 		String linkedAppId = rs.getString("linked_app_id");
 		out.setLinkedAppId(linkedAppId);
+		
+		out.setCallbackUrl(rs.getString("callback_url"));
+		out.setClienntSigningAlg(rs.getString("cliennt_signing_alg"));
+
 		return out;
 	}
 
@@ -503,8 +628,9 @@ public class OAuth2ServiceImpl {
 		s.select(Aggregation.NONE, application, "scopes", "scopes");
 		s.select(Aggregation.NONE, application, "linked_app_id", "linked_app_id");
 		s.select(Aggregation.NONE, application, "trusted_app", "trusted_app");
+		s.select(Aggregation.NONE, application, "callback_url", "callback_url");
+		s.select(Aggregation.NONE, application, "cliennt_signing_alg", "cliennt_signing_alg");
 		
-
 		if ( (search != null) && (search.length() > 0)) {
 			s.where(Operator.AND, s.condition(application, "name", Comparator.LIKE, "%" + search.toLowerCase() + "%"));
 			s.where(Operator.OR, s.condition(application, "client_id", Comparator.EQ, search));
@@ -592,6 +718,24 @@ public class OAuth2ServiceImpl {
 			return ovpns;
 		}
 
+	}
+
+	
+	private Map<String, RSAPublicKey> knownKeys = new HashMap<>();  
+
+	@Override
+	public RSAPublicKey getPublicKeyById(String keyId) {
+		return knownKeys.get(keyId);
+	}
+
+	@Override
+	public RSAPrivateKey getPrivateKey() {
+		return (RSAPrivateKey)this.privateKey;
+	}
+
+	@Override
+	public String getPrivateKeyId() {
+		return this.getJwk().getId();
 	}
 
 }

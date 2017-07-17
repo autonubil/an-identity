@@ -24,10 +24,10 @@ angular.module("autonubil-intranet-openid")
 		console.log("saving OAuth application ... ");
 		
 		OpenidConnectService.add(
-				{ name : $scope.search.search },
+				{ name : $scope.search.search, clienntSigningAlg : "RS256"},
 				function(application){
 					console.log("OAuth2 application saved... ",application);
-					$location.path("/main/admin/openid/application/"+application.id);
+					$location.path("/main/admin/oauth/application/"+application.id);
 				}
 		);
 	}

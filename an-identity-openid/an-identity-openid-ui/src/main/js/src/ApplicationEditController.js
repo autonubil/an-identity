@@ -1,5 +1,5 @@
 angular.module("autonubil-intranet-openid")
- .controller("ApplicationEditController", function($scope, AuthService, OpenidConnectService, LdapConfigService, LdapGroupService, AppService, $routeParams) {
+ .controller("ApplicationEditController", function($scope, AuthService, OpenidConnectService, LdapConfigService, LdapGroupService, AppService, $routeParams, Restangular ) {
  
 	 
 	$scope.changed = false;
@@ -40,7 +40,41 @@ angular.module("autonubil-intranet-openid")
 		}
 		
 	};
-	 
+	
+	$scope.testOAuthApp = function(){
+		console.log ( "OAuth2:  Getting auth from approval... ");
+		params = {
+				client_id: $scope.application.id,
+				response_type: "code",
+				nonce: "test.nonce",
+//				state: "an-identity-test",
+				scope: $scope.application.scopes.join(' ')
+		}; 
+		params['_t'] = Date.now();
+		
+		Restangular.one('oauth').customGET("approve", params).then( function(e) {
+			
+			// remember the code
+			$scope.code = e.code;
+			
+			//if ($scope.status.loggedIn){
+			newUrl = $scope.application.callbackUrl;
+			if (newUrl.indexOf('?') > -1) {
+				newUrl += "&";
+			} else {
+				newUrl += "?";
+			}
+			
+			newUrl += "code=" + e.code +"&state="+e.state + "&nonce="+e.nonce;
+			if (e.authenticated) {
+				console.log("OAuth2: redirecting to "+ newUrl);
+				window.location.href = newUrl;
+			} 
+			// }
+		});
+	};
+	
+	
 	$scope.save = _.debounce(function() {
 		OpenidConnectService.save($scope.application,function(application) {
 			$scope.application = application;

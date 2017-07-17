@@ -2,7 +2,6 @@ package com.autonubil.identity.openid.impl.controllers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,13 +63,14 @@ public class OpenIdConnectController {
  
 	// OAUTH2
 
-	@RequestMapping(value = "/.well-known/webfinger", method = { RequestMethod.GET })
+	@RequestMapping(value = {"/.well-known/webfinger", "/oid/{appname}/.well-known/webfinger"}, method = { RequestMethod.GET })
 	public WebfingerResponse webfinger(HttpServletRequest request,
 			@RequestParam(name = "resource", required = true) String ressource,
 			@RequestParam(name = "rel", required = true) String rel) throws AuthException {
 		OpenIdConnectConfiguration configuration = new OpenIdConnectConfiguration(request);
 		
 		if ("http://openid.net/specs/connect/1.0/issuer".equals(rel)  ) {
+			log.debug("Webfinger - Issuer request from: " + request.getRemoteHost() );
 			return new WebfingerResponse(ressource, rel, configuration.getIssuer());
 		} else {
 			log.warn("Unknown webfinger request "+ rel + " / " +ressource);
@@ -80,23 +81,31 @@ public class OpenIdConnectController {
 	
 	
 	
-	@RequestMapping(value = "/.well-known/openid-configuration", method = { RequestMethod.GET })
+	@RequestMapping(value = {"/.well-known/openid-configuration", "/oid/{appname}/.well-known/openid-configuration"}, method = { RequestMethod.GET })
 	public OpenIdConnectConfiguration getConfiguration(HttpServletRequest request) throws AuthException {
+		log.debug("Configuration request from: " + request.getRemoteHost() );
 		OpenIdConnectConfiguration configuration = new OpenIdConnectConfiguration(request);
 		return configuration; 
 	}
 	
+	@RequestMapping(value = {"/.well-known/jwks.json", "/oid/{appname}/.well-known/jwks.json"}  , method = { RequestMethod.GET })
+	public ObjectNode getJwks(HttpServletRequest request) {
+		log.debug("JWKS request from: " + request.getRemoteHost() );
+		return this.oauthService.getJwks();
+		
+	}	
 	// http://tutorials.jenkov.com/oauth2/authorization-code-request-response.html
 	
 	// this one only rediretcs to the Ui
-	@RequestMapping(value = "/oauth/authorize", method = { RequestMethod.GET })
+	@RequestMapping(value = {"/oauth/authorize", "/oid/{appname}/authorize" }, method = { RequestMethod.GET })
 	public OAuthAuthorizationErrorResponse oauthAuthorize(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(name = "client_id") String client_id, 
 			@RequestParam(name = "redirect_uri") String redirectUrl,
 			@RequestParam(name = "response_type", required = false) String responseType,
 			@RequestParam(name = "scope", required = false) String scope,
 			@RequestParam(name = "nonce", required = false) String nonce,
-			@RequestParam(name = "state", required = false) String state)
+			@RequestParam(name = "state", required = false) String state,
+			@PathVariable(name = "appname", required = false) String appname)
 			throws AuthException, IOException, URISyntaxException {
 
 		// default to code
@@ -106,8 +115,18 @@ public class OpenIdConnectController {
 
 		// angular does not like the fragment after the query params, so build it
 		// manually...
-		URI newTarget = new URI(request.getScheme(), null, request.getRemoteHost(), request.getLocalPort(), null, null,
-				null);
+		String newTarget = new OpenIdConnectConfiguration(request).getIssuer();
+		
+		
+		if ( (redirectUrl == null) || (redirectUrl.length() == 0) ) {
+			OAuthApp app = oauthService.getApplication(client_id);
+			if (app == null) {
+				return new OAuthAuthorizationErrorResponse("invalid_request", "Unknown Client",
+						state);
+			}
+			redirectUrl = app.getCallbackUrl();
+		}
+		
 		UriComponentsBuilder queryBuilder = UriComponentsBuilder.fromPath("/oauth/authorize")
 				.queryParam("redirect_uri", redirectUrl)
 				.queryParam("client_id", client_id)
@@ -130,13 +149,15 @@ public class OpenIdConnectController {
 		String fragmentWithQueryParams = queryBuilder.toUriString();
 		String fullPath = UriComponentsBuilder.fromPath("/").fragment(fragmentWithQueryParams).toUriString();
 
-		response.sendRedirect(newTarget.toString() + fullPath);
+		response.sendRedirect(newTarget + fullPath);
+		
+		log.debug("Authorizeation request from: " + request.getRemoteHost() );
 		return null;
 	}
 
 	 
 	// called from the ui
-	@RequestMapping(value = "/oauth/approve", method = { RequestMethod.GET })
+	@RequestMapping(value = {"/oauth/approve", "/oid/{appname}/approve"}, method = { RequestMethod.GET })
 	public Object oauthApprove(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("client_id") String id,
 			@RequestParam(name = "scope", required = false) String scope,
@@ -146,12 +167,11 @@ public class OpenIdConnectController {
 			@RequestParam(name = "state", required = false) String state)
 			throws AuthException, IOException, URISyntaxException {
 
-		
-		
+		log.debug("approve request from: " + request.getRemoteHost() );
 		
 		
 		// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
-		if (!responseType.equals("code")) {
+		if (! "code".equals(responseType)) {
 			return new OAuthAuthorizationErrorResponse("invalid_request", "Only code response type is supported",
 					state);
 		}
@@ -180,8 +200,6 @@ public class OpenIdConnectController {
 			}
 		}
 		
-		OAuthSession session = this.oauthService.addApproval(id, code, state, nonce, app, scopes);
-		session.setApplication(app);
 
 		Identity i = IdentityHolder.get();
 		boolean authenticated = (i != null);
@@ -217,18 +235,32 @@ public class OpenIdConnectController {
 					}
 					
 					if (!allowed) {
-						response.sendError(403, "Forbidden (Group)");
+						authenticated  = false;
+						// response.sendError(403, "Forbidden (Group)");
 					}
 				}
 			}
-			if (authenticated)
-			 session.setUser(i.getUser());
+			
 		} 
+		OAuthSession session = null;
+		if (authenticated) {
+			session = this.oauthService.addApproval(id, code, state, nonce, app, scopes,i.getUser());
+		} else {
+			session = this.oauthService.addApproval(id, code, state, nonce, app, scopes, null);
+		}
+		if (session == null)  {
+			// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
+			response.setStatus(401);
+			return new OAuthAuthorizationErrorResponse("invalid_grant", "Invalid session", null);
+		}
+		 
+		log.info("approve request from: " + request.getRemoteHost()  + " for " + app.getName());
+		
 		return  new OAuthApprovalRequest(session, authenticated);
 
 	}
 
-	@RequestMapping(value = "/oauth/token", method = { RequestMethod.POST })
+	@RequestMapping(value = {"/oauth/token", "/oid/{appname}/token"}  , method = { RequestMethod.POST })
 	public Object oauthToken(HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestHeader(value = "Authorization", required=false) String authorization,
@@ -238,7 +270,7 @@ public class OpenIdConnectController {
 			@RequestParam(name = "client_id", required = false) String client_id,
 			@RequestParam(name = "client_secret", required = false) String clientSecret)
 
-			throws AuthException, IllegalArgumentException, UnsupportedEncodingException {
+					throws AuthException, IllegalArgumentException, UnsupportedEncodingException {
 
 
 		OAuthSession session = this.oauthService.getApproval(code);
@@ -252,6 +284,12 @@ public class OpenIdConnectController {
 		OAuthToken token = new OAuthToken();
 		// check if user is still valid
 		User user = session.getUser(this.authService);
+		
+		if (user == null) {
+			response.setStatus(401);
+			return new OAuthAuthorizationErrorResponse("invalid_grant", "No user associated", null);
+		}
+		
 		if (user instanceof  ExpiringUser ) {
 			ExpiringUser expiringUser = (ExpiringUser) user;
 			if (expiringUser.isExpired()) {
@@ -287,10 +325,11 @@ public class OpenIdConnectController {
 // TODO:		token.setRefreshToken("refreshToken");
 		
 		// HMAC
- 		Algorithm algorithm = Algorithm.HMAC512(session.getApplication().getSecret());
- 		
+ 		// Algorithm algorithm = Algorithm.HMAC512(session.getApplication().getSecret());
+		Algorithm algorithm = Algorithm.RSA256(this.oauthService);
+		
 		Builder jwtBuilder =  JWT.create()
-			.withIssuer("an-identity")
+			.withIssuer(this.getConfiguration(request).getIssuer())
 			.withAudience(client_id)
 			.withIssuedAt(session.getIssued())
 			.withExpiresAt(session.getExpires())
@@ -311,10 +350,37 @@ public class OpenIdConnectController {
 		token.setIdToken(idToken);
 		token.setExpiresIn ( (session.getExpires().getTime() - new Date().getTime() ) / 1000 );
 		
+		log.info("token request from: " + request.getRemoteHost()  + " for " + session.getApplication().getName());
+		
 		return token;
 	}
 	
-	@RequestMapping(value = "/oauth/profile", method = { RequestMethod.GET })
+	@RequestMapping(value = {"/oauth/tokeninfo", "/oauth/token-info", "/oid/{appname}/tokeninfo", "/oid/{appname}/token-info"}, method = { RequestMethod.GET })
+	public Object oauthTokeninfo(HttpServletRequest request, HttpServletResponse response,
+			@RequestHeader(value = "Authorization") String authorization,
+			@RequestParam(name = "access_token", required = false) String accessToken
+			) throws IllegalArgumentException, UnsupportedEncodingException {
+
+		OAuthSession session = null;
+		if ((authorization != null) && (authorization.startsWith("Bearer "))) {
+			String tokenHash = authorization.substring(7);
+			session = this.oauthService.getSession(tokenHash);
+		} else if (accessToken != null)  {
+			session = this.oauthService.getSession(accessToken);
+		}
+		
+		if (session == null)  {
+			// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
+			response.setStatus(401);
+			return new OAuthAuthorizationErrorResponse("invalid_token", "The Access Token expired", null);
+		}
+		
+		System.err.println("tokeninfo");
+		return "{}";
+	}
+	
+	
+	@RequestMapping(value = { "/oauth/profile", "/oauth/userinfo", "/oid/{appname}/profile", "/oid/{appname}/userinfo"} , method = { RequestMethod.GET })
 	public Object oauthToken(HttpServletRequest request, HttpServletResponse response,
 			@RequestHeader(value = "Authorization") String authorization) throws IllegalArgumentException, UnsupportedEncodingException {
 		

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.autonubil.identity.ldap.api.LdapConfigService;
 import com.autonubil.identity.ldap.api.LdapConnection;
+import com.autonubil.identity.ldap.api.ProviderNotFoundException;
 import com.autonubil.identity.ldap.api.UnsupportedOperation;
 import com.autonubil.identity.ldap.api.entities.LdapConfig;
 import com.autonubil.identity.ldapotp.api.LdapOtpAdapter;
@@ -44,7 +45,8 @@ public class OtpTokenService {
 			}
 			throw new UnsupportedOperation("no adapter found");
 		} catch (Exception e) {
-			throw new UnsupportedOperation("unable to find adapter",e);
+			
+			throw new ProviderNotFoundException("unable to find adapter",e);
 		}
 	}
 	

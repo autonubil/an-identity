@@ -26,6 +26,7 @@
 		<module>an-identity-certs</module>
 		<module>an-identity-persistence</module>
 		<module>an-identity-openid</module>
+		<module>an-identity-aws</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

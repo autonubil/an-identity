@@ -17,6 +17,13 @@ public class OAuthApp {
 	@JsonView(OAuthAppViews.Public.class) 
 	private List<String> scopes;
 	
+	@JsonView(OAuthAppViews.Public.class)
+	private String callbackUrl;
+	
+	@JsonView(OAuthAppViews.Public.class)
+	private String clienntSigningAlg;
+	
+	
 	@JsonView(OAuthAppViews.Internal.class) 
 	private String secret;
 
@@ -85,6 +92,22 @@ public class OAuthApp {
 
 	public void setLinkedAppId(String linkedAppId) {
 		this.linkedAppId = linkedAppId;
+	}
+
+	public String getCallbackUrl() {
+		return callbackUrl;
+	}
+
+	public void setCallbackUrl(String callbackUrl) {
+		this.callbackUrl = callbackUrl;
+	}
+
+	public String getClienntSigningAlg() {
+		return clienntSigningAlg;
+	}
+
+	public void setClienntSigningAlg(String clienntSigningAlg) {
+		this.clienntSigningAlg = clienntSigningAlg;
 	}
 	
 	 

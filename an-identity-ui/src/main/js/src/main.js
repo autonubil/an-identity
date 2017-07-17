@@ -13,7 +13,7 @@ angular.module("autonubil-intranet")
 .factory('errorInterceptor', function($q, $location) {
 	return {
 		responseError : function(rejection) {
-			if (rejection.status == 400  || rejection.status >  403) {
+			if (rejection.status == 400  || rejection.status >  404) {
 				message = ""; //"<h2>"+ rejection.status + " " +rejection.data.error +"</h2>";
 				message += "<div style=\"zoom: 40%\">"
 				if (rejection.data) {
