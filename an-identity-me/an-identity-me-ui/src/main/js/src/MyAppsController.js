@@ -1,5 +1,5 @@
 angular.module("autonubil-intranet-me")
-.controller("MyAppsController", function($scope,MeService,AuthService,$location) {
+.controller("MyAppsController", function($scope, MeService, AuthService, $location, $routeParams) {
 	
 	$scope.search = {
 			term : ""
@@ -14,6 +14,7 @@ angular.module("autonubil-intranet-me")
 		});
 	};
 	
-	$scope.updateApps();
+	if (!$routeParams.selectedTab ||  'applications'==$routeParams.selectedTab)
+		$scope.updateApps();
 	
 });

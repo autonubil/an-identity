@@ -239,19 +239,20 @@ angular.module("autonubil-intranet-myovpns")
 }(typeof self !== "undefined" && self || typeof window !== "undefined" && window || this.content || this));
 
 angular.module("autonubil-intranet-myovpns")
-.controller("MyOvpnsController", function($scope,MeService, MyOvpnsService, AuthService, $location) {
+.controller("MyOvpnsController", function($scope, MeService, MyOvpnsService, AuthService, $location, $routeParams) {
 	
 	AuthService.updateAuth();
 	
 	$scope.search =  "";
+	$scope.loaded = false;
 
 	$scope.updateVpns = _.debounce(function() {
+		$scope.loaded = false;
 		MyOvpnsService.getVpns({search:$scope.search},function(vpns){
 			$scope.vpns = vpns;
+			$scope.loaded = true;
 		});
 	},250);
-	
-	$scope.updateVpns();
 	
 	
 	$scope.downloadVpn = _.debounce(function(vpnId, name) {
@@ -262,7 +263,7 @@ angular.module("autonubil-intranet-myovpns")
 
 	$scope.revokeVpnCertificate = _.debounce(function(vpnId) {
 		bootbox.confirm({
-		    message: "Are you sure you want to delete you current OpenVPN configuration?",
+		    message: "Are you sure you want to delete your current OpenVPN configuration?",
 		    buttons: {
 		        confirm: {
 		            label: 'Yes',
@@ -288,7 +289,7 @@ angular.module("autonubil-intranet-myovpns")
 	
 	$scope.newVpnConfig = _.debounce(function(vpnId, name) {
 		bootbox.confirm({
-		    message: "Are you sure you want to delete you current OpenVPN configuration and create a new one?",
+		    message: "Are you sure you want to delete your current OpenVPN configuration and create a new one?",
 		    buttons: {
 		        confirm: {
 		            label: 'Yes',
@@ -312,13 +313,16 @@ angular.module("autonubil-intranet-myovpns")
  
 	},250);
 
+	if (!$routeParams.selectedTab ||  'vpns'==$routeParams.selectedTab)
+		$scope.updateVpns();
+	
 
 });
 
 
  
 angular.module("autonubil-intranet-myovpns")
-.service("MyOvpnsService", function(Restangular,$location) {
+.service("MyOvpnsService", function(Restangular, $location) {
 	
 	return {
 		getUsers : function(params, success) {

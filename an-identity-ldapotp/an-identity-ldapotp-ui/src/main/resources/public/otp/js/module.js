@@ -22,9 +22,11 @@ angular.module("autonubil-intranet-otp")
 });
 
 angular.module("autonubil-intranet-otp")
-.controller("MyOtpController", function($scope, OtpService, AuthService, $location, $rootScope, $timeout) {
+.controller("MyOtpController", function($scope, OtpService, AuthService, $location, $rootScope, $timeout, $routeParams) {
 
+	$scope.loaded = false;
 	$scope.supported = false;
+	
 	AuthService.updateAuth();
 	$scope.status = AuthService.getAuthStatus();
 	
@@ -33,8 +35,10 @@ angular.module("autonubil-intranet-otp")
 				function(tokens) {
 					$scope.tokens = tokens;
 					$scope.supported = true;
+					$scope.loaded = true;
 			},
 				function(response) {
+					$scope.loaded = true;
 					if(response.status == 501) {
 						$scope.supported = false;
 					}
@@ -57,9 +61,6 @@ angular.module("autonubil-intranet-otp")
 		$scope.newTokenRequest();
 	});
 	
-	
-	$scope.update();
-	$scope.newTokenRequest();
 	
 	$scope.deleteToken = function(tokenId) {
 		OtpService.remove(tokenId, $scope.update);
@@ -93,6 +94,11 @@ angular.module("autonubil-intranet-otp")
 			}
 		);
 		
+	}
+	
+	if (!$routeParams.selectedTab ||  'otptokens'==$routeParams.selectedTab) {
+		$scope.update();
+		$scope.newTokenRequest();
 	}
 	
 	
