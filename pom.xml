@@ -3,13 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.autonubil.identity</groupId>
 	<artifactId>an-identity</artifactId>
-	<version>0.1.29-SNAPSHOT</version>
+	<version>0.1.29</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>an-identity-app</module>
 		<module>an-identity-apps</module>
 		<module>an-identity-audit</module>
 		<module>an-identity-auth</module>
+                <module>an-identity-aws</module>
 		<module>an-identity-db</module>
 		<module>an-identity-ldap</module>
 		<module>an-identity-ldapusers</module>
