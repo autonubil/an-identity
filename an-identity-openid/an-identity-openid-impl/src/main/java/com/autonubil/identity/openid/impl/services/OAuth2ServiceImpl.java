@@ -43,6 +43,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTCreator.Builder;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.RSAKeyProvider;
 import com.autonubil.identity.auth.api.entities.Group;
 import com.autonubil.identity.auth.api.entities.User;
@@ -50,6 +53,7 @@ import com.autonubil.identity.openid.RsaJwk;
 import com.autonubil.identity.openid.impl.entities.OAuthApp;
 import com.autonubil.identity.openid.impl.entities.OAuthPermission;
 import com.autonubil.identity.openid.impl.entities.OAuthSession;
+import com.autonubil.identity.openid.impl.entities.OAuthToken;
 import com.autonubil.identity.secrets.impl.DbSecretProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -131,7 +135,7 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 			byte[] encoded = rsaPrivateKey.getEncoded();
 			PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(encoded);
 			
-			 
+			 // RSAPrivateCrtKeySpec  spec = new RSAPrivateCrtKeySpec ( rsaPrivateKey.getModulus(),rsaPublicKey.getPublicExponent(),rsaPrivateKey.getPrivateExponent(), rsaPrivateKey.getPrime1(),rsaPrivateKey.getPrime2(),rsaPrivateKey.getExponent1(),rsaPrivateKey.getExponent2(),rsaPrivateKey.getCoefficient()); );
 			
 			secretsProvider.setSecret(SECRETSTORE_KEY, Base64.getEncoder().encodeToString(spec.getEncoded()));
 		} else {
@@ -145,6 +149,7 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 		}
 		
 		this.currentKey = new RsaJwk( (RSAPublicKey) publicKey);
+		this.knownJwksKeys.put(this.currentKey.getId(),this.currentKey);
 		this.knownKeys.put(this.currentKey.getId(), (RSAPublicKey) publicKey);
 		
 	}
@@ -157,8 +162,8 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode result = mapper.createObjectNode();
 		ArrayNode keys = result.putArray("keys");
-		for(String keyId : this.knownKeys.keySet()) {
-			keys.add( mapper.valueToTree(new RsaJwk(this.getPublicKeyById(keyId))) );
+		for(String keyId : this.knownJwksKeys.keySet()) {
+			keys.add( mapper.valueToTree(this.knownJwksKeys.get(keyId))  );
 		}
 		
 		return result;
@@ -370,6 +375,42 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 			return null;
 		}
 		
+	}
+	
+	
+	public OAuthToken  getToken(OAuthSession session, String issuer, String subject) {
+		String tokenHash = this.upgradeSession(session);
+		OAuthToken token = new OAuthToken();
+
+		token.setAccessToken(tokenHash);
+// TODO:		token.setRefreshToken("refreshToken");
+		
+		// HMAC
+ 		// Algorithm algorithm = Algorithm.HMAC512(session.getApplication().getSecret());
+		Algorithm algorithm = Algorithm.RSA256(this);
+		
+		Builder jwtBuilder =  JWT.create()
+			.withIssuer(issuer)
+			.withAudience(session.getClientId())
+			.withIssuedAt(session.getIssued())
+			.withExpiresAt(session.getExpires())
+			.withNotBefore(new Date(session.getIssued().getTime() - (60 *1000) ))
+			.withSubject(subject)
+			.withIssuedAt(new Date());
+		
+			if (session.getNonce() != null) {
+				jwtBuilder.withClaim("nonce", session.getNonce());
+			}
+		
+//			.withClaim("email", "anuehm@hotmail.com")
+//			.withClaim("email_verified", true);
+
+		
+		String idToken = jwtBuilder.sign(algorithm);
+		token.setIdToken(idToken);
+		token.setExpiresIn ( (session.getExpires().getTime() - new Date().getTime() ) / 1000 );
+		
+		return token;
 	}
 	
 
@@ -722,6 +763,7 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 
 	
 	private Map<String, RSAPublicKey> knownKeys = new HashMap<>();  
+	private Map<String, RsaJwk> knownJwksKeys = new HashMap<>();
 
 	@Override
 	public RSAPublicKey getPublicKeyById(String keyId) {
