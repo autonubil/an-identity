@@ -165,7 +165,7 @@ public class OpenIdConnectConfiguration {
 				}
 			}
 
-			baseTarget = new URI(isSSL ? "https" : "http", null, request.getHeader("Host"), port, null, null, null);
+			baseTarget = new URI(isSSL ? "https" : "http", null, request.getHeader("Host"), port == 443 || port == 80 ?  -1 : port, null, null, null);
 			issuer = baseTarget.toString();
 		} catch (URISyntaxException e) {
 		}

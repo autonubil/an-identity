@@ -7,10 +7,13 @@ public class Jwk {
 	private String  id;
 
 	@JsonProperty("kty")
-	private String  algorythm ="RSA";
+	private String  keyType ="RSA";
+	
+	@JsonProperty("alg")
+	private String  algorythm ="RS256";
 	
 	@JsonProperty("use")
-	private String  use = "RS256";
+	private String  use = "sig";
 
 	public String getId() {
 		return id;
@@ -20,6 +23,15 @@ public class Jwk {
 		this.id = id;
 	}
 
+	public String getKeyType() {
+		return keyType;
+	}
+
+	public void setKeyType(String keyType) {
+		this.keyType = keyType;
+	}
+
+	
 	public String getAlgorythm() {
 		return algorythm;
 	}

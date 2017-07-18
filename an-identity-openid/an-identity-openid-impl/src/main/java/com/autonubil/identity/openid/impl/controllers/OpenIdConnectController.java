@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTCreator.Builder;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.autonubil.identity.apps.api.entities.App;
 import com.autonubil.identity.apps.api.service.AppsService;
 import com.autonubil.identity.auth.api.entities.ExpiringUser;
@@ -281,7 +277,6 @@ public class OpenIdConnectController {
 			return new OAuthAuthorizationErrorResponse("invalid_grant", "Invalid session", null);
 		}
 
-		OAuthToken token = new OAuthToken();
 		// check if user is still valid
 		User user = session.getUser(this.authService);
 		
@@ -319,37 +314,8 @@ public class OpenIdConnectController {
 				
 		}
 		
-		String tokenHash = this.oauthService.upgradeSession(session);
-		
-		token.setAccessToken(tokenHash);
-// TODO:		token.setRefreshToken("refreshToken");
-		
-		// HMAC
- 		// Algorithm algorithm = Algorithm.HMAC512(session.getApplication().getSecret());
-		Algorithm algorithm = Algorithm.RSA256(this.oauthService);
-		
-		Builder jwtBuilder =  JWT.create()
-			.withIssuer(this.getConfiguration(request).getIssuer())
-			.withAudience(client_id)
-			.withIssuedAt(session.getIssued())
-			.withExpiresAt(session.getExpires())
-			.withNotBefore(new Date(session.getIssued().getTime() - (60 *1000) ))
-			.withSubject(user.getUsername())
-			.withIssuedAt(new Date());
-		
-			if (session.getNonce() != null) {
-				jwtBuilder.withClaim("nonce", session.getNonce());
-			}
-		
-//			.withClaim("email", "anuehm@hotmail.com")
-//			.withClaim("email_verified", true);
-
-		
-		String idToken = jwtBuilder.sign(algorithm);
 		response.setContentType("application/jwt");
-		token.setIdToken(idToken);
-		token.setExpiresIn ( (session.getExpires().getTime() - new Date().getTime() ) / 1000 );
-		
+		OAuthToken token =  oauthService.getToken(session, this.getConfiguration(request).getIssuer(), user.getUsername());
 		log.info("token request from: " + request.getRemoteHost()  + " for " + session.getApplication().getName());
 		
 		return token;
