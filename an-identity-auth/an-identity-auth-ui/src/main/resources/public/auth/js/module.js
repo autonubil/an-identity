@@ -23,7 +23,7 @@ angular.module("autonubil-intranet-auth")
 			} else if(rejection.status == 403) {
 				angular.module("autonubil-intranet-auth").goto("/auth/errors/accessDenied");
 			}  
-			return $q.reject(rejection);;
+			return $q.reject(rejection);
 		}
 	}
 });

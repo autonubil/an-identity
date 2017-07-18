@@ -1,5 +1,5 @@
 angular.module("autonubil-intranet-myovpns")
-.service("MyOvpnsService", function(Restangular,$location) {
+.service("MyOvpnsService", function(Restangular, $location) {
 	
 	return {
 		getUsers : function(params, success) {

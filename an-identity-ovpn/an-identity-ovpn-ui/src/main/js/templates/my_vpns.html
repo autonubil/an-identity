@@ -1,8 +1,12 @@
 <div ng-controller="MyOvpnsController">
-	<div ng-if="!vpns || vpns.length == 0">
+	<div ng-if="!loaded">
+		<span><i>Loading....</i></span>
+	</div>
+
+	<div ng-if="loaded && (!vpns || vpns.length == 0)">
 		<i>No VPNs available!</i>
 	</div>
-	<div ng-if="vpns && vpns.length > 0">
+	<div ng-if="loaded && (vpns && vpns.length > 0)">
 		<div ng-if="vpns && vpns.length > 5">
 			<div class="form-group">
 				<input ng-model="search" class="form-control"
@@ -26,12 +30,12 @@
 						ng-class="['alert',{'alert-danger':notification.level=='ERROR'},{'alert-warning':notification.level=='WARN'},{'alert-info':notification.level=='INFO'}]">
 						{{notification.message}}</div>
 					<div ng-if="!vpn.valid">
-						<div ng-if="vpn.serial == ''">
+						<div ng-if="!vpn.serial || vpn.serial == ''">
 							<button title="Create Configuration"
 								class="btn btn-primary btn-xs glyphicon glyphicon-pencil"
 								ng-click="downloadVpn(vpn.id, vpn.name)"></button>
 						</div>
-						<div ng-if="vpn.serial != ''">
+						<div ng-if="vpn.serial && vpn.serial != ''">
 							<button title="Re-create Configuration"
 								class="btn btn-primary btn-xs glyphicon glyphicon-refresh"
 								ng-click="downloadVpn(vpn.id, vpn.name)"></button>
