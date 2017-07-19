@@ -59,7 +59,7 @@ public class OpenIdConnectController {
  
 	// OAUTH2
 
-	@RequestMapping(value = {"/.well-known/webfinger", "/oid/{appname}/.well-known/webfinger"}, method = { RequestMethod.GET })
+	@RequestMapping(value = {"/.well-known/webfinger"}, method = { RequestMethod.GET })
 	public WebfingerResponse webfinger(HttpServletRequest request,
 			@RequestParam(name = "resource", required = true) String ressource,
 			@RequestParam(name = "rel", required = true) String rel) throws AuthException {
@@ -77,14 +77,14 @@ public class OpenIdConnectController {
 	
 	
 	
-	@RequestMapping(value = {"/.well-known/openid-configuration", "/oid/{appname}/.well-known/openid-configuration"}, method = { RequestMethod.GET })
+	@RequestMapping(value = {"/.well-known/openid-configuration"}, method = { RequestMethod.GET })
 	public OpenIdConnectConfiguration getConfiguration(HttpServletRequest request) throws AuthException {
 		log.debug("Configuration request from: " + request.getRemoteHost() );
 		OpenIdConnectConfiguration configuration = new OpenIdConnectConfiguration(request);
 		return configuration; 
 	}
 	
-	@RequestMapping(value = {"/.well-known/jwks.json", "/oid/{appname}/.well-known/jwks.json"}  , method = { RequestMethod.GET })
+	@RequestMapping(value = {"/.well-known/jwks.json"}  , method = { RequestMethod.GET })
 	public ObjectNode getJwks(HttpServletRequest request) {
 		log.debug("JWKS request from: " + request.getRemoteHost() );
 		return this.oauthService.getJwks();
@@ -93,7 +93,7 @@ public class OpenIdConnectController {
 	// http://tutorials.jenkov.com/oauth2/authorization-code-request-response.html
 	
 	// this one only rediretcs to the Ui
-	@RequestMapping(value = {"/oauth/authorize", "/oid/{appname}/authorize" }, method = { RequestMethod.GET })
+	@RequestMapping(value = {"/oauth/authorize"}, method = { RequestMethod.GET })
 	public OAuthAuthorizationErrorResponse oauthAuthorize(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(name = "client_id") String client_id, 
 			@RequestParam(name = "redirect_uri") String redirectUrl,
@@ -153,7 +153,7 @@ public class OpenIdConnectController {
 
 	 
 	// called from the ui
-	@RequestMapping(value = {"/oauth/approve", "/oid/{appname}/approve"}, method = { RequestMethod.GET })
+	@RequestMapping(value = {"/oauth/approve"}, method = { RequestMethod.GET })
 	public Object oauthApprove(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("client_id") String id,
 			@RequestParam(name = "scope", required = false) String scope,
@@ -256,7 +256,7 @@ public class OpenIdConnectController {
 
 	}
 
-	@RequestMapping(value = {"/oauth/token", "/oid/{appname}/token"}  , method = { RequestMethod.POST })
+	@RequestMapping(value = {"/oauth/token"}  , method = { RequestMethod.POST })
 	public Object oauthToken(HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestHeader(value = "Authorization", required=false) String authorization,
@@ -321,7 +321,7 @@ public class OpenIdConnectController {
 		return token;
 	}
 	
-	@RequestMapping(value = {"/oauth/tokeninfo", "/oauth/token-info", "/oid/{appname}/tokeninfo", "/oid/{appname}/token-info"}, method = { RequestMethod.GET })
+	@RequestMapping(value = {"/oauth/tokeninfo", "/oauth/token-info"}, method = { RequestMethod.GET })
 	public Object oauthTokeninfo(HttpServletRequest request, HttpServletResponse response,
 			@RequestHeader(value = "Authorization") String authorization,
 			@RequestParam(name = "access_token", required = false) String accessToken
@@ -346,7 +346,7 @@ public class OpenIdConnectController {
 	}
 	
 	
-	@RequestMapping(value = { "/oauth/profile", "/oauth/userinfo", "/oid/{appname}/profile", "/oid/{appname}/userinfo"} , method = { RequestMethod.GET })
+	@RequestMapping(value = { "/oauth/profile"} , method = { RequestMethod.GET })
 	public Object oauthToken(HttpServletRequest request, HttpServletResponse response,
 			@RequestHeader(value = "Authorization") String authorization) throws IllegalArgumentException, UnsupportedEncodingException {
 		
@@ -433,6 +433,88 @@ public class OpenIdConnectController {
 
 
 
+
+@RequestMapping(value = { "/oauth/userinfo", "/api/v3/userinfo"} , method = { RequestMethod.GET })
+public Object getUserInfo(HttpServletRequest request, HttpServletResponse response,
+		@RequestHeader(value = "Authorization") String authorization) throws IllegalArgumentException, UnsupportedEncodingException {
+	
+	OAuthSession session = null;
+	if ((authorization != null) && (authorization.startsWith("Bearer "))) {
+		String tokenHash = authorization.substring(7);
+		session = this.oauthService.getSession(tokenHash);
+	}
+	
+	if (session == null)  {
+		// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
+		response.setStatus(401);
+		return new OAuthAuthorizationErrorResponse("invalid_token", "The Access Token expired", null);
+	}
+	
+	
+	// check if user is still valid
+	User user = session.getUser(this.authService);
+	if (user instanceof  ExpiringUser ) {
+		ExpiringUser expiringUser = (ExpiringUser) user;
+		if (expiringUser.isExpired()) {
+			response.setStatus(403);
+			return new OAuthAuthorizationErrorResponse("invalid_grant", "User is expired", null);
+		}
+	}
+	
+	ObjectMapper mapper = new ObjectMapper();
+	ObjectNode profile = mapper.createObjectNode();
+
+	
+	profile.put("iss", new OpenIdConnectConfiguration(request).getIssuer());
+	profile.put("aud", session.getClientId());
+	profile.put("id", user.getId());
+ 
+	LdapUser ldapUser = null;
+	if (user instanceof LdapUser) {
+		ldapUser = (LdapUser)user;
+	}
+	
+	
+	
+	if (session.getScopes().contains("profile")) {
+		// name, family_name, given_name, middle_name, nickname, preferred_username, profile, picture, website, gender, birthdate, zoneinfo, locale, and updated_at.
+		profile.put("name", user.getDisplayName());
+		profile.put("nickname", user.getUsername());
+		if (ldapUser != null) {
+			if (ldapUser.getSn() != null) {
+				profile.put("lastName", ldapUser.getSn());
+			}
+			if (ldapUser.getGivenName() != null) {
+				profile.put("firstName", ldapUser.getGivenName());
+			}
+		}
+	}
+	if (session.getScopes().contains("email")) {
+		if (user instanceof LdapUser) {
+			if (ldapUser.getMail() != null) {
+				profile.put("email", ldapUser .getMail()); 
+			}
+		}
+	}
+	if (session.getScopes().contains("phone")) {
+		if (user instanceof LdapUser) {
+			if (ldapUser.getPhone() != null) {
+				profile.put("phone", ldapUser.getPhone());
+			} else if (ldapUser.getMobilePhone() != null) {
+				profile.put("phone", ldapUser.getMobilePhone());
+			}
+		}
+	}
+		
+		
+	
+	response.setContentType("application/json");
+	return profile.toString();
+}
+}
+
+
+
 /*
  * gitlab (from source:
  * https://docs.gitlab.com/ce/integration/omniauth.html#using-custom-omniauth-
@@ -455,3 +537,5 @@ public class OpenIdConnectController {
  * 
  * 
  */
+
+
