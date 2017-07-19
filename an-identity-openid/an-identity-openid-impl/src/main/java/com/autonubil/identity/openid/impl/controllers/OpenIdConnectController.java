@@ -482,10 +482,10 @@ public Object getUserInfo(HttpServletRequest request, HttpServletResponse respon
 		profile.put("nickname", user.getUsername());
 		if (ldapUser != null) {
 			if (ldapUser.getSn() != null) {
-				profile.put("lastName", ldapUser.getSn());
+				profile.put("first_name", ldapUser.getSn());
 			}
 			if (ldapUser.getGivenName() != null) {
-				profile.put("firstName", ldapUser.getGivenName());
+				profile.put("last_name", ldapUser.getGivenName());
 			}
 		}
 	}
