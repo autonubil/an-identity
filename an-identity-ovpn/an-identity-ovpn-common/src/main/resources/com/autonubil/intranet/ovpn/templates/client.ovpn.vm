@@ -14,6 +14,7 @@ http-proxy ${remote.proxy}
 #end
 dev ${dev}
 topology subnet
+reneg-sec ${reneg-sec}
 #if ( ${fragment} )fragment 0
 #end
 mssfix ${mssfix}

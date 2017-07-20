@@ -2,7 +2,7 @@ package com.autonubil.identity.ovpn.common.service;
 
 import org.springframework.stereotype.Service;
 
-import com.autonubil.identity.auth.api.entities.Identity;
+import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.ovpn.api.OvpnSessionConfigService;
 import com.autonubil.identity.ovpn.api.entities.Ovpn;
 import com.autonubil.identity.ovpn.api.entities.OvpnPushOption;
@@ -56,7 +56,7 @@ public class DefaultOvpnSessionConfigProvider implements OvpnSessionConfigServic
 	}
 
 	@Override
-	public String getSessionConfiguration(Ovpn ovpn,  Identity i) {
+	public String getSessionConfiguration(Ovpn ovpn,  User user) {
 		StringBuilder sb = new StringBuilder();
 		
 		boolean routeSet = false;

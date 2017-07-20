@@ -6,6 +6,14 @@
 		<artifactId>an-identity</artifactId>
 		<version>0.1.31-SNAPSHOT</version>
 	</parent>
+
+	<properties>
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<maven.build.timestamp.format>ddMMyyyyHHmm</maven.build.timestamp.format>
+		<project-name>${project.name}</project-name>
+		<project-version>${pom.version}</project-version>
+	</properties>
+
 	<artifactId>an-identity-ui</artifactId>
 	<dependencies>
 		<dependency>
@@ -14,7 +22,14 @@
 			<version>2.0.19</version>
 		</dependency>
 	</dependencies>
+
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>com.github.eirslett</groupId>

@@ -68,7 +68,7 @@ public class AwsConsoleFederationProxy {
 
 		OAuthSession session = new OAuthSession("itd3dj6imathefos1vbfdvoogm", "", "");
 		session.upgrade();
-		OAuthToken token = oauthService.getToken(session, issuer, identity.getUser().getUsername());
+		OAuthToken token = oauthService.createToken(session, issuer, identity.getUser().getUsername());
 		ObjectMapper mapper = new ObjectMapper();
 		String jwt = mapper.writeValueAsString(token);
 

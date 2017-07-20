@@ -36,8 +36,13 @@
     	<div class="container" style="margin-top: 50px" ng-view="">
 		</div> 
 	</body>
-    <script src="dist/js/dependencies.js"></script>
-    <script src="dist/js/app.js"></script>
-    <script src="/js/modules"></script>
-    <script src="/js/templates"></script>
+    <script src="dist/js/dependencies.js?_v=${timestamp}"></script>
+    <script src="dist/js/app.js?_v=${timestamp}"></script>
+    <script src="/js/modules?_v=${timestamp}"></script>
+    <script src="/js/templates?_v=${timestamp}"></script>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+	    <div class="container">
+	    	<small><a href="https://github.com/autonubil/an-identity">${project-name}</a> ${project-version}</small>
+    	</div>
+    </nav>
 </html>

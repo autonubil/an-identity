@@ -35,6 +35,7 @@ import com.autonubil.identity.ovpn.api.entities.ConfigProvider;
 import com.autonubil.identity.ovpn.api.entities.MyOvpn;
 import com.autonubil.identity.ovpn.api.entities.Ovpn;
 import com.autonubil.identity.ovpn.api.entities.OvpnPermission;
+import com.autonubil.identity.ovpn.api.entities.OvpnSession;
 import com.autonubil.identity.ovpn.api.entities.OvpnSessionConfigRequest;
 import com.autonubil.identity.ovpn.api.entities.StoredCertInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -70,7 +71,6 @@ public class OvpnConfigController {
 		return ovpnConfigService.listServerConfigProviders(search);
 	}
 
-	
 	@RequestMapping(value = "/api/ovpn/vpns", method = RequestMethod.GET)
 	public List<Ovpn> listVpns(@RequestParam String search) throws AuthException {
 		AuthUtils.checkAdmin();
@@ -145,19 +145,27 @@ public class OvpnConfigController {
 						myOvpn.setValidTil(cert.getCertificate().getNotAfter());
 						myOvpn.setSerial(cert.getSerialHex());
 						myOvpn.setValid(cert.getValid());
-				  		long t = cert.getCertificate().getNotAfter().getTime();
-			    		long n = System.currentTimeMillis();
-			    		if(t - n < (0)) {
-			    			myOvpn.addNotification(new Notification(LEVEL.ERROR, "Your certificate for this vpn is expired!"));
-			    		} else if(t - n < (1*24*60*60*1000)) {
-			    			myOvpn.addNotification(new Notification(LEVEL.ERROR, "Your certificate for this vpn will expire in less than a day ("+new Date(t)+")"));
-			    		} else if(t - n < (long)(3*24*60*60*1000)) {
-			    			myOvpn.addNotification(new Notification(LEVEL.WARN, "Your certificate for this vpn will expire in less than 3 days ("+new Date(t)+")"));
-			    		} else if(t - n < (long)(5*24*60*60*1000)) {
-			    			myOvpn.addNotification(new Notification(LEVEL.INFO, "Your certificate for this vpn will expire in less than 5 days ("+new Date(t)+")"));
-			    		}
+						long t = cert.getCertificate().getNotAfter().getTime();
+						long n = System.currentTimeMillis();
+						if (t - n < (0)) {
+							myOvpn.addNotification(
+									new Notification(LEVEL.ERROR, "Your certificate for this vpn is expired!"));
+						} else if (t - n < (1 * 24 * 60 * 60 * 1000)) {
+							myOvpn.addNotification(new Notification(LEVEL.ERROR,
+									"Your certificate for this vpn will expire in less than a day (" + new Date(t)
+											+ ")"));
+						} else if (t - n < (long) (3 * 24 * 60 * 60 * 1000)) {
+							myOvpn.addNotification(new Notification(LEVEL.WARN,
+									"Your certificate for this vpn will expire in less than 3 days (" + new Date(t)
+											+ ")"));
+						} else if (t - n < (long) (5 * 24 * 60 * 60 * 1000)) {
+							myOvpn.addNotification(new Notification(LEVEL.INFO,
+									"Your certificate for this vpn will expire in less than 5 days (" + new Date(t)
+											+ ")"));
+						}
 					} else {
-						myOvpn.addNotification(new Notification(LEVEL.INFO, "Your have no OpenVPN configuration yet. Click on download to create one."));
+						myOvpn.addNotification(new Notification(LEVEL.INFO,
+								"Your have no OpenVPN configuration yet. Click on download to create one."));
 					}
 				}
 			} catch (Exception e) {
@@ -182,16 +190,24 @@ public class OvpnConfigController {
 		}
 		return new ArrayList<>();
 	}
- 
-	@RequestMapping(value = "/api/ovpn/vpns/{id}/server-config", method = RequestMethod.POST)
-	public void getServerConfig(@PathVariable String id, HttpServletResponse response,
+
+	@RequestMapping(value = "/api/ovpn/vpns/{id}/authenticate", method = RequestMethod.POST)
+	public void authenticate(@PathVariable String id, HttpServletResponse response,
 			@RequestBody OvpnSessionConfigRequest configRequest) throws AuthException {
 		Ovpn ovpn = getOvpnForId(id);
 		if (ovpn == null) {
 			response.setStatus(404);
 			return;
 		}
+		ovpnConfigService.purge();
+		
 
+		String sessionId = ovpnConfigService.calcSessionId(id, configRequest);
+		User user =  null;
+		
+		
+		OvpnSession session = ovpnConfigService.getSession(sessionId);
+		
 		if ((configRequest.getSourceId() == null) || (configRequest.getSourceId().length() != 36)) {
 			List<String> sources = new ArrayList<>();
 			List<OvpnPermission> permissions = this.ovpnConfigService.listPermissions(ovpn.getId(), null, null);
@@ -208,11 +224,16 @@ public class OvpnConfigController {
 			}
 		}
 
-		Identity i = authService.authenticate(configRequest, false);
+		if (session == null) {
+			user = authService.getUser(id,  configRequest.getUsername());
+		} else {
+			user = authService.authenticate(configRequest, false).getUser();
+		}
+	 
 
-		if (i != null) {
+		if (user != null) {
 
-			List<Ovpn> userVpns = ovpnConfigService.listOvpnsForGroups(i.getUser().getGroups(), ovpn.getName());
+			List<Ovpn> userVpns = ovpnConfigService.listOvpnsForGroups(user.getGroups(), ovpn.getName());
 			boolean allowed = false;
 			for (Ovpn ovpn2 : userVpns) {
 				if (ovpn.getId().equals(ovpn2.getId())) {
@@ -224,20 +245,71 @@ public class OvpnConfigController {
 			if (!allowed) {
 				response.setStatus(401);
 				auditLogger.log("OPENVPN", "LOGIN_FAILED", "", "",
-						i.getUser().getSourceName() + ":" + i.getUser().getDisplayName(),
+						id +":"+ configRequest.getUsername() ,
 						"Access to vpn " + ovpn.getName() + " denied");
 				return;
 			}
 
 			auditLogger.log("OPENVPN", "LOGIN_SUCCESS", "", "",
-					i.getUser().getSourceName() + ":" + i.getUser().getDisplayName(),
+					id +":"+ configRequest.getUsername() ,
 					"Login to vpn " + ovpn.getName() + " succeeded");
 		} else {
 			auditLogger.log("OPENVPN", "LOGIN_FAILED", "", "", "[unknown]", "Login failed");
 			response.setStatus(403);
 			return;
 		}
+		
+		if (session==null) {
+			session = new OvpnSession(sessionId, id, configRequest ) ; 
+			ovpnConfigService.saveSession(session);
+		} else  {
+			session.upgrade();
+			ovpnConfigService.updateSession(session);
+		}
+ 
+	}
+	
+	
+	@RequestMapping(value = "/api/ovpn/vpns/{id}/client-config", method = RequestMethod.POST)
+	public void getClientConfig(@PathVariable String id, HttpServletResponse response,
+			@RequestBody OvpnSessionConfigRequest configRequest) throws AuthException {
+		Ovpn ovpn = getOvpnForId(id);
+		if (ovpn == null) {
+			response.setStatus(404);
+			return;
+		}
+		ovpnConfigService.purge();
+		User user =  null;
 
+		String sessionId = ovpnConfigService.calcSessionId(id, configRequest);
+		
+		
+		OvpnSession session = ovpnConfigService.getSession(sessionId);
+
+		if ((session == null) || (!session.validatePassword(configRequest)) ) {
+			response.setStatus(400);
+			auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_FAILED", "", "",
+					id +":"+ configRequest.getUsername() ,
+					"Access to vpn " + ovpn.getName() + " denied (empty session)");
+			return;
+		} 
+ 
+		
+		session.setRemote(configRequest.getRemote());
+		session.setLocal(configRequest.getLocal());
+		ovpnConfigService.updateSession(session);
+		
+ 
+		user = session.getUser(authService);
+		 
+		if (user == null) {
+			response.setStatus(400);
+			auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_FAILED", "", "",
+					id +":"+ configRequest.getUsername() ,
+					"Access to vpn " + ovpn.getName() + " denied (no associated user)");
+			return;
+		}
+  
 		OvpnSessionConfigService configService = null;
 		try {
 			configService = getSessionConfigService(ovpn);
@@ -246,13 +318,49 @@ public class OvpnConfigController {
 				configService.setIfConfigInfo(configRequest.getLocal(), configRequest.getLocalNetmask(),
 						configRequest.getRemote(), configRequest.getRemoteNetmask());
 
-				String clientConfig = configService.getSessionConfiguration(ovpn, i);
+				String clientConfig = configService.getSessionConfiguration(ovpn, user);
 				response.getOutputStream().write(clientConfig.getBytes("UTF-8"));
 				response.flushBuffer();
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Client Configuration implementation class not found", e);
 		}
+
+		auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_SUCCESS", "", "",
+				id +":"+ configRequest.getUsername() ,
+				"Config for "+   user.getDisplayName() +" at vpn " + ovpn.getName() + "");
+
+	}
+	
+	
+
+	
+	@RequestMapping(value = "/api/ovpn/vpns/{id}/disconnect", method = RequestMethod.POST)
+	public void disconnect(@PathVariable String id, HttpServletResponse response,
+			@RequestBody OvpnSessionConfigRequest configRequest) throws AuthException {
+		Ovpn ovpn = getOvpnForId(id);
+		if (ovpn == null) {
+			response.setStatus(404);
+			return;
+		}
+		ovpnConfigService.purge();
+
+		String sessionId = ovpnConfigService.calcSessionId(id, configRequest);
+		OvpnSession session = ovpnConfigService.getSession(sessionId);
+
+		if ((session == null) || (!session.validatePassword(configRequest)) ) {
+			response.setStatus(400);
+			auditLogger.log("OPENVPN", "DISCONNECT_FAILED", "", "",
+					id +":"+ configRequest.getUsername() ,
+					"Access to vpn " + ovpn.getName() + " denied (empty session)");
+			return;
+		} 
+		
+		ovpnConfigService.terminateSession(session);
+
+		auditLogger.log("OPENVPN", "DISCONNECT", "", "",
+				id +":"+ configRequest.getUsername() ,
+			"Session for "+   configRequest.getUsername() +" at vpn " + ovpn.getName() + " was terminated");
 
 	}
 
@@ -309,13 +417,12 @@ public class OvpnConfigController {
 			throw new NotAuthenticatedException();
 		}
 		Ovpn resultVpn = null;
-		
+
 		Identity i = IdentityHolder.get();
 		resultVpn = getVpnByIdForUser(id, i);
 		if (resultVpn == null) {
 			throw new NotAuthorizedException();
 		}
-
 
 		OvpnClientConfigService configService = null;
 		try {
@@ -344,7 +451,7 @@ public class OvpnConfigController {
 				groups.addAll(u.getGroups());
 			}
 		}
-		
+
 		List<Ovpn> myOvpns = ovpnConfigService.listOvpnsForGroups(groups, null);
 		for (Ovpn vpn : myOvpns) {
 			if (vpn.getId().equals(id)) {
@@ -386,5 +493,4 @@ public class OvpnConfigController {
 		return configService;
 	}
 
- 
 }

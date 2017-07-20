@@ -1,16 +1,26 @@
 package com.autonubil.identity.ovpn.api.entities;
 
+import java.util.Date;
+
 import com.autonubil.identity.auth.api.util.UsernamePasswordOTPCredentials;
 
 // PAYLOAD=$(echo "{\"source\": \"${SOURCE}\",  \"username\": \"${USERNAME}\", \"password\": \"${PASSWORD}\", \"link_mtu\" : \"${link_mtu}\", \"tun_mtu\": \"${tun_mtu}\". \"local\" : \"${ifconfig_local}\", \"netmask\" : \"${ifconfig_netmask}\"   }")
 
 public class OvpnSessionConfigRequest extends UsernamePasswordOTPCredentials {
 
+	private String vpnPid;
 	private String local; 
 	private String localNetmask;
 	private String remote; 
 	private String remoteNetmask;
+	private long connected;
 	
+	public long getConnected() {
+		return connected;
+	}
+	public void setConnected(long connected) {
+		this.connected = connected;
+	}
 	public String getLocal() {
 		return local;
 	}
@@ -36,5 +46,12 @@ public class OvpnSessionConfigRequest extends UsernamePasswordOTPCredentials {
 	public void setRemoteNetmask(String remoteNetmask) {
 		this.remoteNetmask = remoteNetmask;
 	}
+	public String getVpnPid() {
+		return vpnPid;
+	}
+	public void setVpnPid(String vpnPid) {
+		this.vpnPid = vpnPid;
+	}
+	
 	
 }

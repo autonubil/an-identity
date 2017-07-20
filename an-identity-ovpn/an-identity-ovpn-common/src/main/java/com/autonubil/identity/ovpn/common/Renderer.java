@@ -11,6 +11,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 
+import com.autonubil.identity.ovpn.api.OvpnConfigService;
 import com.autonubil.identity.ovpn.api.entities.OvpnOptions;
 
 
@@ -86,6 +87,13 @@ public class Renderer {
 		result.put("remotes", ovpnOptions.getRemotes());
 		
 		result.put("auth-user-pass", ovpnOptions.isAuthUserPass());
+		
+		
+		long renegSecs = ovpnOptions.getRenegSec();
+		if ( (renegSecs > 0) && (renegSecs < OvpnConfigService.SESSION_EXPIRY - 30L)   ) {
+			renegSecs = Math.min(10L,  OvpnConfigService.SESSION_EXPIRY - 30L);
+		}
+		result.put("reneg-sec", renegSecs );
 		
 		
 		return result;

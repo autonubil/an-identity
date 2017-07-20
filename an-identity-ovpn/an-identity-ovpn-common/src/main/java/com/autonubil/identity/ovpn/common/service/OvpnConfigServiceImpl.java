@@ -2,9 +2,13 @@ package com.autonubil.identity.ovpn.common.service;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +28,14 @@ import org.springframework.stereotype.Service;
 
 import com.autonubil.identity.auth.api.entities.Group;
 import com.autonubil.identity.ovpn.api.OvpnClientConfigService;
+import com.autonubil.identity.ovpn.api.OvpnConfigService;
 import com.autonubil.identity.ovpn.api.OvpnServerConfigService;
 import com.autonubil.identity.ovpn.api.OvpnSessionConfigService;
 import com.autonubil.identity.ovpn.api.entities.ConfigProvider;
 import com.autonubil.identity.ovpn.api.entities.Ovpn;
 import com.autonubil.identity.ovpn.api.entities.OvpnPermission;
+import com.autonubil.identity.ovpn.api.entities.OvpnSession;
+import com.autonubil.identity.ovpn.api.entities.OvpnSessionConfigRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -46,14 +53,29 @@ import de.disk0.db.sqlbuilder.interfaces.Table;
 import de.disk0.db.sqlbuilder.interfaces.Update;
 
 @Service
-public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnConfigService {
+public class OvpnConfigServiceImpl implements com.autonubil.identity.ovpn.api.OvpnConfigService {
 
-	private static Log log = LogFactory.getLog(OvpnConfigService.class);
+	private static Log log = LogFactory.getLog(OvpnConfigServiceImpl.class);
 
 	@Autowired
 	@Qualifier("ovpnDb")
 	private DataSource dataSource;
 
+	private long PURGE_INTERVALL = 60 * 10 * 1000;
+	private long lastPurge = 0;
+
+	public void purge() {
+
+		long now = new Date().getTime();
+		if (now > lastPurge + PURGE_INTERVALL) {
+			log.debug("Purging old sessions");
+			purgeSessions();
+			this.lastPurge = now;
+		}
+		
+	}
+ 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -513,6 +535,169 @@ public class OvpnConfigService implements com.autonubil.identity.ovpn.api.OvpnCo
 		}
 		return result;
 	}
+
+	
+	public List<OvpnSession> getUserSessions(String sourceId, String userName) {
+		 
+		if (sourceId == null) {
+			throw new NullPointerException("sourceId must not be null");
+		}
+		if (userName == null) {
+			throw new NullPointerException("userName must not be null");
+		}
+		
+		Select s = SqlBuilderFactory.select();
+		Table source = s.fromTable("session");
+
+		s.where(Operator.AND, s.condition(source, "source_id", Comparator.EQ, sourceId));
+		s.where(Operator.AND, s.condition(source, "user_name", Comparator.EQ, userName));
+		s.where(Operator.AND, s.condition(source, "expires", Comparator.GT, new Date().getTime()));
+
+		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
+		return templ.query(s.toSQL(), s.getParams(), new SessionSourceRowMapper());
+	}
+	
+
+	public void updateSession(OvpnSession session) {
+		if (session == null) {
+			throw new NullPointerException("session must not be null");
+		}
+		
+		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
+		
+		Update u = SqlBuilderFactory.update("session");
+		ObjectMapper mapper = new ObjectMapper(); 
+		
+	 
+		try {
+			u.set("expires", session.getExpires().getTime());
+			u.set("definition", mapper.writeValueAsString(session));
+		} catch (JsonProcessingException e) {
+			throw new IllegalArgumentException("Failed to serialize session", e);
+		}
+		
+		u.where(Operator.AND, u.condition(u.getTable(), "id", Comparator.EQ, session.getCode()));
+		
+		templ.update(u.toSQL(), u.getParams());
+	}
+	
+	@Override
+	public void terminateSession(OvpnSession session) {
+		if (session == null) {
+			throw new NullPointerException("session must not be null");
+		}
+		
+		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
+		
+		Update u = SqlBuilderFactory.update("session");
+		ObjectMapper mapper = new ObjectMapper(); 
+		
+	 
+		try {
+			u.set("expires", new Date().getTime());
+			u.set("definition", mapper.writeValueAsString(session));
+		} catch (JsonProcessingException e) {
+			throw new IllegalArgumentException("Failed to serialize session", e);
+		}
+		
+		u.where(Operator.AND, u.condition(u.getTable(), "id", Comparator.EQ, session.getCode()));
+		
+		templ.update(u.toSQL(), u.getParams());
+		
+	}
+	
+
+	
+	public void saveSession(OvpnSession session) {
+		if (session == null) {
+			throw new NullPointerException("session must not be null");
+		}
+		
+		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
+		
+		Insert i = SqlBuilderFactory.insert("session");
+		ObjectMapper mapper = new ObjectMapper(); 
+		
+		i.addField("id", session.getCode());
+		i.addField("expires", session.getExpires().getTime());
+		
+		i.addField("source_id", session.getUserSourceId());
+		i.addField("user_name", session.getUserName());
+		
+		try {
+			i.addField("definition", mapper.writeValueAsString(session));
+		} catch (JsonProcessingException e) {
+			throw new IllegalArgumentException("Failed to serialize session", e);
+		}
+		templ.update(i.toSQL(), i.getParams());
+	}
+	
+	
+	
+	
+	public OvpnSession getSession(String id) {
+ 
+		if (id == null) {
+			throw new NullPointerException("id must not be null");
+		}
+		
+		Select s = SqlBuilderFactory.select();
+		Table source = s.fromTable("session");
+
+		s.where(Operator.AND, s.condition(source, "id", Comparator.EQ, id));
+		s.where(Operator.AND, s.condition(source, "expires", Comparator.GT, new Date().getTime()));
+
+		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
+		List<OvpnSession> out = templ.query(s.toSQL(), s.getParams(), new SessionSourceRowMapper());
+		
+		if (out.size() == 1) {
+			return out.get(0);
+		} else {
+			return null;
+		}
+		
+	}
+	
+	// Row Mappers
+	public class SessionSourceRowMapper  implements RowMapper<OvpnSession> {
+
+		
+		@Override
+		public OvpnSession mapRow(ResultSet rs, int rowNum) throws SQLException {
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				return  mapper.readValue(rs.getString("definition"), OvpnSession.class);
+			} catch (IOException e) {
+				throw new SQLException("Failed to read definition", e);
+			}
+		}
+
+	}
+
+	public void deleteSession(OvpnSession session) {
+		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
+		Delete d = SqlBuilderFactory.delete("session");
+		d.where(Operator.AND, d.condition(d.getTable(), "id", Comparator.EQ, session.getCode()));
+		templ.update(d.toSQL(), d.getParams());
+	}
+	
+	public void purgeSessions() {
+		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
+		Delete d = SqlBuilderFactory.delete("session");
+		d.where(Operator.AND, d.condition(d.getTable(), "expires", Comparator.LT, new Date().getTime() - (OvpnConfigService.SESSION_RETENTION *1000) ));
+		templ.update(d.toSQL(), d.getParams());
+	}
+
+	@Override
+	public String calcSessionId(String ovpnId, OvpnSessionConfigRequest configRequest) {
+		try {
+			MessageDigest md5 =  MessageDigest.getInstance("MD5");
+			return Base64.getEncoder().encodeToString(md5.digest( String.format("%s:%d:%s%s", ovpnId, configRequest.getConnected(), configRequest.getSourceId(),configRequest.getUsername()).getBytes() )).replaceAll("=", "");
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException("Failed to hash arguments");
+		}
+	}
+
 
 }
 

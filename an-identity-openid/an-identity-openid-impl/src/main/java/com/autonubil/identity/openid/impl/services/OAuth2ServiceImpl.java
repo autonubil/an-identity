@@ -193,6 +193,9 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 	}
 	
 
+	
+	
+
 	public String upgradeSession(OAuthSession session) {
 		this.purge();
 		this.deleteSession(session);
@@ -350,43 +353,21 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 			templ.update(d.toSQL(), d.getParams());
 		}
 	}
-	
-	
-	
-	public OAuthSession getSession(String id) {
- 
-		if (id == null) {
-			throw new NullPointerException("id must not be null");
-		}
-		
-		Select s = SqlBuilderFactory.select();
-		Table source = s.fromTable("session");
 
-		s.where(Operator.AND, s.condition(source, "id", Comparator.EQ, id));
-		s.where(Operator.AND, s.condition(source, "expires", Comparator.GT, new Date().getTime()));
-
-		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
-		List<OAuthSession> out = new ArrayList<>();
-		out = templ.query(s.toSQL(), s.getParams(), new SessionSourceRowMapper());
-		
-		if (out.size() == 1) {
-			return out.get(0);
-		} else {
-			return null;
-		}
-		
+	
+	
+	public OAuthToken  createToken(OAuthSession session, String issuer, String subject) {
+		String tokenHash = this.upgradeSession(session);
+		return getToken(session, issuer, subject);
 	}
 	
-	
 	public OAuthToken  getToken(OAuthSession session, String issuer, String subject) {
-		String tokenHash = this.upgradeSession(session);
 		OAuthToken token = new OAuthToken();
 
-		token.setAccessToken(tokenHash);
+		token.setAccessToken(session.getCode());
 // TODO:		token.setRefreshToken("refreshToken");
 		
 		// HMAC
- 		// Algorithm algorithm = Algorithm.HMAC512(session.getApplication().getSecret());
 		Algorithm algorithm = Algorithm.RSA256(this);
 		
 		Builder jwtBuilder =  JWT.create()
@@ -398,14 +379,10 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 			.withSubject(subject)
 			.withIssuedAt(new Date());
 		
-			if (session.getNonce() != null) {
-				jwtBuilder.withClaim("nonce", session.getNonce());
-			}
-		
-//			.withClaim("email", "anuehm@hotmail.com")
-//			.withClaim("email_verified", true);
-
-		
+		if (session.getNonce() != null) {
+			jwtBuilder.withClaim("nonce", session.getNonce());
+		}
+ 		
 		String idToken = jwtBuilder.sign(algorithm);
 		token.setIdToken(idToken);
 		token.setExpiresIn ( (session.getExpires().getTime() - new Date().getTime() ) / 1000 );
@@ -436,6 +413,53 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 		templ.update(u.toSQL(), u.getParams());
 	}
 	
+	
+	public OAuthSession getSession(String id) {
+ 
+		if (id == null) {
+			throw new NullPointerException("id must not be null");
+		}
+		
+		Select s = SqlBuilderFactory.select();
+		Table source = s.fromTable("session");
+
+		s.where(Operator.AND, s.condition(source, "id", Comparator.EQ, id));
+		s.where(Operator.AND, s.condition(source, "expires", Comparator.GT, new Date().getTime()));
+
+		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
+		List<OAuthSession> out = new ArrayList<>();
+		out = templ.query(s.toSQL(), s.getParams(), new SessionSourceRowMapper());
+		
+		if (out.size() == 1) {
+			return out.get(0);
+		} else {
+			return null;
+		}
+		
+	}
+	
+
+	public List<OAuthSession> getUserSessions(String sourceId, String userName) {
+ 
+		if (sourceId == null) {
+			throw new NullPointerException("sourceId must not be null");
+		}
+		if (userName == null) {
+			throw new NullPointerException("userName must not be null");
+		}
+		
+		Select s = SqlBuilderFactory.select();
+		Table source = s.fromTable("session");
+
+		s.where(Operator.AND, s.condition(source, "source_id", Comparator.EQ, sourceId));
+		s.where(Operator.AND, s.condition(source, "user_name", Comparator.EQ, userName));
+		s.where(Operator.AND, s.condition(source, "expires", Comparator.GT, new Date().getTime()));
+
+		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
+		return templ.query(s.toSQL(), s.getParams(), new SessionSourceRowMapper());
+	}
+	
+	
 	public void saveSession(OAuthSession session) {
 		if (session == null) {
 			throw new NullPointerException("session must not be null");
@@ -448,6 +472,10 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 		
 		i.addField("id", session.getCode());
 		i.addField("expires", session.getExpires().getTime());
+		
+		i.addField("source_id", session.getUserSourceId());
+		i.addField("user_name", session.getUserName());
+		
 		try {
 			i.addField("definition", mapper.writeValueAsString(session));
 		} catch (JsonProcessingException e) {

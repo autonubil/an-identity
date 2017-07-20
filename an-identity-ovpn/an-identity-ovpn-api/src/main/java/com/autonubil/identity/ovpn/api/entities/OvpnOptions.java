@@ -23,6 +23,7 @@ public class OvpnOptions {
 	private boolean persistKey = true;
 	private boolean persistTun = true;
 	private String nsCertType = null; // "server";
+	private long  renegSec = 3600;
 	
 	private String ca;
 	private String cert;
@@ -169,6 +170,16 @@ public class OvpnOptions {
 
 	public void setMaxUserCertTtl(long maxUserCertTtl) {
 		this.maxUserCertTtl = maxUserCertTtl;
+	}
+
+
+	public long getRenegSec() {
+		return renegSec;
+	}
+
+
+	public void setRenegSec(long renegSec) {
+		this.renegSec = renegSec;
 	}
 
 
