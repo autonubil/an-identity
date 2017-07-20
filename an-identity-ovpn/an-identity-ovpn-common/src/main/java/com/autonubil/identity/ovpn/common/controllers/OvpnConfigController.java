@@ -237,24 +237,29 @@ public class OvpnConfigController {
 
 		if (session == null) {
 			user = authService.getUser(configRequest.getSourceId(),  configRequest.getUsername());
+			log.debug(String.format("Ovpn authentication startet new session on %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
 		} else {
+			log.debug(String.format("Ovpn authentication reuse session on %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
 			user = authService.authenticate(configRequest, false).getUser();
 		}
 	 
 
 		if (user != null) {
-
-			List<Ovpn> userVpns = ovpnConfigService.listOvpnsForGroups(user.getGroups(), ovpn.getName());
+			log.debug(String.format("Ovpn found user on %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
 			boolean allowed = false;
+			List<Ovpn> userVpns = ovpnConfigService.listOvpnsForGroups(user.getGroups(), id);
+			log.debug(String.format("Ovpn user as %d possible vps associated with its grouos on %s as %s at %s", userVpns.size(), id, configRequest.getUsername(), configRequest.getSourceId() ) );
 			for (Ovpn ovpn2 : userVpns) {
+				
 				if (ovpn.getId().equals(ovpn2.getId())) {
 					allowed = true;
+					log.debug(String.format("Ovpn user as vpn permitted on %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
 					break;
 				}
 			}
 
 			if (!allowed) {
-				response.setStatus(401);
+				response.setStatus(403);
 				auditLogger.log("OPENVPN", "LOGIN_FAILED", "", "", id +":"+ configRequest.getUsername() , "Access to vpn " + ovpn.getName() + " denied");
 				return;
 			}

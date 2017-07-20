@@ -206,7 +206,7 @@ public class OpenIdConnectController {
 			if (authenticated) {
 				// group permissions match?
 				List<OAuthApp> userApps = oauthService.listOAuthAppsForGroups(i.getUser().getGroups(), app.getId());
-				if (userApps.size() > 0) {
+				if (!userApps.isEmpty()) {
 					boolean allowed = false;
 					for (OAuthApp userApp : userApps) {
 						if (userApp.getId().equals(userApp.getId())) {
@@ -223,6 +223,9 @@ public class OpenIdConnectController {
 
 		}
 		OAuthSession session = null;
+		if (scopes.contains("offline_access")) {
+			log.debug("Token will contain refresh token");
+		}
 		if (authenticated) {
 			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, i.getUser(), scopes.contains("offline_access"));
 		} else {

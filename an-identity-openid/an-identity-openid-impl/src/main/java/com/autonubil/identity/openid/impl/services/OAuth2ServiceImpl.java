@@ -363,7 +363,7 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 	
 	
 	public OAuthToken  createToken(OAuthSession session, String issuer, String subject) {
-		String tokenHash = this.upgradeSession(session);
+		this.upgradeSession(session);
 		return getToken(session, issuer, subject);
 	}
 	
@@ -373,8 +373,10 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 		token.setAccessToken(session.getCode());
 		
 		
-		// TODO: implement switch?
-		token.setRefreshToken( session.getRefreshToken() );
+		if (session.getRefreshToken()  != null) {
+			log.debug("Token contains refresh token");
+			token.setRefreshToken( session.getRefreshToken() );
+		}
 		
 		// HMAC
 		Algorithm algorithm = Algorithm.RSA256(this);

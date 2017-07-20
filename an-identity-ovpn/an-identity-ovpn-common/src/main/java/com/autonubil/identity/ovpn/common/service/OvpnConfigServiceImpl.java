@@ -293,7 +293,7 @@ public class OvpnConfigServiceImpl implements com.autonubil.identity.ovpn.api.Ov
 	@Override
 	public List<Ovpn> listOvpnsForGroups(List<Group> groups, String search) {
 
-		if (groups == null || groups.size() == 0) {
+		if (groups == null || groups.isEmpty()) {
 			return new ArrayList<>();
 		}
 
@@ -320,7 +320,8 @@ public class OvpnConfigServiceImpl implements com.autonubil.identity.ovpn.api.Ov
 		// s.select(Aggregation.NONE, ovpn, "vpn", "vpn");
 
 		if (!StringUtils.isEmpty(search)) {
-			s.where(Operator.AND, s.condition(ovpn, "name", Comparator.LIKE, "%" + search.toLowerCase() + "%"));
+			s.where(Operator.AND, s.condition(ovpn, "id", Comparator.EQ, search ));
+			s.where(Operator.OR, s.condition(ovpn, "name", Comparator.LIKE, "%" + search.toLowerCase() + "%"));
 		}
 
 		JoinedTable vpnPerm = ovpn.joinTable(JoinType.LEFT, "vpn_permission");
