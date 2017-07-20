@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity-ldap</artifactId>
-		<version>0.1.34-SNAPSHOT</version>
+		<version>0.1.34</version>
 
 	</parent>
 	<artifactId>an-identity-ldap-impl</artifactId>
@@ -17,37 +17,37 @@
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-ldap-api</artifactId>
-			<version>0.1.34-SNAPSHOT</version>
+			<version>0.1.34</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-common</artifactId>
-			<version>0.1.34-SNAPSHOT</version>
+			<version>0.1.34</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-util</artifactId>
-			<version>0.1.34-SNAPSHOT</version>
+			<version>0.1.34</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-mail-api</artifactId>
-			<version>0.1.34-SNAPSHOT</version>
+			<version>0.1.34</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-api</artifactId>
-			<version>0.1.34-SNAPSHOT</version>
+			<version>0.1.34</version>
 
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-audit-api</artifactId>
-			<version>0.1.34-SNAPSHOT</version>
+			<version>0.1.34</version>
 
 		</dependency>
 	</dependencies>
