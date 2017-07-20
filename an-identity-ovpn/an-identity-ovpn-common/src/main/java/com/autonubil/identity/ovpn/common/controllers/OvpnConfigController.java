@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,12 +40,15 @@ import com.autonubil.identity.ovpn.api.entities.OvpnPermission;
 import com.autonubil.identity.ovpn.api.entities.OvpnSession;
 import com.autonubil.identity.ovpn.api.entities.OvpnSessionConfigRequest;
 import com.autonubil.identity.ovpn.api.entities.StoredCertInfo;
+import com.autonubil.identity.ovpn.common.service.OvpnConfigServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
 @RequestMapping("/autonubil")
 public class OvpnConfigController {
 
+	private static Log log = LogFactory.getLog(OvpnConfigController.class);
+	
 	@Autowired
 	private OvpnConfigService ovpnConfigService;
 
@@ -194,8 +199,12 @@ public class OvpnConfigController {
 	@RequestMapping(value = "/api/ovpn/vpns/{id}/authenticate", method = RequestMethod.POST)
 	public void authenticate(@PathVariable String id, HttpServletResponse response,
 			@RequestBody OvpnSessionConfigRequest configRequest) throws AuthException {
+		
+		log.info(String.format("Ovpn authentication request for ovpn %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
+		
 		Ovpn ovpn = getOvpnForId(id);
 		if (ovpn == null) {
+			log.warn(String.format("Ovpn %s was not found", id));
 			response.setStatus(404);
 			return;
 		}
@@ -208,6 +217,7 @@ public class OvpnConfigController {
 		
 		OvpnSession session = ovpnConfigService.getSession(sessionId);
 		
+		/*
 		if ((configRequest.getSourceId() == null) || (configRequest.getSourceId().length() != 36)) {
 			List<String> sources = new ArrayList<>();
 			List<OvpnPermission> permissions = this.ovpnConfigService.listPermissions(ovpn.getId(), null, null);
@@ -223,6 +233,7 @@ public class OvpnConfigController {
 				return;
 			}
 		}
+		*/
 
 		if (session == null) {
 			user = authService.getUser(id,  configRequest.getUsername());
@@ -244,15 +255,11 @@ public class OvpnConfigController {
 
 			if (!allowed) {
 				response.setStatus(401);
-				auditLogger.log("OPENVPN", "LOGIN_FAILED", "", "",
-						id +":"+ configRequest.getUsername() ,
-						"Access to vpn " + ovpn.getName() + " denied");
+				auditLogger.log("OPENVPN", "LOGIN_FAILED", "", "", id +":"+ configRequest.getUsername() , "Access to vpn " + ovpn.getName() + " denied");
 				return;
 			}
 
-			auditLogger.log("OPENVPN", "LOGIN_SUCCESS", "", "",
-					id +":"+ configRequest.getUsername() ,
-					"Login to vpn " + ovpn.getName() + " succeeded");
+			auditLogger.log("OPENVPN", "LOGIN_SUCCESS", "", "", id +":"+ configRequest.getUsername() , "Login to vpn " + ovpn.getName() + " succeeded");
 		} else {
 			auditLogger.log("OPENVPN", "LOGIN_FAILED", "", "", "[unknown]", "Login failed");
 			response.setStatus(403);
@@ -274,6 +281,9 @@ public class OvpnConfigController {
 	public void getClientConfig(@PathVariable String id, HttpServletResponse response,
 			@RequestBody OvpnSessionConfigRequest configRequest) throws AuthException {
 		Ovpn ovpn = getOvpnForId(id);
+		
+		log.info(String.format("Ovpn config request for ovpn %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
+		
 		if (ovpn == null) {
 			response.setStatus(404);
 			return;
@@ -338,6 +348,9 @@ public class OvpnConfigController {
 	@RequestMapping(value = "/api/ovpn/vpns/{id}/disconnect", method = RequestMethod.POST)
 	public void disconnect(@PathVariable String id, HttpServletResponse response,
 			@RequestBody OvpnSessionConfigRequest configRequest) throws AuthException {
+		
+		log.info(String.format("Ovpn disconnect request for ovpn %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
+		
 		Ovpn ovpn = getOvpnForId(id);
 		if (ovpn == null) {
 			response.setStatus(404);

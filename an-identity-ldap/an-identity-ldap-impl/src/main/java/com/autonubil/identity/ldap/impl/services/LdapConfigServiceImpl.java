@@ -203,16 +203,12 @@ public class LdapConfigServiceImpl implements LdapConfigService {
 		log.debug("looking for sources: " + id);
 		LdapConfig config = get(id);
 		if(config==null) {
+			log.debug("sources: " + id + " was not found");
 			return null;
 		}
 		List<LdapCustomsFieldConfig> customFields = ldapConfigFieldService.list(null, id, null, 0, 1000);
 		for(LdapConnectionFactory f : connectionFactories) {
-			log.debug(
-					"looking for sources: "+
-					f.getType().getId()+
-					" == "+
-					config.getServerType()+
-					"?");
+			log.debug( "looking for sources: "+ f.getType().getId()+ " == "+ config.getServerType()+ "?");
 			if(f.getType().getId().compareTo(config.getServerType())==0) {
 				log.debug("looking for sources: "+f.getType().getId()+" == "+config.getServerType()+": "+f.getClass());
 				return f.connect(config, config.getAdminBindDn(), getPassword(id),customFields,mailService);

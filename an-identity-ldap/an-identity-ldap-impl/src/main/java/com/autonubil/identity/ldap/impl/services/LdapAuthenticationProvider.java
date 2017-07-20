@@ -98,7 +98,7 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
 		log.warn("authenticating user using ldap connection: " + c.getSourceId());
 		LdapConnection conn = ldapConfigService.connect(c.getSourceId());
 		if (conn == null) {
-			log.warn("unable to connect to source!");
+			log.warn("unable to connect to source "+  c.getSourceId()  +" that was provided in the credentials!");
 			return null;
 		}
 		log.debug("connection is of type: " + conn.getClass());
@@ -247,9 +247,16 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public User getUser(String sourceId, String username) {
+		if (sourceId == null) {
+			throw new NullPointerException("sourceId must not be null");
+		}
+		if (username == null) {
+			throw new NullPointerException("username must not be null");
+		}
+
 		LdapConnection conn = ldapConfigService.connect(sourceId);
 		if (conn == null) {
-			log.warn("unable to connect to source!");
+			log.warn("unable to connect to source "+ sourceId + " for user "+ username   +" !");
 			return null;
 		}
 		try {

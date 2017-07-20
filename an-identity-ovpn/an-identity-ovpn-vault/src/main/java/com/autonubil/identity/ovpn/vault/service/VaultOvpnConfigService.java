@@ -346,7 +346,7 @@ public class VaultOvpnConfigService implements OvpnClientConfigService {
 				vault.logical().write("secret/vpn/"+resultVpn.getName()+"/users/" + identity.getUser().getUsername(), userData);
 				try {
 					auditLogger.log("OPENVPN", "CA", "", "",
-							identity.getUser().getSourceName() + ":" + identity.getUser().getDisplayName(),
+							identity.getUser().getSourceId() + ":" + identity.getUser().getDisplayName(),
 							"Issued new user certificate");
 				} catch (Exception ex) {
 					ex.printStackTrace();
