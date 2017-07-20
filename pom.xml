@@ -10,7 +10,7 @@
 		<module>an-identity-apps</module>
 		<module>an-identity-audit</module>
 		<module>an-identity-auth</module>
-                <module>an-identity-aws</module>
+        <module>an-identity-aws</module>
 		<module>an-identity-db</module>
 		<module>an-identity-ldap</module>
 		<module>an-identity-ldapusers</module>

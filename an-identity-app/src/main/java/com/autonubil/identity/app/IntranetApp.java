@@ -18,7 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @PropertySource(value = { "an.identity.properties" })
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class, org.springframework.boot.autoconfigure.jooq.JooqAutoConfiguration.class, org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration.class})
 @EnableConfigurationProperties
-@ComponentScan(basePackages={"com","de", "net", "org.mitre"})
+@ComponentScan(basePackages={"com","de", "net"})
 public class IntranetApp {
 
 	

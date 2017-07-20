@@ -75,7 +75,7 @@ public class JsController {
 		
 		@Override
 		public void processMatch(File classpathElt, String relativePath, byte[] fileContents) throws IOException {
-			log.info(" -----> "+classpathElt.getAbsolutePath()+":"+relativePath);
+			log.debug(" -----> "+classpathElt.getAbsolutePath()+":"+relativePath);
 			baos.write(("//  "+ relativePath+"\n").getBytes());
 			baos.write(fileContents);
 		}

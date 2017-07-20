@@ -70,7 +70,7 @@ public class AwsConsoleFederationProxy {
 		session.upgrade();
 		OAuthToken token = oauthService.createToken(session, issuer, identity.getUser().getUsername());
 		ObjectMapper mapper = new ObjectMapper();
-		String jwt = mapper.writeValueAsString(token);
+//		String jwt = mapper.writeValueAsString(token);
 
 		AssumeRoleWithWebIdentityRequest asr = new AssumeRoleWithWebIdentityRequest();
 
