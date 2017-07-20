@@ -66,7 +66,7 @@ public class AwsConsoleFederationProxy {
 
 		AWSSecurityTokenServiceClient stsClient =  new AWSSecurityTokenServiceClient(credentials);
 
-		OAuthSession session = new OAuthSession("itd3dj6imathefos1vbfdvoogm", "", "");
+		OAuthSession session = new OAuthSession(null, "");
 		session.upgrade();
 		OAuthToken token = oauthService.createToken(session, issuer, identity.getUser().getUsername());
 		ObjectMapper mapper = new ObjectMapper();

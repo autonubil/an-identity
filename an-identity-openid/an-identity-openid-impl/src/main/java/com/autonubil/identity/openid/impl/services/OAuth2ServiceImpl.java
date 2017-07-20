@@ -169,7 +169,7 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 		return result;
 	}
 
-	public OAuthSession addApproval(String clientId, String code, String state, String nonce, OAuthApp app, List<String> scopes, User user) {
+	public OAuthSession addApproval(String clientId, String code, String state, String nonce, OAuthApp app, List<String> scopes, User user, boolean createRefreshToken) {
 		this.purge();
 		OAuthSession session; 
 		if (code != null) {
@@ -177,11 +177,17 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 			// new user?
 			if ( (user != null) && ( (session.getUserName() == null) || (session.getUserSourceId() == null) ||  (!user.getUsername().equals(session.getUserName())) ||  (!user.getSourceId().equals(session.getUserSourceId())) ) ) {
 				session.setUser(user);
+				if (createRefreshToken) {
+					session.generateRefreshToken();
+				}
 				this.updateSession(session);
 				
 			}
 		} else { 
-			 session = new OAuthSession(clientId, code, state, nonce, app, scopes, user);
+			 session = new OAuthSession(clientId,  state, nonce, app, scopes, user);
+			 if (createRefreshToken) {
+				session.generateRefreshToken();
+			 }
 			 this.saveSession(session );
 			 
 		 }
@@ -365,7 +371,10 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 		OAuthToken token = new OAuthToken();
 
 		token.setAccessToken(session.getCode());
-// TODO:		token.setRefreshToken("refreshToken");
+		
+		
+		// TODO: implement switch?
+		token.setRefreshToken( session.getRefreshToken() );
 		
 		// HMAC
 		Algorithm algorithm = Algorithm.RSA256(this);

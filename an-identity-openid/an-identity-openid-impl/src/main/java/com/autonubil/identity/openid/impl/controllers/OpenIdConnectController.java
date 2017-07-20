@@ -180,6 +180,8 @@ public class OpenIdConnectController {
 						String.format("The scope %s is not permitted", requestedScope), state);
 			}
 		}
+		
+	
 
 		Identity i = IdentityHolder.get();
 		boolean authenticated = (i != null);
@@ -222,9 +224,10 @@ public class OpenIdConnectController {
 		}
 		OAuthSession session = null;
 		if (authenticated) {
-			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, i.getUser());
+			
+			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, i.getUser(), session.getScopes().contains("offline_access"));
 		} else {
-			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, null);
+			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, null, session.getScopes().contains("offline_access"));
 		}
 		if (session == null) {
 			// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
@@ -244,12 +247,14 @@ public class OpenIdConnectController {
 			@RequestParam(name = "code") String code, @RequestParam(name = "grant_type") String grantType,
 			@RequestParam(name = "redirect_uri") String redirectUrl,
 			@RequestParam(name = "client_id", required = false) String clientId,
+			@RequestParam(name = "refresh_token", required = false) String refreshToken,
 			@RequestParam(name = "client_secret", required = false) String clientSecret)
 
 			throws AuthException, IllegalArgumentException, UnsupportedEncodingException {
 
 		OAuthSession session = this.oauthService.getApproval(code);
 
+			
 		if (session == null) {
 			// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
 			response.setStatus(401);
@@ -275,14 +280,28 @@ public class OpenIdConnectController {
 				session.setExpires(expiringUser.getUserExpires());
 
 			}
-
+		}
+		
+		
+		
+		if ("authorization_code".equals(grantType)) {
+			response.setContentType("application/jwt");
+			OAuthToken token = oauthService.getToken(session, this.getConfiguration(request).getIssuer(), user.getUsername());
+			log.info("token request from: " + request.getRemoteHost() + " for " + session.getApplication().getName());
+			return token;
+		} else if ("refresh_token".equals(grantType)) {
+			response.setContentType("application/jwt");
+			session.upgrade();
+			OAuthToken token = oauthService.getToken(session, this.getConfiguration(request).getIssuer(), user.getUsername());
+			log.info("token request from: " + request.getRemoteHost() + " for " + session.getApplication().getName());
+			return token;	
+		} else {
+			log.info(grantType + " request from: " + request.getRemoteHost() + " for " + session.getApplication().getName());
+			return new OAuthAuthorizationErrorResponse("invalid_grant", "Unsupported grant type", null);
 		}
 
-		response.setContentType("application/jwt");
-		OAuthToken token = oauthService.getToken(session, this.getConfiguration(request).getIssuer(), user.getUsername());
-		log.info("token request from: " + request.getRemoteHost() + " for " + session.getApplication().getName());
 
-		return token;
+		
 	}
 
 	@RequestMapping(value = { "/oauth/tokeninfo", "/oauth/token-info" }, method = { RequestMethod.GET })
@@ -367,6 +386,8 @@ public class OpenIdConnectController {
 		if (user instanceof LdapUser) {
 			ldapUser = (LdapUser) user;
 		}
+		
+		
 
 		if (session.getScopes().contains("profile")) {
 			// name, family_name, given_name, middle_name, nickname, preferred_username,

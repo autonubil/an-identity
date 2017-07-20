@@ -14,8 +14,10 @@ public class OAuthSession {
 
 	public static long APPROVAL_VAILIDITY = 600;
 	public static long TOKEN_VAILIDITY = 7200;
+	public static long REFRESH_TOKEN_VAILIDITY = 60*60*24*1;
 
 	private String code;
+	private String refreshToken;
 	private String state;
 	private String nonce;
 	private String error;
@@ -34,26 +36,28 @@ public class OAuthSession {
 		this.error = error;
 	}
 
-	public OAuthSession(String clientId, String code, String state) {
-		this(clientId, code, state, null, null, null, null);
+	public OAuthSession(String clientId, String state) {
+		this(clientId, state, null, null, null, null);
 	}
 
-	public OAuthSession(String clientId, String code, String state, String nonce, OAuthApp app, List<String> scopes, User user) {
+	public void generateRefreshToken() {
+		SecureRandom random =  new SecureRandom();
+		this.refreshToken = new BigInteger(130, random).toString(32);
+	}
+
+	public OAuthSession(String clientId, String state, String nonce, OAuthApp app, List<String> scopes, User user) {
 		this.clientId = clientId;
-		SecureRandom random = null;
-		if (code == null) {
-			random = new SecureRandom();
-			code = new BigInteger(130, random).toString(32);
-		}
+		SecureRandom random =  new SecureRandom();
+		this.code = new BigInteger(130, random).toString(32);
+		
 		if (nonce == null) {
-			if (random == null) {
-				random = new SecureRandom();
-			}
-			nonce = new BigInteger(130, random).toString(32);
+			this.nonce = new BigInteger(130, random).toString(32);
+		} else {
+			this.nonce = nonce;
 		}
-		this.code = code;
+
 		this.state = state;
-		this.nonce = nonce;
+		
 		if (scopes == null) {
 			scopes = new ArrayList<>();
 		}
@@ -188,6 +192,14 @@ public class OAuthSession {
 
 	public void setUserSourceId(String userSourceId) {
 		this.userSourceId = userSourceId;
+	}
+
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 
 }
