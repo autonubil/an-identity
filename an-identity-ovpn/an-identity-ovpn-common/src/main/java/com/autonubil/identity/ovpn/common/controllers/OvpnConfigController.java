@@ -236,7 +236,7 @@ public class OvpnConfigController {
 		*/
 
 		if (session == null) {
-			user = authService.getUser(id,  configRequest.getUsername());
+			user = authService.getUser(configRequest.getSourceId(),  configRequest.getUsername());
 		} else {
 			user = authService.authenticate(configRequest, false).getUser();
 		}

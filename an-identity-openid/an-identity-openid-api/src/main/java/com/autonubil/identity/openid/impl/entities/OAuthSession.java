@@ -133,6 +133,9 @@ public class OAuthSession {
 	}
 
 	public void setScopes(List<String> scopes) {
+		if (scopes == null) {
+			throw new NullPointerException("scopes must not be null");
+		}
 		this.scopes = scopes;
 	}
 

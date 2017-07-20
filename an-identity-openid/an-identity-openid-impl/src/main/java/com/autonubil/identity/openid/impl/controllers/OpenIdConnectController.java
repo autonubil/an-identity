@@ -224,10 +224,9 @@ public class OpenIdConnectController {
 		}
 		OAuthSession session = null;
 		if (authenticated) {
-			
-			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, i.getUser(), session.getScopes().contains("offline_access"));
+			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, i.getUser(), scopes.contains("offline_access"));
 		} else {
-			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, null, session.getScopes().contains("offline_access"));
+			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, null, scopes.contains("offline_access"));
 		}
 		if (session == null) {
 			// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
