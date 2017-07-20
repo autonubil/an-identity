@@ -4,14 +4,14 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity-ovpn</artifactId>
-		<version>0.1.36-SNAPSHOT</version>
+		<version>0.1.37-SNAPSHOT</version>
 	</parent>
 	<artifactId>an-identity-ovpn-ui</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-ovpn-common</artifactId>
-			<version>0.1.36-SNAPSHOT</version>
+			<version>0.1.37-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
