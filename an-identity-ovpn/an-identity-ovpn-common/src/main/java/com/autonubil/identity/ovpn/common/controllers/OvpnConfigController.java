@@ -40,7 +40,6 @@ import com.autonubil.identity.ovpn.api.entities.OvpnPermission;
 import com.autonubil.identity.ovpn.api.entities.OvpnSession;
 import com.autonubil.identity.ovpn.api.entities.OvpnSessionConfigRequest;
 import com.autonubil.identity.ovpn.api.entities.StoredCertInfo;
-import com.autonubil.identity.ovpn.common.service.OvpnConfigServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
@@ -260,13 +259,13 @@ public class OvpnConfigController {
 
 			if (!allowed) {
 				response.setStatus(403);
-				auditLogger.log("OPENVPN", "LOGIN_FAILED", "", "", id +":"+ configRequest.getUsername() , "Access to vpn " + ovpn.getName() + " denied");
+				auditLogger.log("OPENVPN", "LOGIN_FAILED", sessionId, "", id +":"+ configRequest.getUsername() , "Access to vpn " + ovpn.getName() + " denied");
 				return;
 			}
 
-			auditLogger.log("OPENVPN", "LOGIN_SUCCESS", "", "", id +":"+ configRequest.getUsername() , "Login to vpn " + ovpn.getName() + " succeeded");
+			auditLogger.log("OPENVPN", "LOGIN_SUCCESS", sessionId, "", id +":"+ configRequest.getUsername() , "Login to vpn " + ovpn.getName() + " succeeded");
 		} else {
-			auditLogger.log("OPENVPN", "LOGIN_FAILED", "", "", "[unknown]", "Login failed");
+			auditLogger.log("OPENVPN", "LOGIN_FAILED", sessionId, "", "[unknown]", "Login failed");
 			response.setStatus(403);
 			return;
 		}
@@ -303,7 +302,7 @@ public class OvpnConfigController {
 
 		if ((session == null) || (!session.validatePassword(configRequest)) ) {
 			response.setStatus(400);
-			auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_FAILED", "", "",
+			auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_FAILED", sessionId, "",
 					id +":"+ configRequest.getUsername() ,
 					"Access to vpn " + ovpn.getName() + " denied (empty session)");
 			return;
@@ -319,7 +318,7 @@ public class OvpnConfigController {
 		 
 		if (user == null) {
 			response.setStatus(400);
-			auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_FAILED", "", "",
+			auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_FAILED", sessionId, "",
 					id +":"+ configRequest.getUsername() ,
 					"Access to vpn " + ovpn.getName() + " denied (no associated user)");
 			return;
@@ -341,7 +340,7 @@ public class OvpnConfigController {
 			throw new RuntimeException("Client Configuration implementation class not found", e);
 		}
 
-		auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_SUCCESS", "", "",
+		auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_SUCCESS", sessionId, "",
 				id +":"+ configRequest.getUsername() ,
 				"Config for "+   user.getDisplayName() +" at vpn " + ovpn.getName() + "");
 
@@ -376,7 +375,7 @@ public class OvpnConfigController {
 		
 		ovpnConfigService.terminateSession(session);
 
-		auditLogger.log("OPENVPN", "DISCONNECT", "", "",
+		auditLogger.log("OPENVPN", "DISCONNECT", sessionId, "",
 				id +":"+ configRequest.getUsername() ,
 			"Session for "+   configRequest.getUsername() +" at vpn " + ovpn.getName() + " was terminated");
 

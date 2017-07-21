@@ -260,7 +260,16 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
 			return null;
 		}
 		try {
-			return conn.getUserByName(username);
+			User u = conn.getUserByName(username);
+			if (u instanceof LdapUser) {
+				LdapUser lu = (LdapUser)u;
+				List<Group> groups = new ArrayList<>();
+				for (Group g : conn.getGroupsForUser(u.getId(), true)) {
+					groups.add(g);
+				}
+				lu.setGroups(groups);
+			}
+			return u;
 		} catch (Exception e) {
 			// ...
 		}

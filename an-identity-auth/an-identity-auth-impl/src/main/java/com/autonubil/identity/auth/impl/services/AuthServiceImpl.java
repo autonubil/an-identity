@@ -173,6 +173,7 @@ public class AuthServiceImpl implements AuthService {
 			User u = p.getUser(sourceId, username);
 			if(u!=null) return u;
 		}
+		 
 		return null;
 	}
 

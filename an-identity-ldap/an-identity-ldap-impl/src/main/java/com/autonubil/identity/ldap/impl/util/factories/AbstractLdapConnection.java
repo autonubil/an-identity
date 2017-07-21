@@ -40,6 +40,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.autonubil.identity.audit.api.AuditLoggerHelper;
+import com.autonubil.identity.auth.api.entities.Group;
 import com.autonubil.identity.auth.api.entities.Identity;
 import com.autonubil.identity.auth.api.exceptions.AuthException;
 import com.autonubil.identity.auth.api.exceptions.AuthenticationFailedException;
@@ -578,12 +579,16 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 		return out;
 	}
 
+	
+	 
+	
 	@Override
 	public LdapUser getUserById(String id) throws Exception {
 		LdapSearchResultUserMapper m = new LdapSearchResultUserMapper();
 		String filter = getUserByIdFilter(id);
 		log.info("filter: " + filter);
 		return get(getBaseDn(), filter, getUserAttributes(), m);
+		  
 	}
 
 	@Override
