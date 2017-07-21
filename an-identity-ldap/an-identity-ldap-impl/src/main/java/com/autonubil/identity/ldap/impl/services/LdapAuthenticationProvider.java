@@ -256,7 +256,7 @@ public class LdapAuthenticationProvider implements AuthenticationProvider {
 
 		LdapConnection conn = ldapConfigService.connect(sourceId);
 		if (conn == null) {
-			log.warn("unable to connect to source "+ sourceId + " for user "+ username   +" !");
+			log.warn("unable to connect to source "+ sourceId + " for user "+ username   +"!");
 			return null;
 		}
 		try {

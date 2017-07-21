@@ -33,7 +33,7 @@ public interface OvpnConfigService {
 	void removePermission(String appId, String source, String groupId);
 	List<Ovpn> listOvpnsForGroups(List<Group> groups, String search);
 	
-	OvpnSession getSession(String id);
+	OvpnSession getSession(String id, String sourceId, String userName);
 	List<OvpnSession> getUserSessions(String sourceId, String userName);
 	void updateSession(OvpnSession session);
 	void saveSession(OvpnSession session);

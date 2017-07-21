@@ -199,7 +199,6 @@ public class OvpnConfigController {
 	public void authenticate(@PathVariable String id, HttpServletResponse response,
 			@RequestBody OvpnSessionConfigRequest configRequest) throws AuthException {
 		
-		log.info(String.format("Ovpn authentication request for ovpn %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
 		
 		Ovpn ovpn = getOvpnForId(id);
 		if (ovpn == null) {
@@ -211,35 +210,23 @@ public class OvpnConfigController {
 		
 
 		String sessionId = ovpnConfigService.calcSessionId(id, configRequest);
+		log.info(String.format("Ovpn authentication request %s for ovpn %s as %s at %s @%d", sessionId, id, configRequest.getUsername(), configRequest.getSourceId(), configRequest.getConnected() ) );
+		
+		
 		User user =  null;
-		
-		
-		OvpnSession session = ovpnConfigService.getSession(sessionId);
-		
-		/*
-		if ((configRequest.getSourceId() == null) || (configRequest.getSourceId().length() != 36)) {
-			List<String> sources = new ArrayList<>();
-			List<OvpnPermission> permissions = this.ovpnConfigService.listPermissions(ovpn.getId(), null, null);
-			for (OvpnPermission ovpnPermission : permissions) {
-				if (!sources.contains(ovpnPermission.getSourceId())) {
-					sources.add(ovpnPermission.getSourceId());
-				}
-			}
-			if (sources.size() == 1) {
-				configRequest.setSourceId(sources.get(0));
-			} else {
-				response.setStatus(400);
-				return;
-			}
-		}
-		*/
-
+		OvpnSession session = ovpnConfigService.getSession(sessionId, configRequest.getSourceId(), configRequest.getUsername());
+ 
 		if (session == null) {
-			user = authService.getUser(configRequest.getSourceId(),  configRequest.getUsername());
+			try {
+				user = authService.authenticate(configRequest, false).getUser();
+			} catch (AuthException e) {
+				auditLogger.log("OPENVPN", "LOGIN_FAILED", sessionId, "", id +":"+ configRequest.getUsername() , "Access to vpn " + ovpn.getName() + " denied");
+				throw e;
+			}
 			log.debug(String.format("Ovpn authentication startet new session on %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
 		} else {
 			log.debug(String.format("Ovpn authentication reuse session on %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
-			user = authService.authenticate(configRequest, false).getUser();
+			user = authService.getUser(configRequest.getSourceId(),  configRequest.getUsername());
 		}
 	 
 
@@ -273,26 +260,28 @@ public class OvpnConfigController {
 		if (session==null) {
 			session = new OvpnSession(sessionId, id, configRequest ) ; 
 			ovpnConfigService.saveSession(session);
+			OvpnSessionConfigService configService = null;
+			try {
+				configService = getSessionConfigService(ovpn);
+				if (configService != null) {
+					configService.setConfigruation(ovpn.getSessionConfiguration());
+					configService.setIfConfigInfo(configRequest.getLocal(), configRequest.getLocalNetmask(),
+							configRequest.getRemote(), configRequest.getRemoteNetmask());
+
+					String clientConfig = configService.getSessionConfiguration(ovpn, user);
+					response.getOutputStream().write(clientConfig.getBytes("UTF-8"));
+					response.flushBuffer();
+				}
+			} catch (Exception e) {
+				throw new RuntimeException("Client Configuration implementation class not found", e);
+			}
+			
 		} else  {
 			session.upgrade();
 			ovpnConfigService.updateSession(session);
 		}
  
-		OvpnSessionConfigService configService = null;
-		try {
-			configService = getSessionConfigService(ovpn);
-			if (configService != null) {
-				configService.setConfigruation(ovpn.getSessionConfiguration());
-				configService.setIfConfigInfo(configRequest.getLocal(), configRequest.getLocalNetmask(),
-						configRequest.getRemote(), configRequest.getRemoteNetmask());
-
-				String clientConfig = configService.getSessionConfiguration(ovpn, user);
-				response.getOutputStream().write(clientConfig.getBytes("UTF-8"));
-				response.flushBuffer();
-			}
-		} catch (Exception e) {
-			throw new RuntimeException("Client Configuration implementation class not found", e);
-		}
+	
 	}
 	
 	
@@ -300,9 +289,7 @@ public class OvpnConfigController {
 	public void getClientConfig(@PathVariable String id, HttpServletResponse response,
 			@RequestBody OvpnSessionConfigRequest configRequest) throws AuthException {
 		Ovpn ovpn = getOvpnForId(id);
-		
-		log.info(String.format("Ovpn config request for ovpn %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
-		
+	 
 		if (ovpn == null) {
 			response.setStatus(404);
 			return;
@@ -313,7 +300,8 @@ public class OvpnConfigController {
 		String sessionId = ovpnConfigService.calcSessionId(id, configRequest);
 		
 		
-		OvpnSession session = ovpnConfigService.getSession(sessionId);
+		OvpnSession session = ovpnConfigService.getSession(sessionId, configRequest.getSourceId(), configRequest.getUsername());
+		log.info(String.format("Ovpn config request %s for ovpn %s as %s at %s  @%d", sessionId, id, configRequest.getUsername(), configRequest.getSourceId(), configRequest.getConnected() ) );
 
 		if (session == null)  {
 			response.setStatus(400);
@@ -366,8 +354,6 @@ public class OvpnConfigController {
 	public void disconnect(@PathVariable String id, HttpServletResponse response,
 			@RequestBody OvpnSessionConfigRequest configRequest) throws AuthException {
 		
-		log.info(String.format("Ovpn disconnect request for ovpn %s as %s at %s", id, configRequest.getUsername(), configRequest.getSourceId() ) );
-		
 		Ovpn ovpn = getOvpnForId(id);
 		if (ovpn == null) {
 			response.setStatus(404);
@@ -376,7 +362,10 @@ public class OvpnConfigController {
 		ovpnConfigService.purge();
 
 		String sessionId = ovpnConfigService.calcSessionId(id, configRequest);
-		OvpnSession session = ovpnConfigService.getSession(sessionId);
+
+		log.info(String.format("Ovpn disconnect request %s for ovpn %s as %s at %s",sessionId, id, configRequest.getUsername(), configRequest.getSourceId() ) );
+		
+		OvpnSession session = ovpnConfigService.getSession(sessionId, configRequest.getSourceId(), configRequest.getUsername());
 
 		if ((session == null) || (!session.validatePassword(configRequest)) ) {
 			response.setStatus(400);

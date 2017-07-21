@@ -636,7 +636,7 @@ public class OvpnConfigServiceImpl implements com.autonubil.identity.ovpn.api.Ov
 	
 	
 	
-	public OvpnSession getSession(String id) {
+	public OvpnSession getSession(String id, String sourceId, String userName) {
  
 		if (id == null) {
 			throw new NullPointerException("id must not be null");
@@ -646,6 +646,8 @@ public class OvpnConfigServiceImpl implements com.autonubil.identity.ovpn.api.Ov
 		Table source = s.fromTable("session");
 
 		s.where(Operator.AND, s.condition(source, "id", Comparator.EQ, id));
+		s.where(Operator.AND, s.condition(source, "source_id", Comparator.EQ, sourceId));
+		s.where(Operator.AND, s.condition(source, "user_name", Comparator.EQ, userName));
 		s.where(Operator.AND, s.condition(source, "expires", Comparator.GT, new Date().getTime()));
 
 		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
@@ -693,7 +695,7 @@ public class OvpnConfigServiceImpl implements com.autonubil.identity.ovpn.api.Ov
 	public String calcSessionId(String ovpnId, OvpnSessionConfigRequest configRequest) {
 		try {
 			MessageDigest md5 =  MessageDigest.getInstance("MD5");
-			String hash = Base64.getEncoder().encodeToString(md5.digest( String.format("%s:%d:%s%s", ovpnId, configRequest.getConnected(), configRequest.getSourceId(),configRequest.getUsername()).getBytes() )).replaceAll("=", "");
+			String hash = Base64.getEncoder().encodeToString(md5.digest( String.format("%s:%d:%s%s", ovpnId, configRequest.getConnected(), configRequest.getSourceId(), configRequest.getUsername()).getBytes() )).replaceAll("=", "");
 			
 			log.debug( String.format("%s:%d:%s%s => %s", ovpnId, configRequest.getConnected(), configRequest.getSourceId(),configRequest.getUsername(), hash  ));
 			return hash;
