@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.autonubil.identity</groupId>
     <artifactId>an-identity-aws</artifactId>
-    <version>0.1.38-SNAPSHOT</version>
+    <version>0.1.39-SNAPSHOT</version>
   </parent>
   <artifactId>an-identity-aws-api</artifactId>
 </project>
