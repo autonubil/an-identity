@@ -693,7 +693,10 @@ public class OvpnConfigServiceImpl implements com.autonubil.identity.ovpn.api.Ov
 	public String calcSessionId(String ovpnId, OvpnSessionConfigRequest configRequest) {
 		try {
 			MessageDigest md5 =  MessageDigest.getInstance("MD5");
-			return Base64.getEncoder().encodeToString(md5.digest( String.format("%s:%d:%s%s", ovpnId, configRequest.getConnected(), configRequest.getSourceId(),configRequest.getUsername()).getBytes() )).replaceAll("=", "");
+			String hash = Base64.getEncoder().encodeToString(md5.digest( String.format("%s:%d:%s%s", ovpnId, configRequest.getConnected(), configRequest.getSourceId(),configRequest.getUsername()).getBytes() )).replaceAll("=", "");
+			
+			log.debug( String.format("%s:%d:%s%s => %s", ovpnId, configRequest.getConnected(), configRequest.getSourceId(),configRequest.getUsername(), hash  ));
+			return hash;
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException("Failed to hash arguments");
 		}

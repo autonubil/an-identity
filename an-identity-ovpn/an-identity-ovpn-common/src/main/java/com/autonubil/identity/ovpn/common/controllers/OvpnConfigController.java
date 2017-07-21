@@ -278,6 +278,21 @@ public class OvpnConfigController {
 			ovpnConfigService.updateSession(session);
 		}
  
+		OvpnSessionConfigService configService = null;
+		try {
+			configService = getSessionConfigService(ovpn);
+			if (configService != null) {
+				configService.setConfigruation(ovpn.getSessionConfiguration());
+				configService.setIfConfigInfo(configRequest.getLocal(), configRequest.getLocalNetmask(),
+						configRequest.getRemote(), configRequest.getRemoteNetmask());
+
+				String clientConfig = configService.getSessionConfiguration(ovpn, user);
+				response.getOutputStream().write(clientConfig.getBytes("UTF-8"));
+				response.flushBuffer();
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Client Configuration implementation class not found", e);
+		}
 	}
 	
 	
