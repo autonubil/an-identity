@@ -300,11 +300,9 @@ public class OvpnConfigController {
 		
 		OvpnSession session = ovpnConfigService.getSession(sessionId);
 
-		if ((session == null) || (!session.validatePassword(configRequest)) ) {
+		if (session == null)  {
 			response.setStatus(400);
-			auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_FAILED", sessionId, "",
-					id +":"+ configRequest.getUsername() ,
-					"Access to vpn " + ovpn.getName() + " denied (empty session)");
+			auditLogger.log("OPENVPN", "GET_CLIENT_CONFIG_FAILED", sessionId, "", id +":"+ configRequest.getUsername() , "Access to vpn " + ovpn.getName() + " denied (empty session)");
 			return;
 		} 
  
