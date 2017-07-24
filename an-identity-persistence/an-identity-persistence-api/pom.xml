@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.autonubil.identity</groupId>
     <artifactId>an-identity-persistence</artifactId>
-    <version>0.1.40-SNAPSHOT</version>
+    <version>0.1.41-SNAPSHOT</version>
   </parent>
   <artifactId>an-identity-persistence-api</artifactId>
 </project>
