@@ -125,12 +125,15 @@ public class OvpnConfigController {
 
 	@RequestMapping(value = "/api/ovpn/myvpns", method = RequestMethod.GET)
 	public List<MyOvpn> myVpns(@RequestParam(required = false) String search) throws AuthException {
+		
+		List<OvpnSession> allSession = new ArrayList<>();
+		
 		Identity i = IdentityHolder.get();
 		List<Group> groups = new ArrayList<>();
 		if (i != null) {
 			if (i.getUser() != null) {
-
 				groups.addAll(i.getUser().getGroups());
+				allSession = ovpnConfigService.getUserSessions(i.getUser().getSourceId(), i.getUser().getUsername());
 			}
 			for (User u : i.getLinked()) {
 				groups.addAll(u.getGroups());
@@ -138,9 +141,18 @@ public class OvpnConfigController {
 		}
 		List<MyOvpn> myOvpns = new ArrayList<>();
 		List<Ovpn> ovpns = ovpnConfigService.listOvpnsForGroups(groups, search);
+
 		for (Ovpn ovpn : ovpns) {
 			MyOvpn myOvpn = new MyOvpn(ovpn);
 			try {
+				
+				// active session?
+				for (OvpnSession activeSession :  allSession) {
+					if (activeSession.getOvpnId().equals(ovpn.getName()) ) {
+						myOvpn.addNotification(new Notification(LEVEL.INFO, "You are cuurently connected to this vpn."));
+					}
+				}
+				
 				OvpnClientConfigService configService = getClientConfigService(ovpn);
 				if (configService != null) {
 					StoredCertInfo cert = configService.getCurrentCert(ovpn, i);

@@ -21,6 +21,8 @@ import com.amazonaws.services.securitytoken.model.AssumeRoleWithWebIdentityReque
 import com.amazonaws.services.securitytoken.model.AssumeRoleWithWebIdentityResult;
 import com.amazonaws.services.securitytoken.model.Credentials;
 import com.autonubil.identity.auth.api.entities.Identity;
+import com.autonubil.identity.openid.impl.entities.OAuthAccessSession;
+import com.autonubil.identity.openid.impl.entities.OAuthApprovalSession;
 import com.autonubil.identity.openid.impl.entities.OAuthSession;
 import com.autonubil.identity.openid.impl.entities.OAuthToken;
 import com.autonubil.identity.openid.impl.services.OAuth2ServiceImpl;
@@ -66,16 +68,15 @@ public class AwsConsoleFederationProxy {
 
 		AWSSecurityTokenServiceClient stsClient =  new AWSSecurityTokenServiceClient(credentials);
 
-		OAuthSession session = new OAuthSession(null, "");
-		session.upgrade();
-		OAuthToken token = oauthService.createToken(session, issuer, identity.getUser().getUsername());
+		OAuthApprovalSession session = new OAuthApprovalSession(null, null, null, null,null, identity.getUser().getSourceId(), identity.getUser().getUsername());
+		OAuthAccessSession token = oauthService.createAccessToken(session, issuer, identity.getUser().getUsername());
 		ObjectMapper mapper = new ObjectMapper();
 //		String jwt = mapper.writeValueAsString(token);
 
 		AssumeRoleWithWebIdentityRequest asr = new AssumeRoleWithWebIdentityRequest();
 
 		asr.setRoleArn("arn:aws:iam::118275097572:role/href-openid");
-		asr.setWebIdentityToken(token.getIdToken());
+		asr.setWebIdentityToken(token.getToken());
 		// asr.setProviderId("href.synology.me/");
 		asr.setRoleSessionName(identity.getUser().getId()+ "@an-tintranet" );
 		

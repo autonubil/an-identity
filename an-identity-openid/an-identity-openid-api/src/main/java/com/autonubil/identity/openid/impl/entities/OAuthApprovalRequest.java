@@ -9,8 +9,8 @@ public class OAuthApprovalRequest {
 	private List<String> scopes;
 	private boolean authenticated;
 	
-	public OAuthApprovalRequest(OAuthSession session, boolean authenticated) {
-		this.code = session.getCode();
+	public OAuthApprovalRequest(OAuthApprovalSession session, boolean authenticated) {
+		this.code = session.getToken();
 		this.state = session.getState();
 		this.nonce = session.getNonce();
 		this.scopes = session.getScopes();

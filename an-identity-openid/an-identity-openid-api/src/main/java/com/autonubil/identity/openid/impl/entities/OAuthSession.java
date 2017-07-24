@@ -10,113 +10,64 @@ import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.auth.api.services.AuthService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class OAuthSession {
+public abstract class OAuthSession {
 
-	public static long APPROVAL_VAILIDITY = 600;
-	public static long TOKEN_VAILIDITY = 7200;
-	public static long REFRESH_TOKEN_VAILIDITY = 60*60*24*1;
+	public static long DEFAULT_VAILIDITY = 600;
 
-	private String code;
-	private String refreshToken;
-	private String state;
-	private String nonce;
-	private String error;
-	private String clientId;
-	private Date issued;
-	private Date expires;
-	private OAuthApp application;
-	private List<String> scopes;
-	private String userName;
-	private String userSourceId;
+	protected static final SecureRandom random =  new SecureRandom();
+	
+	protected String type;
+	protected String token;
+	
+	protected Date issued;
+	protected Date expires;
+	protected OAuthApp application;
+	protected List<String> scopes;
+	protected String userName;
+	protected String userSourceId;
+
+	@JsonIgnore
+	protected String error;
 
 	public OAuthSession() {
 	}
 
+	
+	public OAuthSession(OAuthApp app, List<String> scopes, String userSourceId, String userName) {
+		this.application = app;
+		
+		if (scopes == null) {
+			this.scopes = new ArrayList<>();
+		} else {
+			this.scopes = scopes;
+		}
+		this.userSourceId = userSourceId;
+		this.userName = userName;
+		this.generateNewToken();
+		this.issued = new Date();
+		this.setExpiresIn(DEFAULT_VAILIDITY);
+	}
+	
+	protected void setExpiresIn(long inSeconds) {
+		this.expires = new Date(this.issued.getTime() + (inSeconds * 1000));
+	}
+	
+	protected void generateNewToken() {
+		
+		this.token = new BigInteger(130, random).toString(64);
+	}
+	
 	public OAuthSession(String error) {
 		this.error = error;
 	}
 
-	public OAuthSession(String clientId, String state) {
-		this(clientId, state, null, null, null, null);
-	}
-
-	public void generateRefreshToken() {
-		SecureRandom random =  new SecureRandom();
-		this.refreshToken = new BigInteger(130, random).toString(32);
-	}
-
-	public OAuthSession(String clientId, String state, String nonce, OAuthApp app, List<String> scopes, User user) {
-		this.clientId = clientId;
-		SecureRandom random =  new SecureRandom();
-		this.code = new BigInteger(130, random).toString(32);
-		
-		if (nonce == null) {
-			this.nonce = new BigInteger(130, random).toString(32);
-		} else {
-			this.nonce = nonce;
-		}
-
-		this.state = state;
-		
-		if (scopes == null) {
-			scopes = new ArrayList<>();
-		}
-		this.scopes = scopes;
-		this.application = app;
-		this.issued = new Date();
-		this.expires = new Date(this.issued.getTime() + (APPROVAL_VAILIDITY * 1000));
-		if (user != null) {
-			this.setUser(user);
-		}
-	}
-
+	
 	public OAuthApp getApplication() {
 		return application;
 	}
 
 	public void setApplication(OAuthApp application) {
 		this.application = application;
-	}
-
-	// from approval to token
-	public String upgrade() {
-		SecureRandom random = new SecureRandom();
-		this.code = new BigInteger(130, random).toString(32);
-		this.issued = new Date();
-		this.expires = new Date(this.issued.getTime() + (TOKEN_VAILIDITY * 1000));
-		return this.code;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getError() {
-		return error;
-	}
-
-	public void setError(String error) {
-		this.error = error;
-	}
-
-	public String getNonce() {
-		return nonce;
-	}
-
-	public void setNonce(String nonce) {
-		this.nonce = nonce;
 	}
 
 	public Date getExpires() {
@@ -139,13 +90,6 @@ public class OAuthSession {
 		this.scopes = scopes;
 	}
 
-	public String getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
 
 	public Date getIssued() {
 		return issued;
@@ -163,7 +107,6 @@ public class OAuthSession {
 		} else {
 			this.userName = user.getUsername();
 			this.userSourceId = user.getSourceId();
-
 		}
 	}
 
@@ -197,13 +140,31 @@ public class OAuthSession {
 		this.userSourceId = userSourceId;
 	}
 
-	public String getRefreshToken() {
-		return refreshToken;
+
+	@JsonIgnore
+	public String getClientId() {
+		return this.application.getId();
 	}
 
-	public void setRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
+ 
+	
+	public String getToken() {
+		return token;
 	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+ 
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+
 
 }
 

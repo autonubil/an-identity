@@ -266,16 +266,15 @@ angular.module("autonubil-intranet-openid")
 			$scope.code = e.code;
 			
 			if ($scope.status.loggedIn && $routeParams.redirect_uri){
-				newUrl = $routeParams.redirect_uri;
+				var newUrl = $routeParams.redirect_uri;
 				if (newUrl.indexOf('?') > -1) {
 					newUrl += "&";
 				} else {
 					newUrl += "?";
 				}
-				
 				newUrl += "code=" + e.code +"&state="+e.state + "&nonce="+e.nonce;
 				if (e.authenticated) {
-					console.log("OAuth2: redirecting to "+ newUrl);
+					// console.log("OAuth2: redirecting to "+ newUrl);
 					window.location.href = newUrl;
 				} 
 			}

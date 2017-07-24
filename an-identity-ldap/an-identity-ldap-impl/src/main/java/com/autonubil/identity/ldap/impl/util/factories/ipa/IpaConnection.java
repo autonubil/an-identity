@@ -72,6 +72,7 @@ public class IpaConnection extends AbstractLdapConnection  {
 			"telephoneNumber", 
 			"mobileTelephoneNumber", 
 			"sn", 
+			"givenName",
 			"krbPrincipalExpiration", 
 			"krbPasswordExpiration", 
 			"ou", 
@@ -244,6 +245,7 @@ public class IpaConnection extends AbstractLdapConnection  {
     	ou.setDisplayName(getAttribute(r, "displayName", ""));
     	ou.setCn(getAttribute(r, "cn", ""));
     	ou.setSn(getAttribute(r, "sn", ""));
+    	ou.setGivenName(getAttribute(r, "givenName", ""));
     	ou.setPhone(getAttribute(r, "telephoneNumber", ""));
     	ou.setMobilePhone(getAttribute(r, "mobileTelephoneNumber", ""));
     	ou.setUsername(getAttribute(r, "uid","")+"");

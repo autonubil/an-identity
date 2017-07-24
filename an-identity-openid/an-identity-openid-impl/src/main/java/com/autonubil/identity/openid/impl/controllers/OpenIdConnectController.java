@@ -3,7 +3,6 @@ package com.autonubil.identity.openid.impl.controllers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,14 +29,17 @@ import com.autonubil.identity.auth.api.exceptions.AuthException;
 import com.autonubil.identity.auth.api.services.AuthService;
 import com.autonubil.identity.auth.api.util.IdentityHolder;
 import com.autonubil.identity.ldap.api.entities.LdapUser;
+import com.autonubil.identity.openid.impl.entities.OAuthAccessSession;
 import com.autonubil.identity.openid.impl.entities.OAuthApp;
 import com.autonubil.identity.openid.impl.entities.OAuthApprovalRequest;
+import com.autonubil.identity.openid.impl.entities.OAuthApprovalSession;
 import com.autonubil.identity.openid.impl.entities.OAuthAuthorizationErrorResponse;
-import com.autonubil.identity.openid.impl.entities.OAuthSession;
+import com.autonubil.identity.openid.impl.entities.OAuthRefreshSession;
 import com.autonubil.identity.openid.impl.entities.OAuthToken;
 import com.autonubil.identity.openid.impl.entities.OpenIdConnectConfiguration;
 import com.autonubil.identity.openid.impl.entities.WebfingerResponse;
 import com.autonubil.identity.openid.impl.services.OAuth2ServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -92,7 +94,8 @@ public class OpenIdConnectController {
 	// this one only rediretcs to the Ui
 	@RequestMapping(value = { "/oauth/authorize" }, method = { RequestMethod.GET })
 	public OAuthAuthorizationErrorResponse oauthAuthorize(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(name = "client_id") String clientId, @RequestParam(name = "redirect_uri") String redirectUrl,
+			@RequestParam(name = "client_id", required = false) String clientId, 
+			@RequestParam(name = "redirect_uri") String redirectUrl,
 			@RequestParam(name = "response_type", required = false) String responseType,
 			@RequestParam(name = "scope", required = false) String scope,
 			@RequestParam(name = "nonce", required = false) String nonce,
@@ -100,6 +103,7 @@ public class OpenIdConnectController {
 			@PathVariable(name = "appname", required = false) String appname)
 			throws AuthException, IOException, URISyntaxException {
 
+		
 		// default to code
 		if (responseType == null) {
 			responseType = "code";
@@ -118,9 +122,14 @@ public class OpenIdConnectController {
 		}
 
 		UriComponentsBuilder queryBuilder = UriComponentsBuilder.fromPath("/oauth/authorize")
-				.queryParam("redirect_uri", redirectUrl).queryParam("client_id", clientId)
+				.queryParam("redirect_uri", redirectUrl)
 				.queryParam("response_type", responseType);
 
+		
+		if (clientId != null) {
+			queryBuilder.queryParam("client_id", clientId);
+
+		}
 		if (nonce != null) {
 			queryBuilder.queryParam("nonce", nonce);
 		}
@@ -138,28 +147,36 @@ public class OpenIdConnectController {
 
 		response.sendRedirect(newTarget + fullPath);
 
-		log.debug("Authorizeation request from: " + request.getRemoteHost());
 		return null;
 	}
 
 	// called from the ui
 	@RequestMapping(value = { "/oauth/approve" }, method = { RequestMethod.GET })
 	public Object oauthApprove(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("client_id") String clientId, @RequestParam(name = "scope", required = false) String scope,
+			@RequestParam(name = "client_id", required = true) String clientId, 
+			@RequestParam(name = "scope", required = false) String scope,
 			@RequestParam(name = "response_type", required = false) String responseType,
 			@RequestParam(name = "nonce", required = false) String nonce,
 			@RequestParam(name = "code", required = false) String code,
 			@RequestParam(name = "state", required = false) String state)
 			throws AuthException, IOException, URISyntaxException {
 
-		log.debug("approve request from: " + request.getRemoteHost());
+
+
+		if (responseType == null) {
+			return new OAuthAuthorizationErrorResponse("invalid_request", "no respons type specified", state);
+		}
+		
+		log.debug("approve "+  responseType +" request from: " + request.getRemoteHost());
 
 		// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
 		if (!"code".equals(responseType)) {
-			return new OAuthAuthorizationErrorResponse("invalid_request", "Only code response type is supported",
-					state);
+			return new OAuthAuthorizationErrorResponse("invalid_request", "Only code response type is supported", state);
 		}
 		OAuthApp app = oauthService.getApplication(clientId);
+		if (app == null) {
+			return new OAuthAuthorizationErrorResponse("invalid_request", "Unknown client", state);
+		}
 
 		List<String> scopes;
 		if (scope != null) {
@@ -171,11 +188,11 @@ public class OpenIdConnectController {
 				scopes = Arrays.asList(scope.split(" "));
 			}
 		} else {
-			scopes = new ArrayList<>();
+			scopes = app.getScopes();
 		}
 
 		for (String requestedScope : scopes) {
-			if (!app.getScopes().contains(requestedScope)) {
+			if ( (app.getScopes() == null) || (!app.getScopes().contains(requestedScope)) ) {
 				return new OAuthAuthorizationErrorResponse("invalid_scope",
 						String.format("The scope %s is not permitted", requestedScope), state);
 			}
@@ -222,14 +239,15 @@ public class OpenIdConnectController {
 			}
 
 		}
-		OAuthSession session = null;
+		OAuthApprovalSession session = null;
 		if (scopes.contains("offline_access")) {
 			log.debug("Token will contain refresh token");
 		}
 		if (authenticated) {
-			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, i.getUser(), scopes.contains("offline_access"));
+			session = this.oauthService.addApproval(code, state, nonce, app, scopes, i.getUser());
+			// session = this.oauthService.addApproval(, scopes.contains("offline_access"));
 		} else {
-			session = this.oauthService.addApproval(clientId, code, state, nonce, app, scopes, null, scopes.contains("offline_access"));
+			session = this.oauthService.addApproval(code, state, nonce, app, scopes, null);
 		}
 		if (session == null) {
 			// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
@@ -246,63 +264,85 @@ public class OpenIdConnectController {
 	@RequestMapping(value = { "/oauth/token" }, method = { RequestMethod.POST })
 	public Object oauthToken(HttpServletRequest request, HttpServletResponse response,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
-			@RequestParam(name = "code") String code, @RequestParam(name = "grant_type") String grantType,
-			@RequestParam(name = "redirect_uri") String redirectUrl,
+			@RequestParam(name = "code", required = false) String code, 
+			@RequestParam(name = "grant_type") String grantType,
+			@RequestParam(name = "redirect_uri", required = false) String redirectUrl,
 			@RequestParam(name = "client_id", required = false) String clientId,
 			@RequestParam(name = "refresh_token", required = false) String refreshToken,
 			@RequestParam(name = "client_secret", required = false) String clientSecret)
 
 			throws AuthException, IllegalArgumentException, UnsupportedEncodingException {
 
-		OAuthSession session = this.oauthService.getApproval(code);
+		if ("refresh_token".equals(grantType)) {
+			OAuthRefreshSession session = this.oauthService.getRefreshSession(refreshToken);
 
+			if (session == null) {
+				// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
+				response.setStatus(401);
+				log.info("token request from: " + request.getRemoteHost() + " for " + session.getApplication().getName() + " without associated session" );
+				return new OAuthAuthorizationErrorResponse("invalid_grant", "Invalid session", null);
+			}
 			
-		if (session == null) {
-			// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
-			response.setStatus(401);
-			return new OAuthAuthorizationErrorResponse("invalid_grant", "Invalid session", null);
-		}
-
-		// check if user is still valid
-		User user = session.getUser(this.authService);
-
-		if (user == null) {
-			response.setStatus(401);
-			return new OAuthAuthorizationErrorResponse("invalid_grant", "No user associated", null);
-		}
-
-		if (user instanceof ExpiringUser) {
-			ExpiringUser expiringUser = (ExpiringUser) user;
-			if (expiringUser.isExpired()) {
-				response.setStatus(403);
-				return new OAuthAuthorizationErrorResponse("invalid_grant", "User is expired", null);
-			}
-			// token will not be longertvalid as the user itself
-			if (expiringUser.getUserExpires().getTime() < session.getExpires().getTime()) {
-				session.setExpires(expiringUser.getUserExpires());
-
-			}
-		}
-		
-		
-		
-		if ("authorization_code".equals(grantType)) {
-			response.setContentType("application/jwt");
-			OAuthToken token = oauthService.getToken(session, this.getConfiguration(request).getIssuer(), user.getUsername());
-			log.info("token request from: " + request.getRemoteHost() + " for " + session.getApplication().getName());
+			// TODO: Revalidate USER!! 
+			OAuthToken token = oauthService.getToken(session, this.getConfiguration(request).getIssuer(), session.getUserName(), refreshToken);
+			
 			return token;
-		} else if ("refresh_token".equals(grantType)) {
-			response.setContentType("application/jwt");
-			session.upgrade();
-			OAuthToken token = oauthService.getToken(session, this.getConfiguration(request).getIssuer(), user.getUsername());
-			log.info("token request from: " + request.getRemoteHost() + " for " + session.getApplication().getName());
-			return token;	
-		} else {
-			log.info(grantType + " request from: " + request.getRemoteHost() + " for " + session.getApplication().getName());
-			return new OAuthAuthorizationErrorResponse("invalid_grant", "Unsupported grant type", null);
+		} else  {
+			OAuthAccessSession session = this.oauthService.getAccessSession(code);
+				
+			if (session == null) {
+				// https://www.docusign.com/p/RESTAPIGuide/Content/OAuth2/OAuth2%20Response%20Codes.htm
+				response.setStatus(401);
+				log.info("token request from: " + request.getRemoteHost() + " for " + session.getApplication().getName() + " without associated session" );
+				return new OAuthAuthorizationErrorResponse("invalid_grant", "Invalid session", null);
+			}
+	
+			// check if user is still valid
+			User user = session.getUser(this.authService);
+	
+			if (user == null) {
+				response.setStatus(401);
+				log.info("token request from: " + request.getRemoteHost() + " for " + session.getApplication().getName() + " without user" );
+				return new OAuthAuthorizationErrorResponse("invalid_grant", "No user associated", null);
+			}
+	
+			if (user instanceof ExpiringUser) {
+				ExpiringUser expiringUser = (ExpiringUser) user;
+				if (expiringUser.isExpired()) {
+					response.setStatus(403);
+					log.info("token request from: " + request.getRemoteHost() + " for " + session.getApplication().getName() + " with expired user "+ expiringUser.getUsername() );
+					return new OAuthAuthorizationErrorResponse("invalid_grant", "User is expired", null);
+				}
+				// token will not be longertvalid as the user itself
+				if (expiringUser.getUserExpires().getTime() < session.getExpires().getTime()) {
+					session.setExpires(expiringUser.getUserExpires());
+				}
+			}
+			
+			OAuthApp app = oauthService.getApplication(clientId);
+			if (app == null) {
+				return new OAuthAuthorizationErrorResponse("invalid_request", "Unknown client", null);
+			}
+			
+			if ("authorization_code".equals(grantType)) {
+				response.setContentType("application/jwt");
+				OAuthToken token = oauthService.getToken(session, this.getConfiguration(request).getIssuer(), user.getUsername());
+				
+				// also create Refresh_token?
+				if (session.getScopes().contains("offline_access")) {
+					OAuthRefreshSession refreshSession = new OAuthRefreshSession(session);
+					oauthService.saveSession(refreshSession);
+					token.setRefreshToken(refreshSession.getToken());
+				}
+				
+				log.info("positive token request from: " + request.getRemoteHost() + " for " + session.getApplication().getName());
+				return token;
+			} else {
+				log.info(grantType + " request from: " + request.getRemoteHost() + " for " + session.getApplication().getName());
+				return new OAuthAuthorizationErrorResponse("invalid_grant", "Unsupported grant type", null);
+			}
+
 		}
-
-
 		
 	}
 
@@ -312,12 +352,12 @@ public class OpenIdConnectController {
 			@RequestParam(name = "access_token", required = false) String accessToken)
 			throws IllegalArgumentException, UnsupportedEncodingException, AuthException {
 
-		OAuthSession session = null;
+		OAuthAccessSession session = null;
 		if ((authorization != null) && (authorization.startsWith("Bearer "))) {
 			String tokenHash = authorization.substring(7);
-			session = this.oauthService.getSession(tokenHash);
+			session = this.oauthService.getAccessSession(tokenHash);
 		} else if (accessToken != null) {
-			session = this.oauthService.getSession(accessToken);
+			session = this.oauthService.getAccessSession(accessToken);
 		}
 
 		if (session == null) {
@@ -346,14 +386,14 @@ public class OpenIdConnectController {
 	public Object oauthProfile(HttpServletRequest request, HttpServletResponse response,
 			@RequestHeader(value = "Authorization") String authorization,
 			@RequestParam(name = "access_token", required = false) String accessToken)
-			throws IllegalArgumentException, UnsupportedEncodingException {
+			throws IllegalArgumentException, UnsupportedEncodingException, JsonProcessingException {
 
-		OAuthSession session = null;
+		OAuthAccessSession session = null;
 		if ((authorization != null) && (authorization.startsWith("Bearer "))) {
 			String tokenHash = authorization.substring(7);
-			session = this.oauthService.getSession(tokenHash);
+			session = this.oauthService.getAccessSession(tokenHash);
 		} else if (accessToken != null) {
-			session = this.oauthService.getSession(accessToken);
+			session = this.oauthService.getAccessSession(accessToken);
 		}
 
 		if (session == null) {
@@ -380,10 +420,11 @@ public class OpenIdConnectController {
 		profile.put("sub", user.getUsername());
 		// profile.put("iat", new Date().getTime());
 
+		/*
 		if (session.getNonce() != null) {
 			profile.put("nonce", session.getNonce());
 		}
-
+*/
 		LdapUser ldapUser = null;
 		if (user instanceof LdapUser) {
 			ldapUser = (LdapUser) user;
@@ -428,8 +469,7 @@ public class OpenIdConnectController {
 		
 		log.info("profile request from: " + request.getRemoteHost() + " for " + session.getClientId());
 		
-		
-		return profile.toString();
+		return mapper.writeValueAsString(profile);
 	}
 
 
@@ -437,14 +477,14 @@ public class OpenIdConnectController {
 	public Object getUserInfo(HttpServletRequest request, HttpServletResponse response,
 			@RequestHeader(value = "Authorization") String authorization,
 			@RequestParam(name = "access_token", required = false) String accessToken)
-			throws IllegalArgumentException, UnsupportedEncodingException {
+			throws IllegalArgumentException, UnsupportedEncodingException, JsonProcessingException {
 
-		OAuthSession session = null;
+		OAuthAccessSession session = null;
 		if ((authorization != null) && (authorization.startsWith("Bearer "))) {
 			String tokenHash = authorization.substring(7);
-			session = this.oauthService.getSession(tokenHash);
+			session = this.oauthService.getAccessSession(tokenHash);
 		}else if (accessToken != null) {
-			session = this.oauthService.getSession(accessToken);
+			session = this.oauthService.getAccessSession(accessToken);
 		}
 
 		if (session == null) {
@@ -468,7 +508,12 @@ public class OpenIdConnectController {
 
 		profile.put("iss", new OpenIdConnectConfiguration(request).getIssuer());
 		profile.put("aud", session.getClientId());
-		profile.put("id", user.getId());
+		profile.put("sub", user.getId());
+		profile.put("id", user.getUsername());
+		
+		profile.put("user_id", user.getUsername());
+		profile.put("username", user.getUsername());
+		profile.put("preferred_username", user.getUsername());
 
 		LdapUser ldapUser = null;
 		if (user instanceof LdapUser) {
@@ -483,10 +528,10 @@ public class OpenIdConnectController {
 			profile.put("nickname", user.getUsername());
 			if (ldapUser != null) {
 				if (ldapUser.getSn() != null) {
-					profile.put("first_name", ldapUser.getSn());
+					profile.put("last_name", ldapUser.getSn());
 				}
 				if (ldapUser.getGivenName() != null) {
-					profile.put("last_name", ldapUser.getGivenName());
+					profile.put("first_name", ldapUser.getGivenName());
 				}
 			}
 		}
@@ -494,6 +539,7 @@ public class OpenIdConnectController {
 			if (user instanceof LdapUser) {
 				if (ldapUser.getMail() != null) {
 					profile.put("email", ldapUser.getMail());
+					profile.put("email_verified", true);
 				}
 			}
 		}
@@ -510,7 +556,7 @@ public class OpenIdConnectController {
 		log.info("userinfo request from: " + request.getRemoteHost() + " for " + session.getClientId());
 		
 		response.setContentType("application/json");
-		return profile.toString();
+		return mapper.writeValueAsString(profile);
 	}
 }
 

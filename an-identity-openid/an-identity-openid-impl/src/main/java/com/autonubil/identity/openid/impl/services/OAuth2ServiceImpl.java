@@ -50,12 +50,16 @@ import com.auth0.jwt.interfaces.RSAKeyProvider;
 import com.autonubil.identity.auth.api.entities.Group;
 import com.autonubil.identity.auth.api.entities.User;
 import com.autonubil.identity.openid.RsaJwk;
+import com.autonubil.identity.openid.impl.entities.OAuthAccessSession;
 import com.autonubil.identity.openid.impl.entities.OAuthApp;
+import com.autonubil.identity.openid.impl.entities.OAuthApprovalSession;
 import com.autonubil.identity.openid.impl.entities.OAuthPermission;
+import com.autonubil.identity.openid.impl.entities.OAuthRefreshSession;
 import com.autonubil.identity.openid.impl.entities.OAuthSession;
 import com.autonubil.identity.openid.impl.entities.OAuthToken;
 import com.autonubil.identity.secrets.impl.DbSecretProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -169,47 +173,42 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 		return result;
 	}
 
-	public OAuthSession addApproval(String clientId, String code, String state, String nonce, OAuthApp app, List<String> scopes, User user, boolean createRefreshToken) {
+	
+	public OAuthApprovalSession addApproval(String code, String state, String nonce, OAuthApp app, List<String> scopes, User user) {
 		this.purge();
-		OAuthSession session; 
+		OAuthApprovalSession session; 
 		if (code != null) {
-			session = this.getApproval(code);
+			session = this.getApprovalSession(code);
 			// new user?
-			if ( (user != null) && ( (session.getUserName() == null) || (session.getUserSourceId() == null) ||  (!user.getUsername().equals(session.getUserName())) ||  (!user.getSourceId().equals(session.getUserSourceId())) ) ) {
+
+			if ( (user != null) && ( (session.getUserName() == null) || 
+					(session.getUserSourceId() == null) ||  
+					(!user.getUsername().equals(session.getUserName())) ||
+					(!user.getSourceId().equals(session.getUserSourceId())) ) ) {
 				session.setUser(user);
-				if (createRefreshToken) {
-					session.generateRefreshToken();
-				}
 				this.updateSession(session);
 				
 			}
 		} else { 
-			 session = new OAuthSession(clientId,  state, nonce, app, scopes, user);
-			 if (createRefreshToken) {
-				session.generateRefreshToken();
-			 }
-			 this.saveSession(session );
+			 session = new OAuthApprovalSession(code, state, nonce, app, scopes, user == null ? null : user.getSourceId(), user == null ? null : user.getUsername());
+			 this.saveSession(session);
 			 
 		 }
 		 return session;
 	}
 	
-	public OAuthSession getApproval(String code) {
-		return  this.getSession(code);
+	public OAuthApprovalSession getApprovalSession(String code) {
+		return  this.getSession(code, OAuthApprovalSession.class);
 	}
 	
-
-	
-	
-
-	public String upgradeSession(OAuthSession session) {
-		this.purge();
-		this.deleteSession(session);
-		String token = session.upgrade();
-		this.saveSession(session);
-		return token;
+	public OAuthAccessSession getAccessSession(String code) {
+		return  this.getSession(code, OAuthAccessSession.class);
 	}
 	
+	public OAuthRefreshSession getRefreshSession(String code) {
+		return  this.getSession(code, OAuthRefreshSession.class);
+	}
+ 
 	protected void purge() {
 
 		long now = new Date().getTime();
@@ -362,15 +361,27 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 
 	
 	
-	public OAuthToken  createToken(OAuthSession session, String issuer, String subject) {
-		this.upgradeSession(session);
-		return getToken(session, issuer, subject);
+	public OAuthAccessSession createAccessToken(OAuthApprovalSession session, String issuer, String subject) {
+		
+		
+		this.purge();
+		this.deleteSession(session);
+		OAuthAccessSession accessSession = new OAuthAccessSession(session);
+		
+		String token = accessSession.getToken();
+		this.saveSession(accessSession);
+		
+		return accessSession;
+		
 	}
 	
-	public OAuthToken  getToken(OAuthSession session, String issuer, String subject) {
+	public OAuthToken  getToken(OAuthAccessSession session, String issuer, String subject) {
+		return this.getToken(session, issuer, subject, null);
+	}
+	public OAuthToken  getToken(OAuthAccessSession session, String issuer, String subject, String nonce) {
 		OAuthToken token = new OAuthToken();
 
-		token.setAccessToken(session.getCode());
+		token.setAccessToken(session.getToken());
 		
 		
 		if (session.getRefreshToken()  != null) {
@@ -390,8 +401,44 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 			.withSubject(subject)
 			.withIssuedAt(new Date());
 		
-		if (session.getNonce() != null) {
-			jwtBuilder.withClaim("nonce", session.getNonce());
+		if (nonce != null) {
+			jwtBuilder.withClaim("nonce", nonce);
+		}
+ 		
+		String idToken = jwtBuilder.sign(algorithm);
+		token.setIdToken(idToken);
+		token.setExpiresIn ( (session.getExpires().getTime() - new Date().getTime() ) / 1000 );
+		
+		return token;
+	}
+	
+	
+	public OAuthToken  getToken(OAuthRefreshSession session, String issuer, String subject, String refreshToken) {
+		return this.getToken(session, issuer, subject, null, refreshToken);
+	}
+	public OAuthToken  getToken(OAuthRefreshSession session, String issuer, String subject, String nonce, String refreshToken) {
+		OAuthToken token = new OAuthToken();
+
+		token.setAccessToken(session.getToken());
+		
+		if (refreshToken != null) {
+			token.setRefreshToken( refreshToken);
+		}
+		
+		// HMAC
+		Algorithm algorithm = Algorithm.RSA256(this);
+		
+		Builder jwtBuilder =  JWT.create()
+			.withIssuer(issuer)
+			.withAudience(session.getClientId())
+			.withIssuedAt(session.getIssued())
+			.withExpiresAt(session.getExpires())
+			.withNotBefore(new Date(session.getIssued().getTime() - (60 *1000) ))
+			.withSubject(subject)
+			.withIssuedAt(new Date());
+		
+		if (nonce != null) {
+			jwtBuilder.withClaim("nonce", nonce);
 		}
  		
 		String idToken = jwtBuilder.sign(algorithm);
@@ -419,14 +466,14 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 			throw new IllegalArgumentException("Failed to serialize session", e);
 		}
 		
-		u.where(Operator.AND, u.condition(u.getTable(), "id", Comparator.EQ, session.getCode()));
+		u.where(Operator.AND, u.condition(u.getTable(), "id", Comparator.EQ, session.getToken()));
 		
 		templ.update(u.toSQL(), u.getParams());
 	}
 	
-	
-	public OAuthSession getSession(String id) {
- 
+	 
+	public <T extends OAuthSession> T getSession(String id, Class<T> persistentClass) {
+		 
 		if (id == null) {
 			throw new NullPointerException("id must not be null");
 		}
@@ -438,8 +485,7 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 		s.where(Operator.AND, s.condition(source, "expires", Comparator.GT, new Date().getTime()));
 
 		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
-		List<OAuthSession> out = new ArrayList<>();
-		out = templ.query(s.toSQL(), s.getParams(), new SessionSourceRowMapper());
+		List<T> out = templ.query(s.toSQL(), s.getParams(), new SessionSourceRowMapper<T>(persistentClass));
 		
 		if (out.size() == 1) {
 			return out.get(0);
@@ -447,29 +493,7 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 			return null;
 		}
 		
-	}
-	
-
-	public List<OAuthSession> getUserSessions(String sourceId, String userName) {
- 
-		if (sourceId == null) {
-			throw new NullPointerException("sourceId must not be null");
-		}
-		if (userName == null) {
-			throw new NullPointerException("userName must not be null");
-		}
-		
-		Select s = SqlBuilderFactory.select();
-		Table source = s.fromTable("session");
-
-		s.where(Operator.AND, s.condition(source, "source_id", Comparator.EQ, sourceId));
-		s.where(Operator.AND, s.condition(source, "user_name", Comparator.EQ, userName));
-		s.where(Operator.AND, s.condition(source, "expires", Comparator.GT, new Date().getTime()));
-
-		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
-		return templ.query(s.toSQL(), s.getParams(), new SessionSourceRowMapper());
-	}
-	
+	} 
 	
 	public void saveSession(OAuthSession session) {
 		if (session == null) {
@@ -481,7 +505,7 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 		Insert i = SqlBuilderFactory.insert("session");
 		ObjectMapper mapper = new ObjectMapper(); 
 		
-		i.addField("id", session.getCode());
+		i.addField("id", session.getToken());
 		i.addField("expires", session.getExpires().getTime());
 		
 		i.addField("source_id", session.getUserSourceId());
@@ -499,7 +523,7 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 	public void deleteSession(OAuthSession session) {
 		NamedParameterJdbcTemplate templ = new NamedParameterJdbcTemplate(dataSource);
 		Delete d = SqlBuilderFactory.delete("session");
-		d.where(Operator.AND, d.condition(d.getTable(), "id", Comparator.EQ, session.getCode()));
+		d.where(Operator.AND, d.condition(d.getTable(), "id", Comparator.EQ, session.getToken()));
 		templ.update(d.toSQL(), d.getParams());
 	}
 	
@@ -558,14 +582,20 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 	}
 	
 	// Row Mappers
-	public class SessionSourceRowMapper  implements RowMapper<OAuthSession> {
+	public class SessionSourceRowMapper<T>  implements RowMapper<T> {
 
+		private Class<T> persistentClass;
+		
+		public SessionSourceRowMapper(Class<T> persistentClass) {
+		    this.persistentClass =  persistentClass;
+		 }
 		
 		@Override
-		public OAuthSession mapRow(ResultSet rs, int rowNum) throws SQLException {
+		public T mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			try {
-				return  mapper.readValue(rs.getString("definition"), OAuthSession.class);
+				return  mapper.readValue(rs.getString("definition"), persistentClass);
 			} catch (IOException e) {
 				throw new SQLException("Failed to read definition");
 			}
