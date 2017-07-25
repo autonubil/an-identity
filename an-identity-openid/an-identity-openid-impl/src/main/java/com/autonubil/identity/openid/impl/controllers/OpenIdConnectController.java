@@ -384,7 +384,7 @@ public class OpenIdConnectController {
 
 	@RequestMapping(value = { "/oauth/profile" }, method = { RequestMethod.GET })
 	public Object oauthProfile(HttpServletRequest request, HttpServletResponse response,
-			@RequestHeader(value = "Authorization") String authorization,
+			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestParam(name = "access_token", required = false) String accessToken)
 			throws IllegalArgumentException, UnsupportedEncodingException, JsonProcessingException {
 
@@ -475,7 +475,7 @@ public class OpenIdConnectController {
 
 	@RequestMapping(value = { "/oauth/userinfo", "/api/v3/userinfo" }, method = { RequestMethod.GET })
 	public Object getUserInfo(HttpServletRequest request, HttpServletResponse response,
-			@RequestHeader(value = "Authorization") String authorization,
+			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@RequestParam(name = "access_token", required = false) String accessToken)
 			throws IllegalArgumentException, UnsupportedEncodingException, JsonProcessingException {
 
