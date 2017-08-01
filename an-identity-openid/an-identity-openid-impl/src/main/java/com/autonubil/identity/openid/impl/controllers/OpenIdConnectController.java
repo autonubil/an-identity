@@ -180,13 +180,12 @@ public class OpenIdConnectController {
 
 		List<String> scopes;
 		if (scope != null) {
-			scope = scope.replace("%20", " ");
+			scope = scope.replace("%20", " ").replace("  ", " ").replace(' ', ',');
 			if (scope.startsWith("[")) {
-				scope = scope.substring(1, scope.length() - 2).replace("%20", " ");
-				scopes = Arrays.asList(scope.split(" "));
-			} else {
-				scopes = Arrays.asList(scope.split(" "));
+				scope = scope.substring(1, scope.length() - 2);
 			}
+			scopes = Arrays.asList(scope.split(","));
+			
 		} else {
 			scopes = app.getScopes();
 		}
@@ -202,6 +201,9 @@ public class OpenIdConnectController {
 
 		Identity i = IdentityHolder.get();
 		boolean authenticated = (i != null);
+		
+		App linkedApp = null;
+		
 		if (authenticated) {
 
 			// linked app allowed
@@ -210,6 +212,7 @@ public class OpenIdConnectController {
 				boolean allowed = false;
 				for (App userApp : linkedApps) {
 					if (userApp.getId().equals(app.getLinkedAppId())) {
+						linkedApp = userApp;
 						allowed = true;
 						break;
 					}
@@ -237,7 +240,12 @@ public class OpenIdConnectController {
 					}
 				}
 			}
-
+		} else {
+			if ( (app != null) && (app.getLinkedAppId() != null) ) {
+				linkedApp = appsService.get(app.getLinkedAppId());
+			}
+			
+			
 		}
 		OAuthApprovalSession session = null;
 		if (scopes.contains("offline_access")) {
@@ -257,7 +265,7 @@ public class OpenIdConnectController {
 
 		log.info("approve request from: " + request.getRemoteHost() + " for " + app.getName());
 
-		return new OAuthApprovalRequest(session, authenticated);
+		return new OAuthApprovalRequest(session, authenticated, linkedApp);
 
 	}
 

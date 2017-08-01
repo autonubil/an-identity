@@ -219,9 +219,12 @@ angular.module("autonubil-intranet-openid")
 	
 	$scope.redirect_uri = $routeParams.redirect_uri; 
 	$scope.app= {
+			id: null,
+			prefix: "The ",
 			name: "Application"
 	}
 	$scope.scopes = [];
+	
 	
 	$scope.code = $routeParams.code; 
 	
@@ -248,16 +251,31 @@ angular.module("autonubil-intranet-openid")
 		params['_t'] = Date.now();
 		
 		Restangular.one('oauth').customGET("approve", params).then( function(e) {
+			
+			if (e.error) {
+				$scope.error = {
+						data: {
+							message: e.error
+						}
+				};
+				return;
+			}
+			
+			
+			
+			
 			if (e.scopes) {
 				$scope.scopes = e.scopes;
 			} else {
 				$scope.scopes = [];
 			}
 			
-			if (e.app) {
-				$scope.app = e.app;
+			if (e.linkedApplication) {
+				$scope.app = e.linkedApplication;
 			} else {
 				$scope.app = {
+						id: null,
+					prefix: "The ",
 					name: "Application"
 				}
 			}
@@ -270,9 +288,25 @@ angular.module("autonubil-intranet-openid")
 				if (newUrl.indexOf('?') > -1) {
 					newUrl += "&";
 				} else {
-					newUrl += "?";
+					newUrl += "?a=b" ;
 				}
-				newUrl += "code=" + e.code +"&state="+e.state + "&nonce="+e.nonce;
+				
+				params = ""
+				// newUrl += "code=" + e.code +"&state="+e.state;
+				if (e.code)
+					params  +=  "&code="+e.code;
+				if (e.state)
+					params+=  "&state="+e.state;
+				if (e.nonce)
+					params  +=  "&nonce="+e.nonce;
+				
+				if (newUrl.indexOf('?') > -1) {
+					newUrl += "&"+params;
+				} else {
+					newUrl += "?"+params ;
+				}
+				
+				$scope.redirect_uri = newUrl;
 				if (e.authenticated) {
 					// console.log("OAuth2: redirecting to "+ newUrl);
 					window.location.href = newUrl;

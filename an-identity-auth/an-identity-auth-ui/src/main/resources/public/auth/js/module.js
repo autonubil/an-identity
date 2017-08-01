@@ -15,6 +15,10 @@ angular.module("autonubil-intranet-auth")
 					// already on login page
 					return;
 				}
+				if ($location.path().startsWith("/ouath/") ) {
+					// already on login page
+					return;
+				}
 				
 				if ($location.path() == "/welcome" || $location.path() == "/auth/dashboard")
 					angular.module("autonubil-intranet-auth").goto("/auth/login");

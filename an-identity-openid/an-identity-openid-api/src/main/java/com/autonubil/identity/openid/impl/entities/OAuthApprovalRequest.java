@@ -2,6 +2,8 @@ package com.autonubil.identity.openid.impl.entities;
 
 import java.util.List;
 
+import com.autonubil.identity.apps.api.entities.App;
+
 public class OAuthApprovalRequest {
 	private String code;
 	private String state;
@@ -9,12 +11,19 @@ public class OAuthApprovalRequest {
 	private List<String> scopes;
 	private boolean authenticated;
 	
-	public OAuthApprovalRequest(OAuthApprovalSession session, boolean authenticated) {
+	private App linkedApplication;
+	
+	public OAuthApprovalRequest(OAuthApprovalSession session, boolean authenticated, App linkedApplication) {
 		this.code = session.getToken();
 		this.state = session.getState();
 		this.nonce = session.getNonce();
 		this.scopes = session.getScopes();
 		this.authenticated = authenticated;
+		this.linkedApplication = linkedApplication;
+	}
+
+	public OAuthApprovalRequest(OAuthApprovalSession session, boolean authenticated) {
+		this(session, authenticated, null);
 	}
 
 	public String getCode() {
@@ -31,6 +40,14 @@ public class OAuthApprovalRequest {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public App getLinkedApplication() {
+		return linkedApplication;
+	}
+
+	public void setLinkedApplication(App linkedApplication) {
+		this.linkedApplication = linkedApplication;
 	}
 
 	public String getNonce() {

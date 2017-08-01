@@ -6,7 +6,11 @@
 	<div class="col-md-4">
 		<!-- <div >Please authorize {{ app.name }}</div> -->
 		<div ng-if="scopes.length > 0">
-			The application request the following informations:<br />
+			<span ng-if="{{app.id}}">
+			<img ng-src="/autonubil/api/apps/apps/{{app.id}}/icon"
+				style="max-height: 3.2em; min-height: 3.2em" /><br/>
+			{{ app.prefix }}{{ app.name }} request the following informations:<br />
+			</span>
 			<ul>
 				<li ng-repeat="scope in scopes" ng-switch="scope">
 					<div ng-switch-when="openid">
@@ -41,8 +45,9 @@
 </div>
 
 <div class="row" ng-if="status.loggedIn">
-	<div class="col-md-12">Your are beeing sent back to the
-		application that requested authentication....</div>
+	<div class="col-md-12">Your are beeing sent <a ng-href="{{ redirect_uri }}">back</a> to the
+		application that requested authentication....</br>
+		</div>
 
 </div>
 
