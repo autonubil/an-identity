@@ -4,24 +4,24 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity</artifactId>
-		<version>0.1.43-SNAPSHOT</version>
+		<version>0.1.43</version>
 	</parent>
 	<artifactId>an-identity-automigrate</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-common</artifactId>
-			<version>0.1.43-SNAPSHOT</version>
+			<version>0.1.43</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-impl</artifactId>
-			<version>0.1.43-SNAPSHOT</version>
+			<version>0.1.43</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-ldap-api</artifactId>
-			<version>0.1.43-SNAPSHOT</version>
+			<version>0.1.43</version>
 		</dependency>
 	</dependencies>
 </project>

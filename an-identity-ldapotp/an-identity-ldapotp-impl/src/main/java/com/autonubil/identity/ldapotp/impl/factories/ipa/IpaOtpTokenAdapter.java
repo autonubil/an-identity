@@ -29,10 +29,8 @@ import com.autonubil.identity.util.totp.TotpUtil;
 public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 
 	private static Log log = LogFactory.getLog(IpaOtpTokenAdapter.class);
-	
 	private DirContext context;
 	private LdapConnection ldapConnection;
-	
 	
 	public IpaOtpTokenAdapter(LdapConnection connection) {
 		this.ldapConnection = connection;

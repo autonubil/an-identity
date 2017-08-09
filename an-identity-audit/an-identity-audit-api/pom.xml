@@ -6,7 +6,7 @@
 
     
 
-    <version>0.1.43-SNAPSHOT</version>
+    <version>0.1.43</version>
 
   </parent>
   <artifactId>an-identity-audit-api</artifactId>
