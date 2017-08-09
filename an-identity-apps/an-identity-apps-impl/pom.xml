@@ -4,24 +4,24 @@
 	<parent>
 		<groupId>com.autonubil.identity</groupId>
 		<artifactId>an-identity-apps</artifactId>
-		<version>0.1.43</version>
+		<version>0.1.44-SNAPSHOT</version>
 	</parent>
 	<artifactId>an-identity-apps-impl</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-common</artifactId>
-			<version>0.1.43</version>
+			<version>0.1.44-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-apps-api</artifactId>
-			<version>0.1.43</version>
+			<version>0.1.44-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-api</artifactId>
-			<version>0.1.43</version>
+			<version>0.1.44-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
