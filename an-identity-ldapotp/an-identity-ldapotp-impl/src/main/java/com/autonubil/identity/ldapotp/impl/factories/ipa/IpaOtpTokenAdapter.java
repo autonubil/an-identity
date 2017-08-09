@@ -134,10 +134,12 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 			Attributes userAuthTypeAttrs = ldapConnection.getContext().getAttributes(user.getDn(), new String[] {"ipaUserAuthType"} );
 			Attribute userAuthTypeAttr = userAuthTypeAttrs.get("ipaUserAuthType");
 			boolean otpMethodSet = false;
+			boolean attributePresent = false;
 			if (userAuthTypeAttr != null) {
 				for (int i=0; i< userAuthTypeAttr.size(); i++) {
 					if (userAuthTypeAttr.get(i).toString().compareToIgnoreCase("otp") == 0) {
 						otpMethodSet = true;
+						attributePresent  = true;
 						break;
 					}
 				}
@@ -152,7 +154,7 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 				} else {
 					userAuthTypeAttr.remove("otp");
 				}
-				ModificationItem[] items = new ModificationItem[] { new ModificationItem(DirContext.REPLACE_ATTRIBUTE, userAuthTypeAttr) };
+				ModificationItem[] items = new ModificationItem[] { new ModificationItem(attributePresent ? DirContext.REPLACE_ATTRIBUTE : DirContext.ADD_ATTRIBUTE, userAuthTypeAttr) };
 				ldapConnection.getContext().modifyAttributes(user.getDn() , items);
 				log.info("Set OTP UserAuthType flag for " + user.getUsername()+" in IPA" );
 			}
