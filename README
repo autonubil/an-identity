@@ -1,4 +1,6 @@
+# Setup
 
+## Database
 
 please see databases.sql for db create scripts. tables are created automatically (db
 user must have create, alter, drop, select, insert, delete privileges)
@@ -12,7 +14,5 @@ environment variables for postgresql are:
 	pgsql.jdbc.baseurl=jdbc:postgresql://127.0.0.1:5432
 	pgsql.jdbc.username=postgres
 	pgsql.jdbc.password=
-
-
 
 
