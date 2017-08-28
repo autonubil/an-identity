@@ -2,7 +2,7 @@
 
 ## Database
 
-please see databases.sql for db create scripts. tables are created automatically (db
+Please see databases.sql for db create scripts. tables are created automatically (db
 user must have create, alter, drop, select, insert, delete privileges)
 
 general (spring boot) environment variables:
