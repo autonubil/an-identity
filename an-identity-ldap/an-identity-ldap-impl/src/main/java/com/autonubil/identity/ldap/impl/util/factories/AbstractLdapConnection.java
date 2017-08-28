@@ -246,7 +246,7 @@ public abstract class AbstractLdapConnection implements LdapConnection {
 		try {
 			while (results.hasMore()) {
 				out.add(results.next());
-				log.info("result: +1 ---> " + out.size());
+				log.trace("result: +1 ---> " + out.size());
 			}
 		} catch (Exception e) {
 			log.warn("following referrals might yield more results, filter was: " + filter);

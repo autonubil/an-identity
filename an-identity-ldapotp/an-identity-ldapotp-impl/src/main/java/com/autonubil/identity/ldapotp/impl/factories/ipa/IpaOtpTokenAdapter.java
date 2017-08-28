@@ -134,10 +134,10 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 			boolean otpMethodSet = false;
 			boolean attributePresent = false;
 			if (userAuthTypeAttr != null) {
+				attributePresent  = true;
 				for (int i=0; i< userAuthTypeAttr.size(); i++) {
 					if (userAuthTypeAttr.get(i).toString().compareToIgnoreCase("otp") == 0) {
 						otpMethodSet = true;
-						attributePresent  = true;
 						break;
 					}
 				}
@@ -244,7 +244,7 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 							}
 						}
 					}
-					);
+			);
 
 			List<String> toRemove = new ArrayList<>(); 
 
@@ -259,20 +259,33 @@ public class IpaOtpTokenAdapter implements LdapOtpAdapter {
 			}
 			
 			ModificationItem[] items = new ModificationItem[tokenOwners.size()+toRemove.size()];
-			int index=0;
+			int changes=0;
+			
+			Attributes groupAttributes = ldapConnection.getContext().getAttributes(otpGroup, new String[] {"member"} );
+			Attribute memberAttribute = groupAttributes.get("member");
+			if (memberAttribute == null) {
+				memberAttribute =  new BasicAttribute("member");
+			}
 			
 			for(String s : tokenOwners) {
-				log.info(s+" should be added");
-				items[index] = new ModificationItem(DirContext.ADD_ATTRIBUTE, new BasicAttribute("member", s));
-				index++;
+				if (!memberAttribute.contains(s)) {
+					log.info(s+" should be added");
+					changes++;
+					memberAttribute.add(s);
+				}
 			}
 			for(String s : toRemove) {
-				log.info(s+" should be removed");
-				items[index] = new ModificationItem(DirContext.REMOVE_ATTRIBUTE, new BasicAttribute("member", s));
-				index++;
+				if (memberAttribute.contains(s)) {
+					log.info(s+" should be removed");
+					changes++;
+					memberAttribute.remove(s);
+				}
 			}
 			
-			ldapConnection.getContext().modifyAttributes(otpGroup, items);
+			if (changes > 0) {
+				items[0] = new ModificationItem(groupAttributes.get("member") == null ? DirContext.ADD_ATTRIBUTE :  DirContext.REMOVE_ATTRIBUTE , memberAttribute);
+				ldapConnection.getContext().modifyAttributes(otpGroup, items);
+			}
 			
  		} catch (Exception e) {
 			log.error("error updating otp group: ",e);
