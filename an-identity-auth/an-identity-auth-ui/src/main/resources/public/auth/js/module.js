@@ -317,16 +317,7 @@ angular.module("autonubil-intranet-auth")
 								 
 						}
 						return;
-					} else if (user.status != 200 ) {
-						$scope.error = {
-								"data" : {
-									"message": "Server Error:" + user.message,
-									"status": user.status
-								}
-								 
-						}
-						return;
-					}
+					}  
 			
 					$scope.status.loggedIn = true;
 					if ($routeParams.return_url && $routeParams.return_url.length > 0 ) {
