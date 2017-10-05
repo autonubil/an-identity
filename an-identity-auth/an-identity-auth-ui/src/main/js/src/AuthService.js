@@ -38,8 +38,9 @@ angular.module("autonubil-intranet-auth")
 		Restangular.all("autonubil/api/authentication").customGET("authenticate").then(
 				function(e) {
 					
-					if (!e.status != 200) {
+					if ( e.status && !e.status != 200) {
 						setAuthStatus(false,false,"anonymous");
+						console.log("Auth failed: " + e.status);
 						return;
 					}
 					
