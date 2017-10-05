@@ -3,25 +3,25 @@
   <parent>
     <groupId>com.autonubil.identity</groupId>
     <artifactId>an-identity-secrets</artifactId>
-    <version>0.1.49-SNAPSHOT</version>
+    <version>0.1.50-SNAPSHOT</version>
   </parent>
   <artifactId>an-identity-secrets-impl</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>com.autonubil.identity</groupId>
   		<artifactId>an-identity-secrets-api</artifactId>
-  		<version>0.1.49-SNAPSHOT</version>
+  		<version>0.1.50-SNAPSHOT</version>
   	</dependency>
   	
   	<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-db-common</artifactId>
-			<version>0.1.49-SNAPSHOT</version>
+			<version>0.1.50-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.autonubil.identity</groupId>
 			<artifactId>an-identity-auth-api</artifactId>
-			<version>0.1.49-SNAPSHOT</version>
+			<version>0.1.50-SNAPSHOT</version>
 		</dependency>
 		
   </dependencies>

@@ -6,7 +6,7 @@
 
     
 
-    <version>0.1.49-SNAPSHOT</version>
+    <version>0.1.50-SNAPSHOT</version>
 
   </parent>
   <artifactId>an-identity-auth</artifactId>
