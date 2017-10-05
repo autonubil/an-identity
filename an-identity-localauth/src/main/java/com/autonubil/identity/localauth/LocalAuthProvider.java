@@ -41,8 +41,8 @@ public class LocalAuthProvider implements AuthenticationProvider {
 	public static final String SOURCE_NAME = "LOCAL";
 	public static final String ADMIN_ROLE = "admin";
 	
+	@Qualifier("localauth")
 	@Autowired
-	@Qualifier("localAuthDataSource")
 	private DataSource dataSource;
 	
 	@Autowired

@@ -12,7 +12,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.RowMapper;
@@ -41,8 +40,8 @@ public class MailTemplateService {
 	
 	private static Log log = LogFactory.getLog(MailTemplateService.class);
 	
+	@Qualifier("mail")
 	@Autowired
-	@Qualifier("mailServiceDataSource")
 	private DataSource dataSource;
 	
 	@Autowired

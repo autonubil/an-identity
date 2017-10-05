@@ -10,7 +10,7 @@
 		<module>an-identity-apps</module>
 		<module>an-identity-audit</module>
 		<module>an-identity-auth</module>
-        <module>an-identity-aws</module>
+		<module>an-identity-aws</module>
 		<module>an-identity-db</module>
 		<module>an-identity-ldap</module>
 		<module>an-identity-ldapusers</module>
@@ -31,13 +31,15 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<springframework.version>4.3.8.RELEASE</springframework.version>
-		<springboot.version>1.4.6.RELEASE</springboot.version>
+		<springboot.version>1.5.7.RELEASE</springboot.version>
 		<!-- <springsecurity.version>4.2.2.RELEASE</springsecurity.version> -->
 		<jackson.version>2.8.4</jackson.version>
 		<commons-lang3.version>3.5</commons-lang3.version>
 		<commons-io.version>2.5</commons-io.version>
 		<jjwt.version>0.7.0</jjwt.version>
 		<sqlbuilder.version>0.1.22</sqlbuilder.version>
+
+		<prometheus.version>0.0.26</prometheus.version>
 	</properties>
 	<distributionManagement>
 		<repository>
@@ -62,8 +64,14 @@
 			<dependency>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-core</artifactId>
-				<version>4.0.1</version>
+				<version>4.0.2</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.tomcat</groupId>
+				<artifactId>tomcat-dbcp</artifactId>
+				<version>8.5.21</version>
+			</dependency>
+
 			<dependency>
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
@@ -113,6 +121,57 @@
 				<version>${jjwt.version}</version>
 			</dependency>
 
+
+			<!-- prometheus metrics -->
+
+			<dependency>
+				<groupId>io.prometheus</groupId>
+				<artifactId>simpleclient</artifactId>
+				<version>${prometheus.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.prometheus</groupId>
+				<artifactId>simpleclient_spring_boot</artifactId>
+				<version>${prometheus.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.prometheus</groupId>
+				<artifactId>simpleclient_spring_web</artifactId>
+				<version>${prometheus.version}</version>
+			</dependency>
+
+
+			<dependency>
+				<groupId>io.prometheus</groupId>
+				<artifactId>simpleclient_servlet</artifactId>
+				<version>${prometheus.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.prometheus</groupId>
+				<artifactId>simpleclient_jetty</artifactId>
+				<version>${prometheus.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.prometheus</groupId>
+				<artifactId>simpleclient_jetty_jdk8</artifactId>
+				<version>${prometheus.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.prometheus</groupId>
+				<artifactId>simpleclient_jetty_httpserver</artifactId>
+				<version>${prometheus.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.prometheus</groupId>
+				<artifactId>simpleclient_hotspot</artifactId>
+				<version>${prometheus.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>

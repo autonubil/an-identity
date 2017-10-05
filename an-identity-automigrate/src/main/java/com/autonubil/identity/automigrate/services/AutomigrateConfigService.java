@@ -36,8 +36,8 @@ public class AutomigrateConfigService {
 
 	private static Log log = LogFactory.getLog(AutomigrateConfigService.class);
 	
-	@Autowired
 	@Qualifier("automigrateDataSource")
+	@Autowired
 	private DataSource dataSource;
 
 	public List<AutomigrateConfig> list(String id, String fromId, String toId, int offset, int max) {

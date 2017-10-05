@@ -14,6 +14,7 @@ public class PgSqlDataSourceFactory implements DataSourceFactory {
 
 	private static Log log = LogFactory.getLog(PgSqlDataSourceFactory.class);
 	private String baseUrl, username, password;
+	
 
 	public PgSqlDataSourceFactory(String baseUrl, String username, String password) {
 		this.baseUrl = baseUrl;
@@ -40,8 +41,10 @@ public class PgSqlDataSourceFactory implements DataSourceFactory {
 		Flyway flyway = new Flyway();
 		flyway.setDataSource(bds);
 		flyway.setSchemas(schema);
-		flyway.setTable("flyway_"+schema);
+		// flyway.setTable("flyway_"+schema);
 		flyway.setLocations("db/migration_"+schema);
+		flyway.setBaselineOnMigrate(true);
+		// flyway.setCleanDisabled(true);
 		flyway.migrate();
 		
 		return bds;

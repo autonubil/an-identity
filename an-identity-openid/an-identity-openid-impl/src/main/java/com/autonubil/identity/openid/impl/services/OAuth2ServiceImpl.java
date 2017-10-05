@@ -89,8 +89,8 @@ public class OAuth2ServiceImpl  implements RSAKeyProvider {
 	private int keyBits;
 
 	
-	@Autowired
 	@Qualifier("openidDb")
+	@Autowired
 	private DataSource dataSource;
 
 	@Autowired

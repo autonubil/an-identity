@@ -30,8 +30,8 @@ public class CssConfigService {
 
 	private static Log log = LogFactory.getLog(CssConfigService.class);
 	
-	@Autowired
 	@Qualifier(value="lessDataSource")
+	@Autowired
 	private DataSource dataSource;
 	
 	public List<CssLink> list(String id) {

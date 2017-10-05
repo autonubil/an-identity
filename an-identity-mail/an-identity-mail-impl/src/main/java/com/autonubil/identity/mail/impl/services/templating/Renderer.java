@@ -21,7 +21,11 @@ public class Renderer {
 			return null;
 		}
 		StringWriter w = new StringWriter();
-		ve.evaluate(ctx, w, "", new StringReader(template));
+		try {
+			ve.evaluate(ctx, w, "", new StringReader(template));
+		} catch (Exception e) {
+			throw new RuntimeException("Faild to parse template",e );
+		} 
 		return w.toString();
 	}
 	

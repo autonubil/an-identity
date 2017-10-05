@@ -1,7 +1,5 @@
 angular.module("templates", []);
-
 angular.module("autonubil-intranet",["templates","ngRoute", "restangular", "angular-plugin", "angularSpinner"]);
-
 
 angular.module("autonubil-intranet").config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
 	usSpinnerConfigProvider.setTheme('default', {color: 'silver', radius: 20});

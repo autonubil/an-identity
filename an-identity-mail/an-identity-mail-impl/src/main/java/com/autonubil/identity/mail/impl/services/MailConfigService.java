@@ -40,7 +40,7 @@ public class MailConfigService implements MailServiceFactory {
 	private static final Log log = LogFactory.getLog(MailConfigService.class);
 	
 	@Autowired
-	@Qualifier("mailServiceDataSource")
+	@Qualifier("mail")
 	private DataSource dataSource;
 
 	@Autowired

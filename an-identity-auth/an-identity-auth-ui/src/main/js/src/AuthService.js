@@ -37,6 +37,12 @@ angular.module("autonubil-intranet-auth")
 //		console.log ( " update Auth ... ");
 		Restangular.all("autonubil/api/authentication").customGET("authenticate").then(
 				function(e) {
+					
+					if (!e.status != 200) {
+						setAuthStatus(false,false,"anonymous");
+						return;
+					}
+					
 					x = false;
 					_.forEach(e.user.groups,function(group){
 						if(group.name == "admin") {

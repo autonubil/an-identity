@@ -39,8 +39,8 @@ public class LessConfigService {
 	
 	private Path basePath;
 	
-	@Autowired
 	@Qualifier(value="lessDataSource")
+	@Autowired
 	private DataSource dataSource;
 	
 	public String getCss() {

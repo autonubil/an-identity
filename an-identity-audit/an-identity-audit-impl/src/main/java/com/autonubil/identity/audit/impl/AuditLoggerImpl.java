@@ -19,9 +19,9 @@ import de.disk0.db.sqlbuilder.interfaces.Insert;
 @Service
 class AuditLoggerImpl implements AuditLogger {
 	
+	@Qualifier("audit_log")
 	@Autowired
-	@Qualifier("auditLoggerDataSource")
-	private DataSource dataSource;
+	private DataSource auditLoggerDataSource;
 
 	@PostConstruct
 	public void init() {
@@ -39,7 +39,7 @@ class AuditLoggerImpl implements AuditLogger {
 		i.addField("session_id", sessionId);
 		i.addField("user", identity==null?"":identity);
 		i.addField("action", action);
-		NamedParameterJdbcTemplate t = new NamedParameterJdbcTemplate(dataSource);
+		NamedParameterJdbcTemplate t = new NamedParameterJdbcTemplate(auditLoggerDataSource);
 		t.update(i.toSQL(), i.getParams());
 	}
 

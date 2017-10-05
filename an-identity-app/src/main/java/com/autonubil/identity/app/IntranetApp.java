@@ -12,6 +12,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import io.prometheus.client.spring.boot.EnablePrometheusEndpoint;
+import io.prometheus.client.spring.boot.EnableSpringBootMetricsCollector;
+
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
@@ -19,6 +22,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class, org.springframework.boot.autoconfigure.jooq.JooqAutoConfiguration.class, org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration.class})
 @EnableConfigurationProperties
 @ComponentScan(basePackages={"com","de", "net"})
+@EnablePrometheusEndpoint
+@EnableSpringBootMetricsCollector
 public class IntranetApp {
 
 	

@@ -1,0 +1,1 @@
+angular.module("templates").run(["$templateCache", function($templateCache) {$templateCache.put("welcome.html","<div class=\"col-md-12 page-header\">\n	<h2 welcome-title>Welcome</h2>\n</div>\n<div welcome-text class=\"col-md-12\"></div>\n");}]);

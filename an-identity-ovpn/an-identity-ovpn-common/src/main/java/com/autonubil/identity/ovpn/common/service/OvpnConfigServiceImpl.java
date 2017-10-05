@@ -57,8 +57,8 @@ public class OvpnConfigServiceImpl implements com.autonubil.identity.ovpn.api.Ov
 
 	private static Log log = LogFactory.getLog(OvpnConfigServiceImpl.class);
 
-	@Autowired
 	@Qualifier("ovpnDb")
+	@Autowired
 	private DataSource dataSource;
 
 	private long PURGE_INTERVALL = 60 * 10 * 1000;

@@ -24,8 +24,8 @@ import de.disk0.db.sqlbuilder.interfaces.Table;
 @Service
 public class ResetTokenService {
 
-	@Autowired
 	@Qualifier("ldapConfig")
+	@Autowired
 	private DataSource dataSource;
 	
 	public String createToken(String source, String userId, String email, Date expires) {

@@ -45,8 +45,8 @@ public class AppsService implements com.autonubil.identity.apps.api.service.Apps
 	
 	private static Log log = LogFactory.getLog(AppsService.class);
 
-	@Autowired
 	@Qualifier("appsDb")
+	@Autowired
 	private DataSource dataSource;
 
 	public List<App> list(String id, String search) {

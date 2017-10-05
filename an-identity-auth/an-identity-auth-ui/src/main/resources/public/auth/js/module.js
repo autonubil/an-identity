@@ -7,14 +7,27 @@ angular.module("autonubil-intranet-auth")
 	return {
 		responseError : function(rejection) {
 			if(rejection.status == 401) {
-				if( (rejection.data.path == undefined) || (  (rejection.data.path != undefined) && !rejection.data.path.endsWith("/api/authentication/authenticate")) ) {
+				
+				
+				if( (rejection.data.path == undefined) || (  (rejection.data.path != undefined) ) ) {
+					if (rejection.data.path.endsWith("/api/authentication/authenticate")) {
+						if ($location.path() == "/auth/login") {
+							// already on login page
+							return $q.resolve(rejection);
+						}		 
+					} else {
+						console.log("Access Denied for:" +rejection.data.path );
+						angular.module("autonubil-intranet-auth").update();
+					}
+				} else {
 					console.log(rejection);
-					angular.module("autonubil-intranet-auth").update();
 				}
+				
 				if ($location.path() == "/auth/login") {
 					// already on login page
-					return;
+					return $q.accept(rejection);
 				}
+				
 				if ($location.path().startsWith("/ouath/") ) {
 					// already on login page
 					return;
@@ -24,7 +37,7 @@ angular.module("autonubil-intranet-auth")
 					angular.module("autonubil-intranet-auth").goto("/auth/login");
 				else
 					$location.url("/auth/login?return_url="+ encodeURIComponent( $location.absUrl() )  );
-			} else if(rejection.status == 403) {
+			} else if (rejection.status == 403) {
 				angular.module("autonubil-intranet-auth").goto("/auth/errors/accessDenied");
 			}  
 			return $q.reject(rejection);
@@ -149,6 +162,12 @@ angular.module("autonubil-intranet-auth")
 //		console.log ( " update Auth ... ");
 		Restangular.all("autonubil/api/authentication").customGET("authenticate").then(
 				function(e) {
+					
+					if (!e.status != 200) {
+						setAuthStatus(false,false,"anonymous");
+						return;
+					}
+					
 					x = false;
 					_.forEach(e.user.groups,function(group){
 						if(group.name == "admin") {
@@ -288,6 +307,27 @@ angular.module("autonubil-intranet-auth")
 		$scope.startSpin();
 		AuthService.login($scope.credentials,
 				function(user) {
+					$scope.stopSpin();
+					if (user.status == 401 ) {
+						$scope.error = {
+								"data" : {
+									"message": "Wrong credentials provided",
+									"status": user.status
+								}
+								 
+						}
+						return;
+					} else if (user.status != 200 ) {
+						$scope.error = {
+								"data" : {
+									"message": "Server Error:" + user.message,
+									"status": user.status
+								}
+								 
+						}
+						return;
+					}
+			
 					$scope.status.loggedIn = true;
 					if ($routeParams.return_url && $routeParams.return_url.length > 0 ) {
 						redirect =$routeParams.return_url;
@@ -302,8 +342,8 @@ angular.module("autonubil-intranet-auth")
 						}
 					}
 				},
-				function(response) { 
-					$scope.error = response;
+				function(response) {
+					$scope.error = response.data.error;
 					$scope.stopSpin();
 				}
 		);

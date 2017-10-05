@@ -72,6 +72,27 @@ angular.module("autonubil-intranet-auth")
 		$scope.startSpin();
 		AuthService.login($scope.credentials,
 				function(user) {
+					$scope.stopSpin();
+					if (user.status == 401 ) {
+						$scope.error = {
+								"data" : {
+									"message": "Wrong credentials provided",
+									"status": user.status
+								}
+								 
+						}
+						return;
+					} else if (user.status != 200 ) {
+						$scope.error = {
+								"data" : {
+									"message": "Server Error:" + user.message,
+									"status": user.status
+								}
+								 
+						}
+						return;
+					}
+			
 					$scope.status.loggedIn = true;
 					if ($routeParams.return_url && $routeParams.return_url.length > 0 ) {
 						redirect =$routeParams.return_url;
@@ -86,8 +107,8 @@ angular.module("autonubil-intranet-auth")
 						}
 					}
 				},
-				function(response) { 
-					$scope.error = response;
+				function(response) {
+					$scope.error = response.data.error;
 					$scope.stopSpin();
 				}
 		);

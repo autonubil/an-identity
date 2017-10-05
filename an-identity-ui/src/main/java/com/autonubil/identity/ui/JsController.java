@@ -19,7 +19,7 @@ import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 import io.github.lukehutch.fastclasspathscanner.matchprocessor.FileMatchContentsProcessorWithContext;
 
 @Controller
-@RequestMapping("/js")
+@RequestMapping("/gen-js")
 public class JsController {
 
 	private static Log log = LogFactory.getLog(ConcatenateProcessor.class);
@@ -50,7 +50,7 @@ public class JsController {
 		return templates;
 	}
 	
-	@PostConstruct
+ 	@PostConstruct
 	public void init() throws IOException {
 
 		getModules();

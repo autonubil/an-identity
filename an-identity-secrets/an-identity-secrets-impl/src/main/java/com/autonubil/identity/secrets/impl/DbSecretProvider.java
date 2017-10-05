@@ -42,8 +42,8 @@ public class DbSecretProvider implements SecretsProvider{
 	private String masterSecret;
 	
 	
-	@Autowired
 	@Qualifier("secrets")
+	@Autowired
 	private DataSource dataSource;
 	
 	

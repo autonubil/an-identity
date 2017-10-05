@@ -29,8 +29,8 @@ public class LdapCustomFieldConfigService {
 
 	private static Log log = LogFactory.getLog(LdapCustomFieldConfigService.class);
 	
-	@Autowired
 	@Qualifier("ldapConfig")
+	@Autowired
 	private DataSource dataSource;
 
 	public LdapCustomFieldConfigService() {

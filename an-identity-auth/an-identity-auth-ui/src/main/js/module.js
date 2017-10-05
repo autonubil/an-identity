@@ -7,14 +7,27 @@ angular.module("autonubil-intranet-auth")
 	return {
 		responseError : function(rejection) {
 			if(rejection.status == 401) {
-				if( (rejection.data.path == undefined) || (  (rejection.data.path != undefined) && !rejection.data.path.endsWith("/api/authentication/authenticate")) ) {
+				
+				
+				if( (rejection.data.path == undefined) || (  (rejection.data.path != undefined) ) ) {
+					if (rejection.data.path.endsWith("/api/authentication/authenticate")) {
+						if ($location.path() == "/auth/login") {
+							// already on login page
+							return $q.resolve(rejection);
+						}		 
+					} else {
+						console.log("Access Denied for:" +rejection.data.path );
+						angular.module("autonubil-intranet-auth").update();
+					}
+				} else {
 					console.log(rejection);
-					angular.module("autonubil-intranet-auth").update();
 				}
+				
 				if ($location.path() == "/auth/login") {
 					// already on login page
-					return;
+					return $q.accept(rejection);
 				}
+				
 				if ($location.path().startsWith("/ouath/") ) {
 					// already on login page
 					return;
@@ -24,7 +37,7 @@ angular.module("autonubil-intranet-auth")
 					angular.module("autonubil-intranet-auth").goto("/auth/login");
 				else
 					$location.url("/auth/login?return_url="+ encodeURIComponent( $location.absUrl() )  );
-			} else if(rejection.status == 403) {
+			} else if (rejection.status == 403) {
 				angular.module("autonubil-intranet-auth").goto("/auth/errors/accessDenied");
 			}  
 			return $q.reject(rejection);

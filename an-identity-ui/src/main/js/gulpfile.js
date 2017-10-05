@@ -4,6 +4,7 @@ var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var watch = require('gulp-watch');
+var copy = require('gulp-copy');
 
 var target="../resources/public/dist/"
 
@@ -55,7 +56,8 @@ gulp.task('build-deps', function() {
         'node_modules/angular-date-picker/angular-date-picker.js',
         'node_modules/spin.js/spin.min.js',
         'node_modules/angular-spinner/dist/angular-spinner.min.js',
-        'node_modules/bootbox/bootbox.min.js'
+        'node_modules/bootbox/bootbox.min.js',
+
     ];
     return gulp.src(jsFiles)
         .pipe(concat('js/dependencies.js'))
@@ -69,6 +71,8 @@ gulp.task('build-templates', function() {
         .pipe(gulp.dest(target));
 });
 
+
+
 gulp.task('clean', function () {
     return gulp.src(target, {read: false})
         .pipe(clean());
@@ -76,7 +80,7 @@ gulp.task('clean', function () {
 
 gulp.task('default', ['build']);
 
-gulp.task('build', ['build-js', 'build-deps', 'build-fonts', 'build-templates', 'build-css']);
+gulp.task('build', [ 'build-js', 'build-deps', 'build-fonts', 'build-templates', 'build-css']);
 
 gulp.task('watch', ['build'], function () {
     gulp.watch("src/**/*.js", ['build']);

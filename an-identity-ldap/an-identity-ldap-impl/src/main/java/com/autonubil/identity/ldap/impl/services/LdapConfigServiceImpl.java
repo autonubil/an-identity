@@ -40,8 +40,8 @@ public class LdapConfigServiceImpl implements LdapConfigService {
 
 	private static Log log = LogFactory.getLog(LdapConfigServiceImpl.class);
 	
-	@Autowired
 	@Qualifier("ldapConfig")
+	@Autowired
 	private DataSource dataSource;
 	
 	@Autowired

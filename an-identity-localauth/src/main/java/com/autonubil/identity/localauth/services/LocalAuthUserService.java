@@ -65,8 +65,8 @@ public class LocalAuthUserService {
 	@Autowired
 	private AuditLogger auditLogger;
 	
+	@Qualifier("localauth")
 	@Autowired
-	@Qualifier("localAuthDataSource")
 	private DataSource dataSource;
 
 	@Autowired
